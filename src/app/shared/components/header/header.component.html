@@ -7,31 +7,8 @@
         </a>
       </div>
       <div fxFlex class="text--right">
-        <button mat-icon-button [matMenuTriggerFor]="matmenu">
-          <mat-icon>public</mat-icon>
-        </button>
-        <mat-menu #matmenu="matMenu">
-          <button mat-menu-item (click)="changeLanguage('en')">
-            <mat-icon>flag</mat-icon>
-            <span>
-                            English
-                        </span>
-          </button>
-          <button mat-menu-item (click)="changeLanguage('fr')">
-            <mat-icon>flag</mat-icon>
-            <span>
-              Français
-                        </span>
-          </button>
-          <button mat-menu-item (click)="changeLanguage('nl')">
-            <mat-icon>flag</mat-icon>
-            <span>
-                            Nederlands
-                        </span>
-          </button>
-        </mat-menu>
-        <a class="icon__image" href="{{appConfig.repositoryURL}}" target="_blank">
-          <img src="assets/images/github-circle-white-transparent.svg">
+        <a class="icon__image" href="https://console.firebase.google.com/u/0/project/piplan/database" target="_blank">
+          <img src="assets/images/firebase.png">
         </a>
       </div>
     </div>

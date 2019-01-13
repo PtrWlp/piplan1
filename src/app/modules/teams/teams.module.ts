@@ -2,8 +2,8 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TeamRoutingModule} from './teams-routing.module';
 import {SharedModule} from '../../shared/shared.module';
-import {TeamsListPageComponent} from './pages/teams-list-page/teams-list-page.component';
-import {TeamDetailPageComponent} from './pages/team-detail-page/team-detail-page.component';
+import {TeamsComponent} from './teams.component';
+import {TeamRemoveComponent} from './team-remove/team-remove.component';
 
 @NgModule({
   imports: [
@@ -13,8 +13,11 @@ import {TeamDetailPageComponent} from './pages/team-detail-page/team-detail-page
     TeamRoutingModule
   ],
   declarations: [
-    TeamsListPageComponent,
-    TeamDetailPageComponent
+    TeamsComponent,
+    TeamRemoveComponent
+  ],
+  entryComponents: [
+    TeamRemoveComponent
   ]
 })
 

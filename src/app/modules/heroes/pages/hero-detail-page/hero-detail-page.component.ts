@@ -33,7 +33,7 @@ export class HeroDetailPageComponent implements OnInit {
 
   dynamicImport() {
     import('html2canvas').then((html2canvas: any) => {
-      html2canvas.default(document.getElementById('heroe-detail')).then((canvas) => {
+      html2canvas.default(document.getElementById('hero-detail')).then((canvas) => {
         window.open().document.write('<img src="' + canvas.toDataURL() + '" />');
       });
     });
@@ -44,6 +44,6 @@ export class HeroDetailPageComponent implements OnInit {
   }
 
   goToTheAnchor(): void {
-    this.router.navigate([`/${AppConfig.routes.heroes}/${this.hero.id}`], {fragment: 'heroe-detail'});
+    this.router.navigate([`/${AppConfig.routes.heroes}/${this.hero.id}`], {fragment: 'hero-detail'});
   }
 }

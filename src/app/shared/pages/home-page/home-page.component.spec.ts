@@ -41,7 +41,7 @@ describe('HomePage', () => {
     expect(component).toBeTruthy();
   }));
 
-  it('should initialice component', fakeAsync(() => {
+  it('should initializße component', fakeAsync(() => {
     const heroes = [
       new Hero({name: 'test1', default: true}),
       new Hero({name: 'test2', default: true}),

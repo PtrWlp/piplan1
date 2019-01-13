@@ -14,14 +14,12 @@ import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@
 })
 export class PiplanService {
   private heroesCollection: AngularFirestoreCollection<Hero>;
-  private PICollection: AngularFirestoreCollection<ProgramIncrement>;
-  private currentPI: string;
   constructor(private afs: AngularFirestore,
               private translateService: TranslateService,
               private snackBar: MatSnackBar) {
 
-    this.PICollection = this.afs.collection<Hero>('programIncrements', (PI) => {
-      return PI.orderBy('name', 'desc');
+    this.heroesCollection = this.afs.collection<Hero>('heroes', (hero) => {
+      return hero.orderBy('name', 'desc');
     });
 
   }
@@ -43,38 +41,7 @@ export class PiplanService {
     };
   }
 
-  fillMyDatabase() {
-    console.log('biddie25');
-    const programIncrements = this.afs.collection<ProgramIncrement>(`programIncrements`, (programIncrement) => programIncrement);
-    console.log(programIncrements.doc);
-    const newPI = new ProgramIncrement;
-    newPI.name = 'PI11';
-    newPI.start = '2019-01-01';
-    this.createPI(newPI);
-
-  }
-  createPI(programIncrement: ProgramIncrement): Promise<DocumentReference> {
-    return this.PICollection.add(JSON.parse(JSON.stringify(programIncrement))).then((document: DocumentReference) => {
-      LoggerService.log(`added PI w/ id=${document.id}`);
-      return document;
-    }, (error) => {
-      PiplanService.handleError<any>('createPI', error);
-      return error;
-    });
-  }
-
-
-  setCurrentPI(pi) {
-    console.log('biddie1');
-    this.currentPI = pi;
-    this.heroesCollection = this.afs.collection<Hero>(`programIncrements/programIncrement/${pi}`, (hero) => {
-      return hero.orderBy('name', 'desc');
-    });
-
-
-  }
   getHeroes(): Observable<Hero[]> {
-    console.log('biddie2', this.currentPI);
     return this.heroesCollection.snapshotChanges()
       .pipe(
         map((actions) => {
@@ -85,20 +52,6 @@ export class PiplanService {
         }),
         tap(() => LoggerService.log(`fetched heroes`)),
         catchError(PiplanService.handleError('getHeroes', []))
-      );
-  }
-
-  getProgramIncrements(): Observable<ProgramIncrement[]> {
-    return this.PICollection.snapshotChanges()
-      .pipe(
-        map((actions) => {
-          return actions.map((action) => {
-            const data = action.payload.doc.data();
-            return new Hero({id: action.payload.doc.id, ...data});
-          });
-        }),
-        tap(() => LoggerService.log(`fetched programIncrements`)),
-        catchError(PiplanService.handleError('getProgramIncrements', []))
       );
   }
 

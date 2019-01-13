@@ -1,18 +1,32 @@
-<div fxLayout="row">
+<app-piplan-loading *ngIf="!programIncrements && !teams"></app-piplan-loading>
+<h1 class="header__title">Select ProgramIncrement and Team</h1>
+
+<div *ngIf="programIncrements && teams" fxLayout="row">
   <div fxFlex="10" fxFlex.gt-sm="20"></div>
-  <div fxFlex="90" fxFlex.gt-sm="80">
-    <h1 class="header__title">{{'listProgramIncrements' | translate}}</h1>
-    <app-hero-loading *ngIf="!programIncrements"></app-hero-loading>
-    <div id="heroes-list" *ngIf="programIncrements" [@fadeInOut]>
+  <div fxFlex="80" fxFlex.gt-sm="60">
+    <div id="program-increments-list" *ngIf="programIncrements" [@fadeInOut]>
+      <h2>Program Increments</h2>
       <ng-container *ngFor="let programIncrement of programIncrements">
         <ul>
-          <li (click)="seePIDetails(programIncrement);" style="cursor: pointer">
+          <li (click)="setSelectedProgramIncrement(programIncrement);" style="cursor: pointer">
             {{ programIncrement.name }} starting: {{ programIncrement.start }}
           </li>
         </ul>
       </ng-container>
     </div>
+
+    <div id="team-list" *ngIf="teams" [@fadeInOut]>
+      <h2>Teams</h2>
+      <ng-container *ngFor="let team of teams">
+          <ul>
+          <li (click)="setSelectedTeam(team);" style="cursor: pointer">
+            {{ team.jiraPrefix }} - {{ team.name }}
+          </li>
+        </ul>
+      </ng-container>
+    </div>
   </div>
+  <button *ngIf="selectionComplete" (click)="viewPlanning()">View Planning</button>
+
   <div fxFlex="10" fxFlex.gt-sm="20"></div>
 </div>
-<button (click)="fillMyDatabase();">fill it!</button>

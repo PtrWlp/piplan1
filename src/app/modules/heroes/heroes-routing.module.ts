@@ -5,7 +5,7 @@ import {HeroDetailPageComponent} from './pages/hero-detail-page/hero-detail-page
 
 const heroesRoutes: Routes = [
   {path: '', component: HeroesListPageComponent},
-  {path: ':pi', component: HeroDetailPageComponent}
+  {path: ':id', component: HeroDetailPageComponent}
 ];
 
 @NgModule({

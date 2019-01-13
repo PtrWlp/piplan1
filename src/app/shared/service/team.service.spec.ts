@@ -1,5 +1,5 @@
 import {async, TestBed} from '@angular/core/testing';
-import {PiplanService} from './piplan.service';
+import {TeamService} from './team.service';
 import {APP_BASE_HREF} from '@angular/common';
 import {TestsModule} from '../../shared/modules/tests.module';
 import {TranslateModule} from '@ngx-translate/core';
@@ -7,9 +7,9 @@ import {APP_CONFIG, AppConfig} from '../../configs/app.config';
 import {Team} from './piplan.models';
 import {HttpErrorResponse} from '@angular/common/http';
 
-describe('PiplanService', () => {
+describe('TeamService', () => {
   const teamId = 'BzTvl77YsRTtdihH0jeh';
-  let piplanService: PiplanService;
+  let service: TeamService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,30 +20,30 @@ describe('PiplanService', () => {
       providers: [
         {provide: APP_CONFIG, useValue: AppConfig},
         {provide: APP_BASE_HREF, useValue: '/'},
-        PiplanService
+        TeamService
       ]
     });
 
-    piplanService = TestBed.get(PiplanService);
+    service = TestBed.get(TeamService);
   });
 
   it('should get team by id ' + teamId, (() => {
-    piplanService.getTeam(teamId).subscribe((team: Team) => {
+    service.getTeam(teamId).subscribe((team: Team) => {
       expect(team.id).toEqual(teamId);
     });
   }));
 
   it('should fail getting team by no id', (() => {
-    piplanService.getTeam('noId').subscribe(() => {
+    service.getTeam('noId').subscribe(() => {
     }, (error) => {
       expect(error).toEqual(jasmine.any(HttpErrorResponse));
     });
   }));
 
   it('should fail creating empty team', (() => {
-    piplanService.createTeam(new Team({
+    service.createTeam(new Team({
       'name': 'test',
-      'alterEgo': 'test'
+      'jiraPrefix': 'test'
     })).then(() => {
     }, (error) => {
       expect(error).toEqual(jasmine.any(HttpErrorResponse));

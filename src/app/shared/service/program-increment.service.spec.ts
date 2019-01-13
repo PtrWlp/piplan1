@@ -1,15 +1,15 @@
 import {async, TestBed} from '@angular/core/testing';
-import {PiplanService} from './piplan.service';
+import {ProgramIncrementService} from './program-increment.service';
 import {APP_BASE_HREF} from '@angular/common';
 import {TestsModule} from '../../shared/modules/tests.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {APP_CONFIG, AppConfig} from '../../configs/app.config';
-import {Hero} from './piplan.models';
+import {ProgramIncrement} from './piplan.models';
 import {HttpErrorResponse} from '@angular/common/http';
 
-describe('PiplanService', () => {
-  const heroId = 'BzTvl77YsRTtdihH0jeh';
-  let piplanService: PiplanService;
+describe('ProgramIncrementService', () => {
+  const programIncrementId = 'BzTvl77YsRTtdihH0jeh';
+  let service: ProgramIncrementService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,30 +20,30 @@ describe('PiplanService', () => {
       providers: [
         {provide: APP_CONFIG, useValue: AppConfig},
         {provide: APP_BASE_HREF, useValue: '/'},
-        PiplanService
+        ProgramIncrementService
       ]
     });
 
-    piplanService = TestBed.get(PiplanService);
+    service = TestBed.get(ProgramIncrementService);
   });
 
-  it('should get hero by id ' + heroId, (() => {
-    piplanService.getHero(heroId).subscribe((hero: Hero) => {
-      expect(hero.id).toEqual(heroId);
+  it('should get programIncrement by id ' + programIncrementId, (() => {
+    service.getProgramIncrement(programIncrementId).subscribe((programIncrement: ProgramIncrement) => {
+      expect(programIncrement.id).toEqual(programIncrementId);
     });
   }));
 
-  it('should fail getting team by no id', (() => {
-    piplanService.getHero('noId').subscribe(() => {
+  it('should fail getting programIncrement by no id', (() => {
+    service.getProgramIncrement('noId').subscribe(() => {
     }, (error) => {
       expect(error).toEqual(jasmine.any(HttpErrorResponse));
     });
   }));
 
-  it('should fail creating empty team', (() => {
-    piplanService.createHero(new Hero({
+  it('should fail creating empty programIncrement', (() => {
+    service.createProgramIncrement(new ProgramIncrement({
       'name': 'test',
-      'alterEgo': 'test'
+      'jiraPrefix': 'test'
     })).then(() => {
     }, (error) => {
       expect(error).toEqual(jasmine.any(HttpErrorResponse));

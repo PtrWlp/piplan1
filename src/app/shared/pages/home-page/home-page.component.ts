@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {Hero, ProgramIncrement} from '../../../shared/service/piplan.models';
-import {PiplanService} from '../../../shared/service/piplan.service';
+import {Team, ProgramIncrement} from '../../../shared/service/piplan.models';
+import {TeamService} from '../../../shared/service/team.service';
+import {ProgramIncrementService} from '../../../shared/service/program-increment.service';
 import {AppConfig} from '../../../configs/app.config';
 import {UtilsHelperService} from '../../../core/services/utils-helper.service';
+import { TeamsComponent } from 'src/app/modules/teams/teams.component';
 
 @Component({
   selector: 'app-home-page',
@@ -14,23 +16,37 @@ import {UtilsHelperService} from '../../../core/services/utils-helper.service';
 
 export class HomePageComponent implements OnInit {
   programIncrements: ProgramIncrement[] = null;
+  teams: Team[] = null;
+  selectedProgramIncrement = null;
+  selectedTeam = null;
+  selectionComplete = false;
 
-  constructor(private piplanService: PiplanService,
+  constructor(private teamService: TeamService,
+              private programIncrementService: ProgramIncrementService,
               private router: Router) {
   }
 
   ngOnInit() {
-    this.piplanService.getProgramIncrements().subscribe((programIncrements: Array<ProgramIncrement>) => {
+    this.teamService.getTeams().subscribe((teams: Array<Team>) => {
+      this.teams = teams;
+    });
+    this.programIncrementService.getProgramIncrements().subscribe((programIncrements: Array<ProgramIncrement>) => {
       this.programIncrements = programIncrements;
     });
   }
 
-  fillMyDatabase() {
-    this.piplanService.fillMyDatabase();
+  setSelectedProgramIncrement(programIncrement): void {
+    this.selectedProgramIncrement = programIncrement;
+    this.selectionComplete = (this.selectedProgramIncrement && this.selectedTeam);
   }
 
-  seePIDetails(programIncrement): void {
-    this.router.navigate([programIncrement.name + '/teams']);
+  setSelectedTeam(team): void {
+    this.selectedTeam = team;
+    this.selectionComplete = (this.selectedProgramIncrement && this.selectedTeam);
+  }
+
+  viewPlanning(): void {
+    this.router.navigate([this.selectedProgramIncrement.name + '/' + this.selectedTeam.jiraPrefix]);
   }
 
 }

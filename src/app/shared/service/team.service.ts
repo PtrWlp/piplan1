@@ -12,33 +12,12 @@ import {UtilsHelperService} from '../../core/services/utils-helper.service';
 })
 export class TeamService {
   private teamsCollection: AngularFirestoreCollection<Team>;
-  private PICollection: AngularFirestoreCollection<ProgramIncrement>;
   constructor(private afs: AngularFirestore) {
 
     this.teamsCollection = this.afs.collection<Team>('teams', (team) => {
       return team.orderBy('name');
     });
 
-  }
-
-  fillMyDatabase() {
-    console.log('biddie25');
-    const programIncrements = this.afs.collection<ProgramIncrement>(`programIncrements`, (programIncrement) => programIncrement);
-    console.log(programIncrements.doc);
-    const newPI = new ProgramIncrement;
-    newPI.name = 'PI11';
-    newPI.start = '2019-01-01';
-    this.createPI(newPI);
-
-  }
-  createPI(programIncrement: ProgramIncrement): Promise<DocumentReference> {
-    return this.PICollection.add(JSON.parse(JSON.stringify(programIncrement))).then((document: DocumentReference) => {
-      LoggerService.log(`added PI w/ id=${document.id}`);
-      return document;
-    }, (error) => {
-      UtilsHelperService.handleError<any>('createPI', error);
-      return error;
-    });
   }
 
   getTeams(): Observable<Team[]> {

@@ -43,7 +43,6 @@ export class HeroesListPageComponent implements OnInit {
 
   ngOnInit() {
     this.programIncrement = this.activatedRoute.snapshot.paramMap.get('pi');
-    this.piplanService.setCurrentPI(this.programIncrement);
     this.piplanService.getHeroes().subscribe((heroes: Array<Hero>) => {
       this.heroes = heroes;
     });
@@ -73,9 +72,7 @@ export class HeroesListPageComponent implements OnInit {
   }
 
   seeHeroDetails(hero): void {
-    if (hero.default) {
-      this.router.navigate([AppConfig.routes.heroes + '/' + hero.id]);
-    }
+    this.router.navigate([AppConfig.routes.heroes + '/' + hero.id]);
   }
 
   private onChanges() {

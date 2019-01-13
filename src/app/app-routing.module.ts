@@ -6,7 +6,8 @@ import {AppConfig} from './configs/app.config';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent, pathMatch: 'full'},
-  {path: ':pi/teams', loadChildren: './modules/heroes/heroes.module#HeroesModule'},
+  {path: ':pi/:team', loadChildren: './modules/heroes/heroes.module#HeroesModule'},
+  {path: 'teams', loadChildren: './modules/teams/teams.module#TeamsModule'},
   {path: AppConfig.routes.heroes, loadChildren: './modules/heroes/heroes.module#HeroesModule'},
   {path: AppConfig.routes.error404, component: Error404PageComponent},
 

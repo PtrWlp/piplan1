@@ -14,7 +14,7 @@ import {WebStorageModule} from 'ngx-store';
 import {LoadingPlaceholderComponent} from './components/loading-placeholder/loading-placeholder.component';
 
 import {HomePageComponent} from './pages/home-page/home-page.component';
-import {HeroLoadingComponent} from './components/hero-loading/hero-loading.component';
+import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading.component';
 import {HeroCardComponent} from './components/hero-card/hero-card.component';
 
 @NgModule({
@@ -35,7 +35,7 @@ import {HeroCardComponent} from './components/hero-card/hero-card.component';
     HeaderComponent,
     SpinnerComponent,
     HeroCardComponent,
-    HeroLoadingComponent,
+    PiplanLoadingComponent,
     LoadingPlaceholderComponent
   ],
   exports: [
@@ -48,7 +48,7 @@ import {HeroCardComponent} from './components/hero-card/hero-card.component';
     HeaderComponent,
     SpinnerComponent,
     HeroCardComponent,
-    HeroLoadingComponent,
+    PiplanLoadingComponent,
     NgxScrollToFirstInvalidModule,
     LoadingPlaceholderComponent
   ]

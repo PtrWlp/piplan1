@@ -1,23 +1,21 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Team} from '../../../../shared/service/piplan.models';
-import {TeamService} from '../../../../shared/service/team.service';
+import {Team} from '../../shared/service/piplan.models';
+import {TeamService} from '../../shared/service/team.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import { ActivatedRoute, Router} from '@angular/router';
-import {AppConfig} from '../../../../configs/app.config';
-import {_} from '@biesbjerg/ngx-translate-extract/dist/utils/utils';
-import {TranslateService} from '@ngx-translate/core';
-import {UtilsHelperService} from '../../../../core/services/utils-helper.service';
-import {TeamRemoveComponent} from '../../components/team-remove/team-remove.component';
+import {AppConfig} from '../../configs/app.config';
+import {UtilsHelperService} from '../../core/services/utils-helper.service';
+import {TeamRemoveComponent} from './team-remove/team-remove.component';
 
 @Component({
-  selector: 'app-teams-list-page',
-  templateUrl: './teams-list-page.component.html',
-  styleUrls: ['./teams-list-page.component.scss'],
+  selector: 'app-teams',
+  templateUrl: './teams.component.html',
+  styleUrls: ['./teams.component.scss'],
   animations: [UtilsHelperService.fadeInOut()]
 })
 
-export class TeamsListPageComponent implements OnInit {
+export class TeamsComponent implements OnInit {
 
   teams: Team[];
   newTeamForm: FormGroup;
@@ -27,23 +25,19 @@ export class TeamsListPageComponent implements OnInit {
 
   constructor(private teamService: TeamService,
               private dialog: MatDialog,
-              private snackBar: MatSnackBar,
-              private translateService: TranslateService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder) {
 
     this.newTeamForm = this.formBuilder.group({
       'name': new FormControl('', [Validators.required]),
-      'alterEgo': new FormControl('', [Validators.required])
+      'jiraPrefix': new FormControl('', [Validators.required])
     });
 
-    this.onChanges();
   }
 
   ngOnInit() {
     this.programIncrement = this.activatedRoute.snapshot.paramMap.get('pi');
-    // this.teamService.setCurrentPI(this.programIncrement);
     this.teamService.getTeams().subscribe((teams: Array<Team>) => {
       this.teams = teams;
     });
@@ -79,13 +73,4 @@ export class TeamsListPageComponent implements OnInit {
     }
   }
 
-  private onChanges() {
-    this.newTeamForm.get('name').valueChanges.subscribe((value) => {
-      if (value && value.length >= 3 && UtilsHelperService.isPalindrome(value)) {
-        this.snackBar.open(this.translateService.instant(String(_('yeahPalindrome'))));
-      } else {
-        this.snackBar.dismiss();
-      }
-    });
-  }
 }

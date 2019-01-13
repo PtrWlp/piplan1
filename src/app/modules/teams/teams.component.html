@@ -1,5 +1,5 @@
 <div id="left">
-  <h2 class="header__title">{{ 'PIList' | translate }}</h2>
+  <h2 class="header__title">Product Teams</h2>
   <div>
     <mat-list id="loading-list" *ngIf="!teams">
       loading...
@@ -21,7 +21,7 @@
   </div>
 </div>
 <div id="right" [@fadeInOut]>
-  <h2 class="header__title">{{ 'createTeam' | translate }}</h2>
+  <h2 class="header__title">New Team</h2>
   <div id="form-loading" *ngIf="!teams">
     <form>
       <div class="input-container">
@@ -32,7 +32,7 @@
       </div>
 
       <button mat-raised-button [disabled]="true">
-        {{'create' | translate}}
+        Add
       </button>
     </form>
   </div>
@@ -41,24 +41,24 @@
           (ngSubmit)="createNewTeam(newTeamForm.value)" autocomplete="on">
       <mat-form-field class="input-container">
         <input matInput name="hname" type="text"
-               placeholder="{{'nameWithPalindrome' | translate}}"
+               placeholder="Product Team Name"
                formControlName="name">
         <mat-error *ngIf="!newTeamForm.controls.name.valid && form.submitted">
-          {{'nameRequired' | translate}}
+          Required field
         </mat-error>
       </mat-form-field>
       <mat-form-field class="input-container">
         <input matInput type="text" name="rname"
-               placeholder="{{'realName' | translate}}"
-               formControlName="alterEgo">
-        <mat-error *ngIf="!newTeamForm.controls.alterEgo.valid && form.submitted">
-          {{'realNameRequired' | translate}}
+               placeholder="Jira Prefix"
+               formControlName="jiraPrefix">
+        <mat-error *ngIf="!newTeamForm.controls.jiraPrefix.valid && form.submitted">
+          Required field
         </mat-error>
       </mat-form-field>
       <button mat-raised-button type="submit" [disabled]="form.submitted && !newTeamForm.valid">
-        {{'create' | translate}}
+        add
       </button>
-      <div *ngIf="error">{{error | translate}}</div>
+      <div *ngIf="error">An error occurred.</div>
     </form>
   </div>
 
