@@ -1,0 +1,18 @@
+<div fxLayout="row">
+  <div fxFlex="10" fxFlex.gt-sm="20"></div>
+  <div fxFlex="90" fxFlex.gt-sm="80">
+    <h1 class="header__title">{{'listProgramIncrements' | translate}}</h1>
+    <app-hero-loading *ngIf="!programIncrements"></app-hero-loading>
+    <div id="heroes-list" *ngIf="programIncrements" [@fadeInOut]>
+      <ng-container *ngFor="let programIncrement of programIncrements">
+        <ul>
+          <li (click)="seePIDetails(programIncrement);" style="cursor: pointer">
+            {{ programIncrement.name }} starting: {{ programIncrement.start }}
+          </li>
+        </ul>
+      </ng-container>
+    </div>
+  </div>
+  <div fxFlex="10" fxFlex.gt-sm="20"></div>
+</div>
+<button (click)="fillMyDatabase();">fill it!</button>

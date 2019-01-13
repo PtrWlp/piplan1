@@ -1,0 +1,21 @@
+<h1 class="header__title">{{'teamDetail' | translate}}</h1>
+<div class="container" *ngIf="!team">
+  <app-team-loading></app-team-loading>
+</div>
+<div class="container" *ngIf="team" [@fadeInOut]>
+  <ng-container>
+    <app-team-card [team]="team"></app-team-card>
+    <div id="team-json">
+      <pre>{{team | json}}</pre>
+    </div>
+  </ng-container>
+</div>
+<button mat-raised-button type="button" (click)="dynamicImport()">
+  {{'snapshot' | translate | uppercase}}
+</button>
+<button mat-raised-button type="button" (click)="goBack()">
+  {{'goBack' | translate | uppercase}}
+</button>
+<button *ngIf="team" mat-raised-button type="button" (click)="goToTheAnchor()">
+  {{'anchorToTeam' | translate | uppercase}}
+</button>
