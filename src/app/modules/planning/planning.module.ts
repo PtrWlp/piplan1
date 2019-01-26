@@ -4,7 +4,7 @@ import {PlanningRoutingModule} from './planning-routing.module';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {SharedModule} from '../../shared/shared.module';
 import {PlanningComponent} from './planning.component';
-// import {EditableFiedComponent} from './editablefield/editablefield.component';
+import {EditableFiedComponent} from './editablefield/editablefield.component';
 
 @NgModule({
   imports: [
@@ -12,10 +12,10 @@ import {PlanningComponent} from './planning.component';
     ReactiveFormsModule,
     SharedModule,
     DragDropModule,
-//    EditableFiedComponent,
     PlanningRoutingModule
   ],
   declarations: [
+    EditableFiedComponent,
     PlanningComponent
   ]
 })

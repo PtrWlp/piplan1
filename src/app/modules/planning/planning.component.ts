@@ -99,8 +99,8 @@ export class PlanningComponent implements OnInit {
   }
 
   getStories(sprint) {
-    // return this.planning.filter(story => story.sprint === sprint);
-    return this.planning;
+    return this.planning && this.planning.filter(story => story.sprint === sprint);
+    // return this.planning;
   }
 
   getStartOfSprint(sprintNumber) {
