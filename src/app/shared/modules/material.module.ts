@@ -3,6 +3,7 @@ import {
   MatButtonModule,
   MatCardModule,
   MatDialogModule,
+  MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
   MatInputModule,
@@ -10,10 +11,13 @@ import {
   MatMenuModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatSliderModule,
   MatSnackBarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatRadioModule
 } from '@angular/material';
+
 import {NgModule} from '@angular/core';
 
 @NgModule({
@@ -22,6 +26,8 @@ import {NgModule} from '@angular/core';
     MatMenuModule,
     MatIconModule,
     MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
     MatSliderModule,
     MatProgressBarModule,
     MatAutocompleteModule,
@@ -31,13 +37,16 @@ import {NgModule} from '@angular/core';
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatRadioModule
   ],
   exports: [
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
     MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
     MatSliderModule,
     MatProgressBarModule,
     MatAutocompleteModule,
@@ -47,7 +56,8 @@ import {NgModule} from '@angular/core';
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatRadioModule
   ],
 })
 

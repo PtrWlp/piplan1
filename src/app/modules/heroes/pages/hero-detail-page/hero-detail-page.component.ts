@@ -26,9 +26,9 @@ export class HeroDetailPageComponent implements OnInit {
 
   ngOnInit() {
     const heroId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.piplanService.getHero(heroId).subscribe((hero: Hero) => {
-      this.hero = hero;
-    });
+    // this.piplanService.getHero(heroId).subscribe((hero: Hero) => {
+    //   this.hero = hero;
+    // });
   }
 
   dynamicImport() {

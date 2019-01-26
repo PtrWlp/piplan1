@@ -1,5 +1,9 @@
 @import "../../../styles/colors";
 
-.piplan-header__image {
-  background: $grey;
+svg .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: inherit;
+}
+
+.piplan-spinner {
+  stroke: #00a1de;
 }

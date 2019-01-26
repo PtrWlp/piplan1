@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Team} from '../../shared/service/piplan.models';
 import {TeamService} from '../../shared/service/team.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import { ActivatedRoute, Router} from '@angular/router';
 import {AppConfig} from '../../configs/app.config';
 import {UtilsHelperService} from '../../core/services/utils-helper.service';
@@ -27,7 +27,8 @@ export class TeamsComponent implements OnInit {
               private dialog: MatDialog,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private snackBar: MatSnackBar) {
 
     this.newTeamForm = this.formBuilder.group({
       'name': new FormControl('', [Validators.required]),
@@ -58,8 +59,7 @@ export class TeamsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.teamService.deleteTeam(team.id).then(() => {
-          // this.teamService.showSnackBar('teamRemoved');
-          alert('team removed');
+          this.showSnackBar(`team ${team.name} removed`);
         }, () => {
           this.error = 'teamDefault';
         });
@@ -71,6 +71,12 @@ export class TeamsComponent implements OnInit {
     if (team.default) {
       this.router.navigate([AppConfig.routes.teams + '/' + team.id]);
     }
+  }
+
+  showSnackBar(message) {
+    const config: any = new MatSnackBarConfig();
+    config.duration = 3000;
+    this.snackBar.open(message, 'OK', config);
   }
 
 }

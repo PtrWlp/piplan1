@@ -50,3 +50,28 @@ export class ProgramIncrement implements Deserializable {
     return this;
   }
 }
+
+export class Story implements Deserializable {
+  id: string;
+  jiraNumber: string;
+  description: string;
+  points: number;
+  piid: string;
+  teamid: string;
+  sprint: string;
+
+  constructor(story: any = {}) {
+    this.id = story.id;
+    this.jiraNumber = story.jiraNumber || '';
+    this.description = story.description || '';
+    this.points = story.points || null;
+    this.piid = story.piid || '';
+    this.teamid = story.teamid || '';
+    this.sprint = story.sprint || 'backlog';
+  }
+
+  deserialize(input: any) {
+    Object.assign(this, input);
+    return this;
+  }
+}

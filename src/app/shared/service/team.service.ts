@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {Team, ProgramIncrement } from './piplan.models';
+import {Team } from './piplan.models';
 import {catchError, map, tap} from 'rxjs/operators';
 import {LoggerService} from '../../core/services/logger.service';
 import {AppConfig} from '../../configs/app.config';
@@ -44,21 +44,9 @@ export class TeamService {
     );
   }
 
-  getTeamName(jiraPrefix: string): Observable<any> {
-    const team = this.afs.collection<Team>('teams', ref => ref.where('jiraPrefix', '==', jiraPrefix));
-    return of(team);
-  }
-
-  createTeam(team: Team): Promise<DocumentReference> {
-    return this.teamsCollection.add(JSON.parse(JSON.stringify(team))).then((document: DocumentReference) => {
-      LoggerService.log(`added team w/ id=${document.id}`);
-      // his.showSnackBar('teamCreated');
-      alert('team created');
-      return document;
-    }, (error) => {
-      UtilsHelperService.handleError<any>('createTeam', error);
-      return error;
-    });
+  createTeam(team: Team): Promise<any> {
+    const data = JSON.parse(JSON.stringify(team));
+    return this.teamsCollection.doc(team.jiraPrefix).set(data);
   }
 
   updateTeam(team: Team): Promise<void> {

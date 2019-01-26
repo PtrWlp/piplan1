@@ -31,22 +31,34 @@ export class HomePageComponent implements OnInit {
       this.teams = teams;
     });
     this.programIncrementService.getProgramIncrements().subscribe((programIncrements: Array<ProgramIncrement>) => {
-      this.programIncrements = programIncrements;
+      this.programIncrements = programIncrements.map((pi) => {
+        pi['selected'] = false;
+        return pi;
+    });
     });
   }
+
+  // handleSelection(index) {
+  //   console.log(this.programIncrements[index]);
+  //   this.programIncrements[index]['selected'] = true;
+  //   this.setSelectedProgramIncrement(this.programIncrements[index]);
+  // }
 
   setSelectedProgramIncrement(programIncrement): void {
     this.selectedProgramIncrement = programIncrement;
     this.selectionComplete = (this.selectedProgramIncrement && this.selectedTeam);
+    console.log(this.selectionComplete);
   }
 
   setSelectedTeam(team): void {
     this.selectedTeam = team;
     this.selectionComplete = (this.selectedProgramIncrement && this.selectedTeam);
+    console.log(this.selectionComplete);
   }
 
-  viewPlanning(): void {
-    this.router.navigate([this.selectedProgramIncrement.name + '/' + this.selectedTeam.jiraPrefix]);
+  viewPlanning(selectedProgramIncrement, selectedTeam): void {
+    console.log(selectedTeam);
+    this.router.navigate([selectedProgramIncrement + '/' + selectedTeam + '/planning']);
   }
 
 }

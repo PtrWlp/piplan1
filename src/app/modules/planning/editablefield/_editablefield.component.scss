@@ -1,0 +1,55 @@
+.piplan__editablefield {
+  display: inline-block;
+
+
+  &--view {
+    display: inline;
+    font-weight: inherit;
+    font-size: inherit;
+    word-break: break-all;
+    line-height: 1.2;
+    transition: color 0.4s;
+  }
+
+  &--edit {
+    margin-bottom: 5px;
+    line-height: 2;
+    width: 100%;
+    display: none;
+  }
+
+  &.editing {
+    .piplan__editablefield--view, button.piplan__miniButton {
+      display: none;
+    }
+    .piplan__editablefield--edit {
+      display: inline-block;
+    }
+  }
+
+  & input::-webkit-input-placeholder {
+    font-style: italic;
+    font-weight: 300;
+    color: #e6e6e6;
+  }
+
+  & input::-moz-placeholder {
+    font-style: italic;
+    font-weight: 300;
+    color: #e6e6e6;
+  }
+
+  & input::input-placeholder {
+    font-style: italic;
+    font-weight: 300;
+    color: #e6e6e6;
+  }
+
+  & a {
+    text-decoration: underline;
+    & label {
+      color: blue;
+    }
+  }
+
+}

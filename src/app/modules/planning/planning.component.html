@@ -1,0 +1,112 @@
+<app-header teamName="{{ team && team.name }}" pi="{{ pi }}"></app-header>
+
+<div id="left">
+  <h2 class="header__title">Product Team Planning</h2>
+  <div>
+    <mat-list id="loading-list" *ngIf="!planning">
+      <app-piplan-loading></app-piplan-loading>
+    </mat-list>
+    <mat-list>
+      <mat-list-item *ngFor="let story of planning" [@fadeInOut]>
+        {{ story.jiraNumber}} {{ story.description }}
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+
+<div id="right" [@fadeInOut]>
+    <h2 class="header__title">new Story</h2>
+    <div *ngIf="planning">
+      <form [formGroup]="newStoryForm" #form="ngForm" ngxScrollToFirstInvalid
+            (ngSubmit)="createNewStory(newStoryForm.value)" autocomplete="on">
+        <mat-form-field class="input-container">
+          <input matInput name="hjiraNumber" type="text"
+                 placeholder="jira number (optional)"
+                 formControlName="jiraNumber">
+          <mat-error *ngIf="!newStoryForm.controls.jiraNumber.valid && form.submitted">
+            some error
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="input-container">
+          <input matInput name="rdescription" type="text"
+                 placeholder="description"
+                 formControlName="description">
+          <mat-error *ngIf="!newStoryForm.controls.description.valid && form.submitted">
+            required field
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button type="submit" [disabled]="form.submitted && !newStoryForm.valid">
+          add
+        </button>
+        <div *ngIf="error">an error cocurred</div>
+      </form>
+    </div>
+
+</div>
+
+<div class="clear"></div>
+
+<div cdkDropListGroup>
+  <div class="piplan__sprint"
+       *ngFor="let sprint of sprints; let i = index">
+    <div class="piplan__sprint__heading">
+      <h2 class="piplan__sprint__heading__title">{{sprint.name}}</h2>
+      <div class="piplan__sprint__add-to-backlog"
+           *ngIf="(sprint.name === 'backlog')">
+        <button class="piplan__miniButton" (click)="addBlankStory()">+</button>
+      </div>
+      <div class="piplan__sprint__heading__sprintstart" *ngIf="sprint.isSprint">
+        start: {{getStartOfSprint(i)}}
+      </div>
+      <div class="piplan__sprint__capacity" *ngIf="sprint.isSprint">
+        capacity: {{sprint.capacity}}
+      </div>
+      <div class="piplan__sprint__heading__pointtotal piplan__points"
+           *ngIf="sprint.isSprint">
+        {{getPoints(sprint.name)}}
+      </div>
+    </div>
+
+    <div cdkDropList class="piplan__stories"
+         [cdkDropListData]="{sprint: sprint.name, stories: getStories(sprint.name)}"
+         (cdkDropListDropped)="drop($event)">
+
+      <div cdkDrag
+           class="piplan__story"
+           *ngFor="let story of getStories(sprint.name)"
+           [cdkDragData]="story"
+           [cdkDragDisabled]="!story.editing == ''">
+
+        <div class="piplan__story__key">
+           {{ story.jiraNumber }}
+            <!-- <piplan-editablefield
+              class="piplan__story__number"
+              [fieldValue]="story.jiraNumber"
+              [linkPrefix]="'https://jira.devnet.klm.com/browse/'"
+              (valueChanged)="updateStoryNumber(story, $event)"
+              (inEditMode)="story.editing = $event"
+            ></piplan-editablefield> -->
+
+          <div class="piplan__story__points">
+            <div class="piplan__story__points__display piplan__points">
+              {{getDisplayPoints(story.points)}}
+            </div>
+            <button class="piplan__miniButton" (click)="estimateUp(story)">+</button>
+            <button class="piplan__miniButton" (click)="estimateDown(story)">-</button>
+
+          </div>
+        </div>
+
+        <!-- <piplan-editablefield
+          class="piplan__story__description"
+          [fieldValue]="story.descr"
+          (valueChanged)="updateStoryDescr(story, $event)"
+          (inEditMode)="story.editing = $event"
+          ></piplan-editablefield> -->
+
+      </div>
+    </div>
+  </div>
+</div>
+
+

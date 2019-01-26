@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {Hero, ProgramIncrement } from './piplan.models';
+import {ProgramIncrement, Story } from './piplan.models';
 import {catchError, map, tap} from 'rxjs/operators';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
@@ -14,13 +14,13 @@ import {UtilsHelperService} from '../../core/services/utils-helper.service';
   providedIn: 'root'
 })
 export class PiplanService {
-  private heroesCollection: AngularFirestoreCollection<Hero>;
+  private planningCollection: AngularFirestoreCollection<Story>;
   constructor(private afs: AngularFirestore,
               private translateService: TranslateService,
               private snackBar: MatSnackBar) {
 
-    this.heroesCollection = this.afs.collection<Hero>('heroes', (hero) => {
-      return hero.orderBy('name', 'desc');
+    this.planningCollection = this.afs.collection<Story>('planning', (planning) => {
+      return planning.orderBy('jiraNumber', 'desc');
     });
 
   }
@@ -42,49 +42,50 @@ export class PiplanService {
     };
   }
 
-  getHeroes(): Observable<Hero[]> {
-    return this.heroesCollection.snapshotChanges()
+  getPlanning(pi, team): Observable<Story[]> {
+    return this.planningCollection.snapshotChanges()
       .pipe(
         map((actions) => {
           return actions.map((action) => {
             const data = action.payload.doc.data();
-            return new Hero({id: action.payload.doc.id, ...data});
+            return new Story({id: action.payload.doc.id, ...data});
           });
         }),
-        tap(() => LoggerService.log(`fetched heroes`)),
-        catchError(UtilsHelperService.handleError('getHeroes', []))
+        tap(() => LoggerService.log(`fetched stories in planning`)),
+        catchError(UtilsHelperService.handleError('getPlanning', []))
       );
   }
 
-  getHero(id: string): Observable<any> {
+  getStory(id: string): Observable<any> {
     return this.afs.doc(`${AppConfig.routes.heroes}/${id}`).get().pipe(
       map((hero) => {
-        return new Hero({id, ...hero.data()});
+        return new Story({id, ...hero.data()});
       }),
       tap(() => LoggerService.log(`fetched hero ${id}`)),
-      catchError(UtilsHelperService.handleError('getHero', []))
+      catchError(UtilsHelperService.handleError('getStory', []))
     );
   }
 
-  createHero(hero: Hero): Promise<DocumentReference> {
-    return this.heroesCollection.add(JSON.parse(JSON.stringify(hero))).then((document: DocumentReference) => {
-      LoggerService.log(`added hero w/ id=${document.id}`);
+  createStory(story: Story): Promise<DocumentReference> {
+    return this.planningCollection.add(JSON.parse(JSON.stringify(story))).then((document: DocumentReference) => {
+      LoggerService.log(`added story w/ id=${document.id}`);
       this.showSnackBar('heroCreated');
+      alert('story created');
       return document;
     }, (error) => {
-      UtilsHelperService.handleError<any>('createHero', error);
+      UtilsHelperService.handleError<any>('createStory', error);
       return error;
     });
   }
 
-  updateHero(hero: Hero): Promise<void> {
+  updateStory(hero: Story): Promise<void> {
     return this.afs.doc(`${AppConfig.routes.heroes}/${hero.id}`).update(JSON.parse(JSON.stringify(hero))).then(() => {
       LoggerService.log(`updated hero w/ id=${hero.id}`);
       this.showSnackBar('saved');
     });
   }
 
-  deleteHero(id: string): Promise<void> {
+  deleteStory(id: string): Promise<void> {
     return this.afs.doc(`${AppConfig.routes.heroes}/${id}`).delete();
   }
 

@@ -1,3 +1,5 @@
+<app-header></app-header>
+
 <div id="left">
   <h2 class="header__title">Product Teams</h2>
   <div>
@@ -11,8 +13,7 @@
           <span>{{team.name}}</span>
         </p>
         <div class="team-actions">
-          <mat-icon class="icon__remove" *ngIf="!team.default"
-                    (click)="deleteTeam(team);">
+          <mat-icon class="icon__remove" (click)="deleteTeam(team);">
             delete
           </mat-icon>
         </div>

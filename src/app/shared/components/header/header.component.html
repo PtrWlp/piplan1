@@ -1,10 +1,15 @@
 <header>
   <nav>
     <div fxFlex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
-      <div fxFlex="40">
-        <a mat-raised-button *ngFor="let item of menuItems" routerLink="{{item.link}}">
-          {{item.name | translate | uppercase}}
+      <div fxFlex class="text--left" *ngIf="!hideBackButton">
+        <a class="icon__back" routerLink="/">
+          <mat-icon class="icon__back">
+            arrow_back
+          </mat-icon>
         </a>
+      </div>
+      <div fxFlex="80" class="text--center" *ngIf="(teamName && pi)">
+        Planning for pi: {{ pi }}, team:  {{ teamName }}
       </div>
       <div fxFlex class="text--right">
         <a class="icon__image" href="https://console.firebase.google.com/u/0/project/piplan/database" target="_blank">
@@ -13,8 +18,4 @@
       </div>
     </div>
   </nav>
-  <section class="progress-bar">
-    <mat-progress-bar [color]="'primary'" [mode]="progressBarMode">
-    </mat-progress-bar>
-  </section>
 </header>

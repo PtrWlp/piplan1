@@ -43,18 +43,18 @@ export class HeroesListPageComponent implements OnInit {
 
   ngOnInit() {
     this.programIncrement = this.activatedRoute.snapshot.paramMap.get('pi');
-    this.piplanService.getHeroes().subscribe((heroes: Array<Hero>) => {
-      this.heroes = heroes;
-    });
+    // this.piplanService.getHeroes().subscribe((heroes: Array<Hero>) => {
+    //   this.heroes = heroes;
+    // });
   }
 
   createNewHero(newHero: any) {
     if (this.newHeroForm.valid) {
-      this.piplanService.createHero(new Hero(newHero)).then(() => {
-        this.myNgForm.resetForm();
-      }, () => {
-        this.error = 'errorHasOcurred';
-      });
+      // this.piplanService.createHero(new Hero(newHero)).then(() => {
+      //   this.myNgForm.resetForm();
+      // }, () => {
+      //   this.error = 'errorHasOcurred';
+      // });
     }
   }
 
@@ -62,11 +62,11 @@ export class HeroesListPageComponent implements OnInit {
     const dialogRef = this.dialog.open(HeroRemoveComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.piplanService.deleteHero(hero.id).then(() => {
-          this.piplanService.showSnackBar('heroRemoved');
-        }, () => {
-          this.error = 'heroDefault';
-        });
+        // this.piplanService.deleteHero(hero.id).then(() => {
+        //   this.piplanService.showSnackBar('heroRemoved');
+        // }, () => {
+        //   this.error = 'heroDefault';
+        // });
       }
     });
   }
