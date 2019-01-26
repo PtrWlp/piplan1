@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-team-remove',
+  selector: 'piplan-team-remove',
   templateUrl: './team-remove.component.html',
 })
 

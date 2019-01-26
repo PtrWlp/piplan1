@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-hero-remove',
+  selector: 'piplan-hero-remove',
   templateUrl: './hero-remove.component.html',
 })
 

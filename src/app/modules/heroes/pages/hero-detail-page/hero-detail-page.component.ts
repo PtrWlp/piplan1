@@ -7,7 +7,7 @@ import {AppConfig} from '../../../../configs/app.config';
 import {UtilsHelperService} from '../../../../core/services/utils-helper.service';
 
 @Component({
-  selector: 'app-hero-detail-page',
+  selector: 'piplan-hero-detail-page',
   templateUrl: './hero-detail-page.component.html',
   styleUrls: ['./hero-detail-page.component.scss'],
   animations: [UtilsHelperService.fadeInOut()]

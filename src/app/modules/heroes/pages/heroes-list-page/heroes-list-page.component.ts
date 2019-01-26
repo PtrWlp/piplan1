@@ -11,7 +11,7 @@ import {UtilsHelperService} from '../../../../core/services/utils-helper.service
 import {HeroRemoveComponent} from '../../components/hero-remove/hero-remove.component';
 
 @Component({
-  selector: 'app-heroes-list-page',
+  selector: 'piplan-heroes-list-page',
   templateUrl: './heroes-list-page.component.html',
   styleUrls: ['./heroes-list-page.component.scss'],
   animations: [UtilsHelperService.fadeInOut()]
