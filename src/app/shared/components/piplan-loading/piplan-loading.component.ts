@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-piplan-loading',
+  selector: 'piplan-loading',
   templateUrl: './piplan-loading.component.html',
   styleUrls: ['./piplan-loading.component.scss']
 })

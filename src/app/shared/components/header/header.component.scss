@@ -1,6 +1,6 @@
 @import "../../../styles/mixins";
 
-:host(app-header) {
+:host(piplan-header) {
   padding-top: 0;
   padding-bottom: 3rem;
   display: grid;
@@ -48,7 +48,7 @@
 }
 
 @media (max-width: 680px) {
-  :host(app-header) {
+  :host(piplan-header) {
     padding-top: 0;
     padding-bottom: 1rem;
 
@@ -73,7 +73,7 @@
 }
 
 @media (max-width: 425px) {
-  :host(app-header) {
+  :host(piplan-header) {
     padding-bottom: 0;
 
     header {

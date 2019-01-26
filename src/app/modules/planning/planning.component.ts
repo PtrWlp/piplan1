@@ -12,7 +12,7 @@ import {UtilsHelperService} from '../../core/services/utils-helper.service';
 import { now } from 'moment';
 
 @Component({
-  selector: 'app-planning',
+  selector: 'piplan-planning',
   templateUrl: './planning.component.html',
   styleUrls: ['./planning.component.scss'],
   animations: [UtilsHelperService.fadeInOut()]

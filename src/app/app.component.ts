@@ -12,7 +12,7 @@ declare const require;
 declare const Modernizr;
 
 @Component({
-  selector: 'app-root',
+  selector: 'piplan-root',
   templateUrl: './app.component.html'
 })
 

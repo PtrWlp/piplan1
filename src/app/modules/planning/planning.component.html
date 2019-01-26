@@ -1,10 +1,10 @@
-<app-header teamName="{{ team && team.name }}" pi="{{ pi }}"></app-header>
+<piplan-header teamName="{{ team && team.name }}" pi="{{ pi }}"></piplan-header>
 
 <div id="left">
   <h2 class="header__title">Product Team Planning</h2>
   <div>
     <mat-list id="loading-list" *ngIf="!planning">
-      <app-piplan-loading></app-piplan-loading>
+      <piplan-loading></piplan-loading>
     </mat-list>
     <mat-list>
       <mat-list-item *ngFor="let story of planning" [@fadeInOut]>

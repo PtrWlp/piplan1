@@ -9,7 +9,7 @@ import {UtilsHelperService} from '../../core/services/utils-helper.service';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
 
 @Component({
-  selector: 'app-teams',
+  selector: 'piplan-teams',
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.scss'],
   animations: [UtilsHelperService.fadeInOut()]
