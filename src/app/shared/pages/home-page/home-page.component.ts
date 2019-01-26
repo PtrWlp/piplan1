@@ -8,7 +8,7 @@ import {UtilsHelperService} from '../../../core/services/utils-helper.service';
 import { TeamsComponent } from 'src/app/modules/teams/teams.component';
 
 @Component({
-  selector: 'app-home-page',
+  selector: 'piplan-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
   animations: [UtilsHelperService.fadeInOut()]

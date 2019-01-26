@@ -5,7 +5,7 @@ import {Hero} from '../../../shared/service/piplan.models';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-hero-card',
+  selector: 'piplan-hero-card',
   templateUrl: './hero-card.component.html',
   styleUrls: ['./hero-card.component.scss']
 })
