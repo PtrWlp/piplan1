@@ -114,6 +114,12 @@ export class PlanningComponent implements OnInit {
     return points ? points < 9998 ? points : '∞' : '?';
   }
 
+  updateStoryNumber(story, newValue) {
+    story.number = newValue;
+    this.piplanService.updateStory(story);
+    story.editing = '';
+  }
+
 
   // createNewPlanning(newPlanning: any) {
   //   if (this.newStoryForm.valid) {

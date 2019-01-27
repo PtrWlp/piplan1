@@ -1,0 +1,53 @@
+<piplan-header></piplan-header>
+
+<div id="left">
+  <h2 class="header__title">Program Increments</h2>
+  <div>
+    <mat-list id="loading-list" *ngIf="!programincrements">
+      loading...
+    </mat-list>
+    <mat-list>
+      <mat-list-item *ngFor="let programincrement of programincrements" [@fadeInOut]>
+        <h3 mat-line (click)="seeProgramIncrementDetails(programincrement);"> {{programincrement.name}} </h3>
+        <p mat-line (click)="seeProgramIncrementDetails(programincrement);">
+          <span>{{programincrement.start}}</span>
+        </p>
+        <div class="programincrement-actions">
+          <mat-icon class="icon__remove" (click)="deleteProgramIncrement(programincrement);">
+            delete
+          </mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+<div id="right" [@fadeInOut]>
+  <h2 class="header__title">New Program Increment</h2>
+  <div *ngIf="programincrements">
+    <form [formGroup]="newProgramIncrementForm" #form="ngForm" ngxScrollToFirstInvalid
+          (ngSubmit)="createNewProgramIncrement(newProgramIncrementForm.value)" autocomplete="on">
+      <mat-form-field class="input-container">
+        <input matInput name="hname" type="text"
+               placeholder="Program Increment"
+               formControlName="name">
+        <mat-error *ngIf="!newProgramIncrementForm.controls.name.valid && form.submitted">
+          Required field
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-container">
+        <input matInput type="text" name="rname"
+               placeholder="start yyyy-mm-dd"
+               formControlName="start">
+        <mat-error *ngIf="!newProgramIncrementForm.controls.start.valid && form.submitted">
+          Required field
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button type="submit" [disabled]="form.submitted && !newProgramIncrementForm.valid">
+        add
+      </button>
+      <div *ngIf="error">An error occurred.</div>
+    </form>
+  </div>
+
+</div>
+<div class="clear"></div>

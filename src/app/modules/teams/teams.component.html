@@ -23,20 +23,6 @@
 </div>
 <div id="right" [@fadeInOut]>
   <h2 class="header__title">New Team</h2>
-  <div id="form-loading" *ngIf="!teams">
-    <form>
-      <div class="input-container">
-        <app-loading-placeholder [height]="'2rem'"></app-loading-placeholder>
-      </div>
-      <div class="input-container">
-        <app-loading-placeholder [height]="'2rem'"></app-loading-placeholder>
-      </div>
-
-      <button mat-raised-button [disabled]="true">
-        Add
-      </button>
-    </form>
-  </div>
   <div *ngIf="teams">
     <form [formGroup]="newTeamForm" #form="ngForm" ngxScrollToFirstInvalid
           (ngSubmit)="createNewTeam(newTeamForm.value)" autocomplete="on">

@@ -3,7 +3,7 @@ import {Team} from '../../shared/service/piplan.models';
 import {TeamService} from '../../shared/service/team.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import { ActivatedRoute, Router} from '@angular/router';
+import { Router} from '@angular/router';
 import {AppConfig} from '../../configs/app.config';
 import {UtilsHelperService} from '../../core/services/utils-helper.service';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
@@ -20,13 +20,11 @@ export class TeamsComponent implements OnInit {
   teams: Team[];
   newTeamForm: FormGroup;
   error: string;
-  programIncrement: string;
   @ViewChild('form') myNgForm; // just to call resetForm method
 
   constructor(private teamService: TeamService,
               private dialog: MatDialog,
               private router: Router,
-              private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
               private snackBar: MatSnackBar) {
 
@@ -38,7 +36,6 @@ export class TeamsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.programIncrement = this.activatedRoute.snapshot.paramMap.get('pi');
     this.teamService.getTeams().subscribe((teams: Array<Team>) => {
       this.teams = teams;
     });

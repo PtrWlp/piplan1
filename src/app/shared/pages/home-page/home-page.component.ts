@@ -5,7 +5,6 @@ import {TeamService} from '../../../shared/service/team.service';
 import {ProgramIncrementService} from '../../../shared/service/program-increment.service';
 import {AppConfig} from '../../../configs/app.config';
 import {UtilsHelperService} from '../../../core/services/utils-helper.service';
-import { TeamsComponent } from 'src/app/modules/teams/teams.component';
 
 @Component({
   selector: 'piplan-home-page',
