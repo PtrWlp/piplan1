@@ -1,7 +1,8 @@
 <piplan-header hideBackButton="true"></piplan-header>
 
 <piplan-loading *ngIf="!programIncrements && !teams"></piplan-loading>
-<h1 class="header__title">Select ProgramIncrement and Team
+
+<h1  *ngIf="programIncrements && teams" class="header__title">Select ProgramIncrement and Team
 </h1>
 
 <div *ngIf="programIncrements && teams" fxLayout="row">

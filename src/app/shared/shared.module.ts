@@ -14,6 +14,8 @@ import {WebStorageModule} from 'ngx-store';
 import {HomePageComponent} from './pages/home-page/home-page.component';
 import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading.component';
 import {HeroCardComponent} from './components/hero-card/hero-card.component';
+import {LoadingPlaceholderComponent} from './components/loading-placeholder/loading-placeholder.component';
+
 
 @NgModule({
   imports: [
@@ -31,7 +33,8 @@ import {HeroCardComponent} from './components/hero-card/hero-card.component';
     Error404PageComponent,
     HeaderComponent,
     HeroCardComponent,
-    PiplanLoadingComponent
+    PiplanLoadingComponent,
+    LoadingPlaceholderComponent
   ],
   exports: [
     CommonModule,
@@ -42,7 +45,8 @@ import {HeroCardComponent} from './components/hero-card/hero-card.component';
     HeaderComponent,
     HeroCardComponent,
     PiplanLoadingComponent,
-    NgxScrollToFirstInvalidModule
+    NgxScrollToFirstInvalidModule,
+    LoadingPlaceholderComponent
   ]
 })
 

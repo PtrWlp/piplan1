@@ -4,6 +4,18 @@ snack-bar-container {
   background: $primary--color !important;
 }
 
+.piplan-loading .mat-spinner circle, .piplan-loading .mat-progress-spinner circle {
+  stroke: inherit;
+}
+.piplan-loading {
+  stroke: $primary--color;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+  & mat-spinner {
+    @include push--auto();
+  }
+}
+
 .mat-menu-content {
   background: $primary--color;
 }

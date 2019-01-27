@@ -1,20 +1,8 @@
 <piplan-header teamName="{{ team && team.name }}" pi="{{ pi }}"></piplan-header>
 
-<div id="left">
-  <h2 class="header__title">Product Team Planning</h2>
-  <div>
-    <mat-list id="loading-list" *ngIf="!planning">
-      <piplan-loading></piplan-loading>
-    </mat-list>
-    <mat-list>
-      <mat-list-item *ngFor="let story of planning" [@fadeInOut]>
-        {{ story.jiraNumber}} {{ story.description }}
-      </mat-list-item>
-    </mat-list>
-  </div>
-</div>
+<piplan-loading *ngIf="!planning"></piplan-loading>
 
-<div id="right" [@fadeInOut]>
+<div id="left" [@fadeInOut]>
     <h2 class="header__title">new Story</h2>
     <div *ngIf="planning">
       <form [formGroup]="newStoryForm" #form="ngForm" ngxScrollToFirstInvalid
@@ -78,14 +66,13 @@
            [cdkDragDisabled]="!story.editing == ''">
 
         <div class="piplan__story__key">
-           {{ story.jiraNumber }}
-            <!-- <piplan-editablefield
+            <piplan-editablefield
               class="piplan__story__number"
               [fieldValue]="story.jiraNumber"
               [linkPrefix]="'https://jira.devnet.klm.com/browse/'"
               (valueChanged)="updateStoryNumber(story, $event)"
               (inEditMode)="story.editing = $event"
-            ></piplan-editablefield> -->
+            ></piplan-editablefield>
 
           <div class="piplan__story__points">
             <div class="piplan__story__points__display piplan__points">
@@ -96,7 +83,7 @@
 
           </div>
         </div>
-
+        {{ story.description }}
         <!-- <piplan-editablefield
           class="piplan__story__description"
           [fieldValue]="story.descr"
@@ -105,6 +92,16 @@
           ></piplan-editablefield> -->
 
       </div>
+    </div>
+
+  </div>
+
+  <div class="piplan__sprint">
+    <div class="piplan__sprint__heading">
+      <h2 class="piplan__sprint__heading__title">trashcan</h2>
+    </div>
+    <div cdkDropList class="piplan__stories piplan__trashcan"
+        (cdkDropListDropped)="trashcan($event)">
     </div>
   </div>
 </div>

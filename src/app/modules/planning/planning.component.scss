@@ -1,12 +1,6 @@
 @import "../../styles/mixins";
 @import "../../styles/colors";
 
-#loading-list {
-  p {
-    margin-top: 0.2rem;
-  }
-}
-
 #form-loading {
   .input-container {
     margin: 0.5rem 0;
@@ -145,6 +139,10 @@ form {
     display: block;
   }
 
+  &__trashcan {
+    width: 50px;
+  }
+
   &__story {
     padding: 10px 5px;
     border: solid 1px #ccc;
@@ -207,3 +205,38 @@ form {
   background: rgb(224, 248, 224);
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+.piplan__trashcan.cdk-drop-list-dragging {
+  background: rgb(252, 83, 83);
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.piplan__miniButton {
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+  vertical-align: middle;
+  background: #a8a7a7;
+  width: 20px;
+  height: 20px;
+  margin: 0 5px 0 0;
+  color: black;
+  transition: color 0.2s ease-out;
+  border-radius: 3px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(121, 173, 121);
+  }
+}
+
+.piplan__points {
+  border-radius: 50%;
+  padding-top: 5px;
+  width: 25px;
+  height: 20px;
+  background: #fff;
+  border: 1px solid #666;
+  color: #666;
+  text-align: center;
+}
+

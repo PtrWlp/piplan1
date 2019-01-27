@@ -12,7 +12,8 @@ declare const require;
 declare const Modernizr;
 
 @Component({
-  selector: 'piplan-root',
+  // tslint:disable-next-line:component-selector
+  selector: 'app-root',
   templateUrl: './app.component.html'
 })
 
