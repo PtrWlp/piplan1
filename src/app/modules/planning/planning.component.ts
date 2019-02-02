@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Story, Team} from '../../shared/service/piplan.models';
+import {Story, Team, ProgramIncrement} from '../../shared/models/piplan.models';
 import {TeamService} from '../../shared/service/team.service';
+import { ProgramIncrementService } from 'src/app/shared/service/program-increment.service';
 import {PiplanService} from '../../shared/service/piplan.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material';
@@ -22,14 +23,18 @@ export class PlanningComponent implements OnInit {
 
   planning: Story[];
   team: Team;
+  programIncrement: ProgramIncrement;
+  pi: string;
   newStoryForm: FormGroup;
   error: string;
-  pi: string;
   teamJiraPrefix: string;
   sprints: any;
+  fibo = [undefined, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
+
   @ViewChild('form') myNgForm; // just to call resetForm method
 
   constructor(private teamService: TeamService,
+              private programIncrementService: ProgramIncrementService,
               private piplanService: PiplanService,
               private dialog: MatDialog,
               private router: Router,
@@ -51,8 +56,11 @@ export class PlanningComponent implements OnInit {
     this.teamService.getTeam(this.teamJiraPrefix).subscribe((team: Team) => {
       this.team = team;
     });
-    this.piplanService.getPlanning(this.pi, this.teamJiraPrefix).subscribe((planning: Array<Story>) => {
-      this.planning = planning;
+    this.programIncrementService.getProgramIncrement(this.pi).subscribe((programIncrement: ProgramIncrement) => {
+      this.programIncrement = programIncrement;
+    });
+    this.piplanService.getPlanning().subscribe((planning: Array<Story>) => {
+      this.planning = planning.filter(story => story.piid === this.pi && story.teamid === this.teamJiraPrefix);
     });
 
     this.sprints = [
@@ -65,36 +73,37 @@ export class PlanningComponent implements OnInit {
     ];
   }
 
-  createNewStory(newStory: any) {
-    if (this.newStoryForm.valid) {
-      newStory.piid = this.pi;
-      newStory.teamid = this.team;
+  createNewStory() {
+    const newStory = new Story;
+    newStory.piid = this.pi;
+    newStory.teamid = this.teamJiraPrefix;
+    newStory.jiraNumber = this.teamJiraPrefix + '-';
+    newStory.sprint = 'backlog';
+    newStory.description = 'new story';
 
-      this.piplanService.createStory(new Story(newStory)).then(() => {
-        this.myNgForm.resetForm();
-      }, () => {
-        this.error = 'errorHasOcurred';
-      });
-    }
+    this.piplanService.createStory(new Story(newStory)).then(() => {
+      console.log('new story saved');
+    }, () => {
+      this.error = 'errorHasOcurred';
+    });
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.container.data['sprint'] === 'trashcan') {
-      this.planning = this.planning.filter(story => {
-        return (story.description !== event.item.data['description'] &&
-                story.jiraNumber !== event.item.data['jiraNumber']);
-      });
-// SAVE IT      this.piplanService.saveTeamPlan(this.planning);
+    const story = event.item.data;
+    const targetSprint = event.container.data['sprint'];
+
+    if (targetSprint === 'trashcan') {
+      this.piplanService.deleteStory(event.item.data['id']);
     } else if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data['stories'], event.previousIndex, event.currentIndex);
-      // For now the order is not stored in localstorage... TODO fix that
+      // For now the order is not stored... TODO fix that
     } else {
-      event.item.data['sprint'] = event.container.data['sprint'];
+      story.sprint = targetSprint;
       transferArrayItem(event.previousContainer.data['stories'],
                         event.container.data['stories'],
                         event.previousIndex,
                         event.currentIndex);
-// SAVE IT      this.piplanService.saveTeamPlan(this.teamPlan);
+      this.piplanService.updateStory(story);
     }
   }
 
@@ -120,6 +129,31 @@ export class PlanningComponent implements OnInit {
     story.editing = '';
   }
 
+  getPoints(sprint) {
+    let points = 0;
+    try {
+      this.getStories(sprint).forEach(story => points += story.points);
+    } catch (error) {
+      points = undefined;
+    }
+    return this.getDisplayPoints(points);
+  }
+
+  estimateUp(story) {
+    const currentSpot = this.fibo.indexOf(story.points);
+    if (currentSpot + 1 < this.fibo.length) {
+      story.points = this.fibo[currentSpot + 1];
+      this.piplanService.saveTeamPlan(this.teamPlan);
+    }
+  }
+
+  estimateDown(story) {
+    const currentSpot = this.fibo.indexOf(story.points);
+    if (currentSpot > 0) {
+      story.points = this.fibo[currentSpot - 1];
+      this.piplanService.saveTeamPlan(this.teamPlan);
+    }
+  }
 
   // createNewPlanning(newPlanning: any) {
   //   if (this.newStoryForm.valid) {

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProgramIncrement} from '../../shared/service/piplan.models';
+import {ProgramIncrement} from '../../shared/models/piplan.models';
 import {ProgramIncrementService} from '../../shared/service/programincrement.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';

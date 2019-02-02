@@ -1,7 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {ProgressBarService} from './progress-bar.service';
 import {TestsModule} from '../../shared/modules/tests.module';
-import {TranslateModule} from '@ngx-translate/core';
 import {PiplanService} from '../../shared/service/piplan.service';
 import {APP_CONFIG, AppConfig} from '../../configs/app.config';
 
@@ -13,7 +12,6 @@ describe('ProgressBarService', () => {
     TestBed.configureTestingModule({
       imports: [
         TestsModule,
-        TranslateModule.forRoot(),
       ],
       providers: [
         {provide: APP_CONFIG, useValue: AppConfig},

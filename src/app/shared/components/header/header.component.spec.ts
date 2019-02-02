@@ -1,6 +1,5 @@
 import {async, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {HeaderComponent} from './header.component';
 import {PiplanService} from '../../../shared/service/piplan.service';
 import {TestsModule} from '../../modules/tests.module';
@@ -17,7 +16,6 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         TestsModule,
-        TranslateModule.forRoot(),
         MaterialModule
       ],
       declarations: [
@@ -38,8 +36,7 @@ describe('HeaderComponent', () => {
   }));
 
   it('should create header component with constructor', (() => {
-    const translateService = TestBed.get(TranslateService);
-    const instance = new HeaderComponent(AppConfig, progressBarService, translateService);
+    const instance = new HeaderComponent();
     expect(instance).toBeTruthy();
   }));
 
@@ -53,9 +50,4 @@ describe('HeaderComponent', () => {
     expect(component.progressBarMode).toBe('query');
   }));
 
-  it('should change language to spanish', (() => {
-    expect(component.translateService.currentLang).toBeUndefined();
-    component.changeLanguage('es');
-    expect(component.translateService.currentLang).toBe('es');
-  }));
 });

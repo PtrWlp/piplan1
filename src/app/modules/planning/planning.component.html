@@ -41,16 +41,15 @@
       <h2 class="piplan__sprint__heading__title">{{sprint.name}}</h2>
       <div class="piplan__sprint__add-to-backlog"
            *ngIf="(sprint.name === 'backlog')">
-        <button class="piplan__miniButton" (click)="addBlankStory()">+</button>
+        <button class="piplan__miniButton" (click)="createNewStory()">+</button>
       </div>
-      <div class="piplan__sprint__heading__sprintstart" *ngIf="sprint.isSprint">
+      <div class="piplan__sprint__heading__sprintstart" *ngIf="sprint.name.indexOf('sprint') !==-1">
         start: {{getStartOfSprint(i)}}
       </div>
-      <div class="piplan__sprint__capacity" *ngIf="sprint.isSprint">
+      <div class="piplan__sprint__capacity" *ngIf="sprint.name.indexOf('sprint') !==-1">
         capacity: {{sprint.capacity}}
       </div>
-      <div class="piplan__sprint__heading__pointtotal piplan__points"
-           *ngIf="sprint.isSprint">
+      <div class="piplan__sprint__heading__pointtotal piplan__points" *ngIf="sprint.name.indexOf('sprint') !==-1">
         {{getPoints(sprint.name)}}
       </div>
     </div>
@@ -83,13 +82,12 @@
 
           </div>
         </div>
-        {{ story.description }}
-        <!-- <piplan-editablefield
+        <piplan-editablefield
           class="piplan__story__description"
-          [fieldValue]="story.descr"
+          [fieldValue]="story.description"
           (valueChanged)="updateStoryDescr(story, $event)"
           (inEditMode)="story.editing = $event"
-          ></piplan-editablefield> -->
+          ></piplan-editablefield>
 
       </div>
     </div>

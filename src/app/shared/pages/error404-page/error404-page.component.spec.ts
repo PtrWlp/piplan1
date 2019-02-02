@@ -1,6 +1,5 @@
 import {async, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {TranslateModule} from '@ngx-translate/core';
 import {MaterialModule} from '../../modules/material.module';
 import {TestsModule} from '../../modules/tests.module';
 import {PiplanService} from '../../../shared/service/piplan.service';
@@ -17,7 +16,6 @@ describe('Error404Page', () => {
     TestBed.configureTestingModule({
       imports: [
         TestsModule,
-        TranslateModule.forRoot(),
         MaterialModule
       ],
       declarations: [

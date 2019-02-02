@@ -2,9 +2,8 @@ import {async, TestBed} from '@angular/core/testing';
 import {ProgramIncrementService} from './programincrement.service';
 import {APP_BASE_HREF} from '@angular/common';
 import {TestsModule} from '../../shared/modules/tests.module';
-import {TranslateModule} from '@ngx-translate/core';
 import {APP_CONFIG, AppConfig} from '../../configs/app.config';
-import {ProgramIncrement} from './piplan.models';
+import {ProgramIncrement} from '../models/piplan.models';
 import {HttpErrorResponse} from '@angular/common/http';
 
 describe('ProgramIncrementService', () => {
@@ -14,8 +13,7 @@ describe('ProgramIncrementService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        TestsModule,
-        TranslateModule.forRoot()
+        TestsModule
       ],
       providers: [
         {provide: APP_CONFIG, useValue: AppConfig},

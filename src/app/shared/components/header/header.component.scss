@@ -15,10 +15,9 @@
       flex-wrap: wrap;
       align-items: center;
       padding: calculateRem(8px) calculateRem(16px);
-      color: $secondary--color;
       height: 2rem;
-      background: $primary--color;
-
+      background: linear-gradient(to right, #0800b9, #00a1de);
+      color: white;
       .icon__image {
         width: calculateRem(15px);
         height: calculateRem(15px);

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {Team, ProgramIncrement} from '../../../shared/service/piplan.models';
+import {Team, ProgramIncrement} from '../../models/piplan.models';
 import {TeamService} from '../../../shared/service/team.service';
 import {ProgramIncrementService} from '../../../shared/service/program-increment.service';
 import {AppConfig} from '../../../configs/app.config';

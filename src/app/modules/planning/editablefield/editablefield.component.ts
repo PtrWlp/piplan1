@@ -3,7 +3,8 @@ import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'piplan-editablefield',
-  templateUrl: './editablefield.component.html'
+  templateUrl: './editablefield.component.html',
+  styleUrls: ['./editablefield.component.scss']
 })
 
 export class EditableFiedComponent implements OnInit {

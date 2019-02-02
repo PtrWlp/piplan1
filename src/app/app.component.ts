@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {NavigationEnd, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
-import {_} from '@biesbjerg/ngx-translate-extract/dist/utils/utils';
 import {AppConfig} from './configs/app.config';
 import {LocalStorage} from 'ngx-store';
 import {UtilsHelperService} from './core/services/utils-helper.service';
@@ -22,8 +20,7 @@ export class AppComponent implements OnInit {
   @LocalStorage() language = 'en';
   isOnline: boolean;
 
-  constructor(private translateService: TranslateService,
-              private title: Title,
+  constructor(private title: Title,
               private meta: Meta,
               private snackBar: MatSnackBar,
               private router: Router) {
@@ -31,13 +28,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.translateService.setDefaultLang('en');
-    this.translateService.use(this.language);
 
-    // With this we load the default language in the main bundle (cache busting)
-    this.translateService.setTranslation('en', require('../assets/i18n/en.json'));
-
-    this.title.setTitle('Angular Example App');
+    this.title.setTitle('PI Planning');
 
     this.onEvents();
     this.checkBrowser();
@@ -50,14 +42,14 @@ export class AppComponent implements OnInit {
           case '/':
             this.meta.updateTag({
               name: 'description',
-              content: 'Angular Example app with Angular CLI, Angular Material and more'
+              content: 'Support PI Planning'
             });
             break;
-          case '/' + AppConfig.routes.heroes:
-            this.title.setTitle('Heroes list');
+          case '/' + AppConfig.routes.planning:
+            this.title.setTitle('PI Planning');
             this.meta.updateTag({
               name: 'description',
-              content: 'List of super-heroes'
+              content: 'Plan your teams stories, count the points'
             });
             break;
         }
@@ -69,9 +61,7 @@ export class AppComponent implements OnInit {
     if (UtilsHelperService.isBrowserValid()) {
       this.checkBrowserFeatures();
     } else {
-      this.translateService.get([String(_('changeBrowser'))]).subscribe((texts) => {
-        this.snackBar.open(texts['changeBrowser'], 'OK');
-      });
+      this.snackBar.open('our browser is not supported. Please use, Chrome, Firefox, Safari, Opera or IE>11', 'OK');
     }
   }
 
@@ -86,9 +76,7 @@ export class AppComponent implements OnInit {
     }
 
     if (!supported) {
-      this.translateService.get([String(_('updateBrowser'))]).subscribe((texts) => {
-        this.snackBar.open(texts['updateBrowser'], 'OK');
-      });
+      this.snackBar.open('You are using an old browser, please update it and reload the page.', 'OK');
     }
 
     return supported;

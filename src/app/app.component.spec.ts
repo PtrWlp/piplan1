@@ -2,7 +2,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {APP_BASE_HREF} from '@angular/common';
 import {TestsModule} from './shared/modules/tests.module';
-import {TranslateModule} from '@ngx-translate/core';
 import {AppRoutingModule} from './app-routing.module';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {PiplanService} from './shared/service/piplan.service';
@@ -20,7 +19,6 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         TestsModule,
-        TranslateModule.forRoot(),
         CoreModule,
         SharedModule,
         AppRoutingModule

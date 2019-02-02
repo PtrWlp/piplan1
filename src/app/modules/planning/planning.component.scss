@@ -32,16 +32,6 @@
   }
 }
 
-.team-actions {
-  margin-left: 1rem;
-  padding-bottom: 0;
-
-  .icon__remove {
-    padding-left: 0.5rem;
-    color: darkslategrey;
-    cursor: pointer;
-  }
-}
 
 form {
   display: grid;
@@ -95,7 +85,7 @@ form {
   &__sprint {
     width: 400px;
     max-width: 100%;
-    margin: 0 25px 25px 0;
+    margin: 0 0 25px 25px;
     display: inline-block;
     vertical-align: top;
 

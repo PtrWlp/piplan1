@@ -1,31 +1,17 @@
-import {Deserializable} from '../../shared/interfaces/deserializable.interface';
+import {Deserializable} from '../interfaces/deserializable.interface';
 import { Moment } from 'moment';
 
 export class Team implements Deserializable {
   id: string;
   name: string;
   jiraPrefix: string;
+  averageSprintCapacity: number;
 
   constructor(team: any = {}) {
     this.id = team.id;
     this.name = team.name || '';
     this.jiraPrefix = team.jiraPrefix || '';
-  }
-
-  deserialize(input: any) {
-    Object.assign(this, input);
-    return this;
-  }
-}
-export class Hero implements Deserializable {
-  id: string;
-  name: string;
-  start: string;
-
-  constructor(hero: any = {}) {
-    this.id = hero.id;
-    this.name = hero.name || '';
-    this.start = hero.start || new Date().toJSON().slice(0, 10);
+    this.averageSprintCapacity = team.averageSprintCapacity;
   }
 
   deserialize(input: any) {
@@ -59,6 +45,7 @@ export class Story implements Deserializable {
   piid: string;
   teamid: string;
   sprint: string;
+  editing: string;
 
   constructor(story: any = {}) {
     this.id = story.id;

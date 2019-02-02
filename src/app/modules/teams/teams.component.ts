@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Team} from '../../shared/service/piplan.models';
+import {Team} from '../../shared/models/piplan.models';
 import {TeamService} from '../../shared/service/team.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
@@ -18,7 +18,7 @@ import {TeamRemoveComponent} from './team-remove/team-remove.component';
 export class TeamsComponent implements OnInit {
 
   teams: Team[];
-  newTeamForm: FormGroup;
+  teamForm: FormGroup;
   error: string;
   @ViewChild('form') myNgForm; // just to call resetForm method
 
@@ -28,9 +28,10 @@ export class TeamsComponent implements OnInit {
               private formBuilder: FormBuilder,
               private snackBar: MatSnackBar) {
 
-    this.newTeamForm = this.formBuilder.group({
+    this.teamForm = this.formBuilder.group({
       'name': new FormControl('', [Validators.required]),
-      'jiraPrefix': new FormControl('', [Validators.required])
+      'jiraPrefix': new FormControl('', [Validators.required]),
+      'averageSprintCapacity': new FormControl('', [Validators.pattern('^[0-9]*$')])
     });
 
   }
@@ -41,9 +42,19 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  createNewTeam(newTeam: any) {
-    if (this.newTeamForm.valid) {
-      this.teamService.createTeam(new Team(newTeam)).then(() => {
+  createNewTeam(team: any) {
+    if (this.teamForm.valid) {
+      this.teamService.saveTeam(new Team(team)).then(() => {
+        this.myNgForm.resetForm();
+      }, () => {
+        this.error = 'errorHasOcurred';
+      });
+    }
+  }
+
+  saveTeam(team: any) {
+    if (this.teamForm.valid) {
+      this.teamService.saveTeam(new Team(team)).then(() => {
         this.myNgForm.resetForm();
       }, () => {
         this.error = 'errorHasOcurred';
@@ -65,9 +76,7 @@ export class TeamsComponent implements OnInit {
   }
 
   seeTeamDetails(team): void {
-    if (team.default) {
-      this.router.navigate([AppConfig.routes.teams + '/' + team.id]);
-    }
+    this.router.navigate([AppConfig.routes.teams + '/' + team.id]);
   }
 
   showSnackBar(message) {

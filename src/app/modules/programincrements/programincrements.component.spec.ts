@@ -2,7 +2,6 @@ import {async, TestBed} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {ProgramIncrementsModule} from './programincrements.module';
 import {TestsModule} from '../../shared/modules/tests.module';
-import {TranslateModule} from '@ngx-translate/core';
 import {PiplanService} from '../../shared/service/piplan.service';
 import {APP_CONFIG, AppConfig} from '../../configs/app.config';
 import {ProgramIncrementsComponent} from './programincrements.component';
@@ -15,7 +14,6 @@ describe('ProgramIncrementListComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         TestsModule,
-        TranslateModule.forRoot(),
         ProgramIncrementsModule
       ],
       providers: [

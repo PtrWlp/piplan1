@@ -1,5 +1,4 @@
 import {HomePage} from './home-page';
-import {AppConfig} from '../../../../src/app/configs/app.config';
 import {browser} from 'protractor';
 
 describe('Home page', function () {
@@ -9,9 +8,9 @@ describe('Home page', function () {
     page = new HomePage();
   });
 
-  it('should contains heroes limit', () => {
+  it('should contains stories', () => {
     HomePage.navigateTo();
     browser.driver.sleep(2000);
-    expect<any>(HomePage.getNumberHeroes()).toBe(AppConfig.topHeroesLimit);
+    expect<any>(HomePage.getNumberStories()).toBe(1);
   });
 });

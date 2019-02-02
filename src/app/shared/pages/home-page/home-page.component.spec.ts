@@ -1,13 +1,12 @@
 import {async, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
-import {TranslateModule} from '@ngx-translate/core';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TestsModule} from '../../modules/tests.module';
 import {PiplanService} from '../../../shared/service/piplan.service';
 import {HomePageComponent} from './home-page.component';
 import {APP_CONFIG, AppConfig} from '../../../configs/app.config';
 import {of} from 'rxjs';
-import {Hero} from '../../../shared/service/piplan.models';
+import {Story} from '../../models/piplan.models';
 
 describe('HomePage', () => {
   let fixture;
@@ -18,7 +17,6 @@ describe('HomePage', () => {
     TestBed.configureTestingModule({
       imports: [
         TestsModule,
-        TranslateModule.forRoot(),
       ],
       declarations: [
         HomePageComponent
@@ -36,21 +34,19 @@ describe('HomePage', () => {
     piplanService = TestBed.get(PiplanService);
   }));
 
-  it('should create hero top component', (() => {
+  it('should create piplan top component', (() => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   }));
 
   it('should initializße component', fakeAsync(() => {
-    const heroes = [
-      new Hero({name: 'test1', default: true}),
-      new Hero({name: 'test2', default: true}),
-      new Hero({name: 'test3', default: true}),
-      new Hero({name: 'test4', default: true})
+    const planning = [
+      new Story({jiraPrifix: 'test1'}),
+      new Story({jiraPrifix: 'test2'})
     ];
-    spyOn(piplanService, 'getHeroes').and.returnValue(of(heroes));
+    spyOn(piplanService, 'getStories').and.returnValue(of(planning));
     fixture.detectChanges();
     tick();
-    expect(component.heroes.length).toBe(AppConfig.listProgramIncrementsLimit);
+    expect(component.planning.length).toBe(2);
   }));
 });

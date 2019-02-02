@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {Team } from './piplan.models';
+import {Team } from '../models/piplan.models';
 import {catchError, map, tap} from 'rxjs/operators';
 import {LoggerService} from '../../core/services/logger.service';
 import {AppConfig} from '../../configs/app.config';
@@ -39,12 +39,11 @@ export class TeamService {
       map((team) => {
         return new Team({id, ...team.data()});
       }),
-      tap(() => LoggerService.log(`fetched team ${id}`)),
       catchError(UtilsHelperService.handleError('getTeam', []))
     );
   }
 
-  createTeam(team: Team): Promise<any> {
+  saveTeam(team: Team): Promise<any> {
     const data = JSON.parse(JSON.stringify(team));
     return this.teamsCollection.doc(team.jiraPrefix).set(data);
   }

@@ -12,11 +12,13 @@
         <p mat-line (click)="seeTeamDetails(team);">
           <span>{{team.name}}</span>
         </p>
-        <div class="team-actions">
-          <mat-icon class="icon__remove" (click)="deleteTeam(team);">
-            delete
-          </mat-icon>
-        </div>
+        <p mat-line (click)="seeTeamDetails(team);">
+          <span>sprint capacity: {{team.averageSprintCapacity}}</span>
+        </p>
+        <p mat-line>
+          <button class="piplan__miniButton" (click)="setTeamAsEditEditMode(true)">&#x270e;</button>
+          <button class="piplan__miniButton" (click)="deleteTeam(team);">&#x2613;</button>
+        </p>
       </mat-list-item>
     </mat-list>
   </div>
@@ -24,25 +26,37 @@
 <div id="right" [@fadeInOut]>
   <h2 class="header__title">New Team</h2>
   <div *ngIf="teams">
-    <form [formGroup]="newTeamForm" #form="ngForm" ngxScrollToFirstInvalid
-          (ngSubmit)="createNewTeam(newTeamForm.value)" autocomplete="on">
-      <mat-form-field class="input-container">
+    <form [formGroup]="teamForm" #form="ngForm" ngxScrollToFirstInvalid
+          (ngSubmit)="createNewTeam(teamForm.value)" autocomplete="on">
+
+          <mat-form-field class="input-container">
         <input matInput name="hname" type="text"
                placeholder="Product Team Name"
                formControlName="name">
-        <mat-error *ngIf="!newTeamForm.controls.name.valid && form.submitted">
+        <mat-error *ngIf="!teamForm.controls.name.valid && form.submitted">
           Required field
         </mat-error>
       </mat-form-field>
+
       <mat-form-field class="input-container">
         <input matInput type="text" name="rname"
                placeholder="Jira Prefix"
                formControlName="jiraPrefix">
-        <mat-error *ngIf="!newTeamForm.controls.jiraPrefix.valid && form.submitted">
+        <mat-error *ngIf="!teamForm.controls.jiraPrefix.valid && form.submitted">
           Required field
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button type="submit" [disabled]="form.submitted && !newTeamForm.valid">
+
+      <mat-form-field class="input-container">
+        <input matInput type="text" name="raverageSprintCapacity"
+               placeholder="average sprint capacity"
+               formControlName="averageSprintCapacity">
+        <mat-error *ngIf="!teamForm.controls.averageSprintCapacity.valid && form.submitted">
+          Required field
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" [disabled]="form.submitted && !teamForm.valid">
         add
       </button>
       <div *ngIf="error">An error occurred.</div>

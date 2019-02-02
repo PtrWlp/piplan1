@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ProgramIncrement } from './piplan.models';
+import {ProgramIncrement } from '../models/piplan.models';
 import {catchError, map, tap} from 'rxjs/operators';
 import {LoggerService} from '../../core/services/logger.service';
 import {AppConfig} from '../../configs/app.config';
@@ -29,7 +29,6 @@ export class ProgramIncrementService {
             return new ProgramIncrement({id: action.payload.doc.id, ...data});
           });
         }),
-        tap(() => LoggerService.log(`fetched programIncrements`)),
         catchError(UtilsHelperService.handleError('getProgramIncrements', []))
       );
   }
@@ -39,7 +38,6 @@ export class ProgramIncrementService {
       map((programIncrement) => {
         return new ProgramIncrement({id, ...programIncrement.data()});
       }),
-      tap(() => LoggerService.log(`fetched programIncrement ${id}`)),
       catchError(UtilsHelperService.handleError('getProgramIncrement', []))
     );
   }

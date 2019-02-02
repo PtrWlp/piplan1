@@ -2,9 +2,8 @@ import {async, TestBed} from '@angular/core/testing';
 import {TeamService} from './team.service';
 import {APP_BASE_HREF} from '@angular/common';
 import {TestsModule} from '../../shared/modules/tests.module';
-import {TranslateModule} from '@ngx-translate/core';
 import {APP_CONFIG, AppConfig} from '../../configs/app.config';
-import {Team} from './piplan.models';
+import {Team} from '../models/piplan.models';
 import {HttpErrorResponse} from '@angular/common/http';
 
 describe('TeamService', () => {
@@ -14,8 +13,7 @@ describe('TeamService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        TestsModule,
-        TranslateModule.forRoot()
+        TestsModule
       ],
       providers: [
         {provide: APP_CONFIG, useValue: AppConfig},
@@ -41,7 +39,7 @@ describe('TeamService', () => {
   }));
 
   it('should fail creating empty team', (() => {
-    service.createTeam(new Team({
+    service.saveTeam(new Team({
       'name': 'test',
       'jiraPrefix': 'test'
     })).then(() => {

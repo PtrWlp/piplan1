@@ -1,10 +1,8 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ProgramIncrement, Story } from './piplan.models';
+import {ProgramIncrement, Story } from '../models/piplan.models';
 import {catchError, map, tap} from 'rxjs/operators';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import {TranslateService} from '@ngx-translate/core';
-import {_} from '@biesbjerg/ngx-translate-extract/dist/utils/utils';
 import {LoggerService} from '../../core/services/logger.service';
 import {AppConfig} from '../../configs/app.config';
 import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
@@ -16,7 +14,6 @@ import {UtilsHelperService} from '../../core/services/utils-helper.service';
 export class PiplanService {
   private planningCollection: AngularFirestoreCollection<Story>;
   constructor(private afs: AngularFirestore,
-              private translateService: TranslateService,
               private snackBar: MatSnackBar) {
 
     this.planningCollection = this.afs.collection<Story>('planning', (planning) => {
@@ -42,7 +39,7 @@ export class PiplanService {
     };
   }
 
-  getPlanning(pi, team): Observable<Story[]> {
+  getPlanning(): Observable<Story[]> {
     return this.planningCollection.snapshotChanges()
       .pipe(
         map((actions) => {
@@ -51,17 +48,16 @@ export class PiplanService {
             return new Story({id: action.payload.doc.id, ...data});
           });
         }),
-        tap(() => LoggerService.log(`fetched stories in planning`)),
+        // tap(() => LoggerService.log(`fetched stories in planning`)),
         catchError(UtilsHelperService.handleError('getPlanning', []))
       );
   }
 
   getStory(id: string): Observable<any> {
-    return this.afs.doc(`${AppConfig.routes.heroes}/${id}`).get().pipe(
-      map((hero) => {
-        return new Story({id, ...hero.data()});
+    return this.afs.doc(`${AppConfig.routes.planning}/${id}`).get().pipe(
+      map((story) => {
+        return new Story({id, ...story.data()});
       }),
-      tap(() => LoggerService.log(`fetched hero ${id}`)),
       catchError(UtilsHelperService.handleError('getStory', []))
     );
   }
@@ -69,7 +65,7 @@ export class PiplanService {
   createStory(story: Story): Promise<DocumentReference> {
     return this.planningCollection.add(JSON.parse(JSON.stringify(story))).then((document: DocumentReference) => {
       LoggerService.log(`added story w/ id=${document.id}`);
-      this.showSnackBar('heroCreated');
+      this.showSnackBar('Story Created');
       alert('story created');
       return document;
     }, (error) => {
@@ -78,23 +74,22 @@ export class PiplanService {
     });
   }
 
-  updateStory(hero: Story): Promise<void> {
-    return this.afs.doc(`${AppConfig.routes.heroes}/${hero.id}`).update(JSON.parse(JSON.stringify(hero))).then(() => {
-      LoggerService.log(`updated hero w/ id=${hero.id}`);
-      this.showSnackBar('saved');
+  updateStory(story: Story): Promise<void> {
+    return this.afs.doc(`${AppConfig.routes.planning}/${story.id}`).update(JSON.parse(JSON.stringify(story))).then(() => {
+      LoggerService.log(`updated story w/ id=${story.id}`);
+      // this.showSnackBar(`story ${story.jiraNumber} saved`);
     });
   }
 
   deleteStory(id: string): Promise<void> {
-    return this.afs.doc(`${AppConfig.routes.heroes}/${id}`).delete();
+    const result = this.afs.doc(`${AppConfig.routes.stories}/${id}`).delete();
+    this.showSnackBar('deleted');
+    return result;
   }
 
-  showSnackBar(name): void {
-    this.translateService.get([String(_('heroCreated')), String(_('saved')),
-      String(_('heroLikeMaximum')), String(_('heroRemoved'))], {'value': AppConfig.votesLimit}).subscribe((texts) => {
-      const config: any = new MatSnackBarConfig();
-      config.duration = AppConfig.snackBarDuration;
-      this.snackBar.open(texts[name], 'OK', config);
-    });
+  showSnackBar(text): void {
+    const config: any = new MatSnackBarConfig();
+    config.duration = 3000;
+    this.snackBar.open(text, 'OK', config);
   }
 }
