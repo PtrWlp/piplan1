@@ -2,55 +2,26 @@
 
 <piplan-loading *ngIf="!planning"></piplan-loading>
 
-<div id="left" [@fadeInOut]>
-    <h2 class="header__title">new Story</h2>
-    <div *ngIf="planning">
-      <form [formGroup]="newStoryForm" #form="ngForm" ngxScrollToFirstInvalid
-            (ngSubmit)="createNewStory(newStoryForm.value)" autocomplete="on">
-        <mat-form-field class="input-container">
-          <input matInput name="hjiraNumber" type="text"
-                 placeholder="jira number (optional)"
-                 formControlName="jiraNumber">
-          <mat-error *ngIf="!newStoryForm.controls.jiraNumber.valid && form.submitted">
-            some error
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="input-container">
-          <input matInput name="rdescription" type="text"
-                 placeholder="description"
-                 formControlName="description">
-          <mat-error *ngIf="!newStoryForm.controls.description.valid && form.submitted">
-            required field
-          </mat-error>
-        </mat-form-field>
-        <button mat-raised-button type="submit" [disabled]="form.submitted && !newStoryForm.valid">
-          add
-        </button>
-        <div *ngIf="error">an error cocurred</div>
-      </form>
-    </div>
-
-</div>
-
-<div class="clear"></div>
-
 <div cdkDropListGroup>
   <div class="piplan__sprint"
        *ngFor="let sprint of sprints; let i = index">
     <div class="piplan__sprint__heading">
-      <h2 class="piplan__sprint__heading__title">{{sprint.name}}</h2>
+      <h2 class="piplan__sprint__heading__title">{{ sprint.name }}</h2>
       <div class="piplan__sprint__add-to-backlog"
            *ngIf="(sprint.name === 'backlog')">
-        <button class="piplan__miniButton" (click)="createNewStory()">+</button>
+        <button class="piplan__miniAddButton" (click)="createNewStory()">add story</button>
       </div>
       <div class="piplan__sprint__heading__sprintstart" *ngIf="sprint.name.indexOf('sprint') !==-1">
-        start: {{getStartOfSprint(i)}}
+        start: {{ getStartOfSprint(i) }}
       </div>
       <div class="piplan__sprint__capacity" *ngIf="sprint.name.indexOf('sprint') !==-1">
-        capacity: {{sprint.capacity}}
+        capacity:
+        <button class="piplan__miniButton" (click)="changeSprintCapacity(sprint, 1)">+</button>
+        <button class="piplan__miniButton" (click)="changeSprintCapacity(sprint, -1)">-</button>
+        {{ sprint.capacity || '?' }}
       </div>
       <div class="piplan__sprint__heading__pointtotal piplan__points" *ngIf="sprint.name.indexOf('sprint') !==-1">
-        {{getPoints(sprint.name)}}
+        {{ getPoints(sprint.name) }}
       </div>
     </div>
 

@@ -6,14 +6,21 @@
     font-weight: inherit;
     font-size: inherit;
     word-break: break-all;
-    line-height: 1.2;
+    line-height: 1.3;
+    margin-left: 5px;
+    font-size: 14px;
     transition: color 0.4s;
   }
 
   &--edit {
     margin-bottom: 5px;
-    line-height: 2;
-    width: 100%;
+    margin-left: 5px;
+    font-size: 14px;
+    line-height: 2.5;
+    display: none;
+  }
+
+  &__canceledit {
     display: none;
   }
 
@@ -22,6 +29,9 @@
       display: none;
     }
     .piplan__editablefield--edit {
+      display: inline-block;
+    }
+    button.piplan__miniButton.piplan__editablefield__canceledit {
       display: inline-block;
     }
   }

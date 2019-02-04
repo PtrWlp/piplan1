@@ -1,16 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Story, Team, ProgramIncrement} from '../../shared/models/piplan.models';
-import {TeamService} from '../../shared/service/team.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Story, Team, ProgramIncrement, Sprint } from '../../shared/models/piplan.models';
+import { TeamService } from '../../shared/service/team.service';
 import { ProgramIncrementService } from 'src/app/shared/service/program-increment.service';
-import {PiplanService} from '../../shared/service/piplan.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
-import { ActivatedRoute, Router} from '@angular/router';
-import {AppConfig} from '../../configs/app.config';
+import { PiplanService } from '../../shared/service/piplan.service';
+import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
-import {UtilsHelperService} from '../../core/services/utils-helper.service';
-import { now } from 'moment';
+import { UtilsHelperService } from '../../core/services/utils-helper.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'piplan-planning',
@@ -25,26 +22,17 @@ export class PlanningComponent implements OnInit {
   team: Team;
   programIncrement: ProgramIncrement;
   pi: string;
-  newStoryForm: FormGroup;
   error: string;
   teamJiraPrefix: string;
   sprints: any;
-  fibo = [undefined, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
+  fibo = [null, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
 
   @ViewChild('form') myNgForm; // just to call resetForm method
 
   constructor(private teamService: TeamService,
               private programIncrementService: ProgramIncrementService,
               private piplanService: PiplanService,
-              private dialog: MatDialog,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private formBuilder: FormBuilder) {
-
-                this.newStoryForm = this.formBuilder.group({
-        'jiraNumber': new FormControl('', []),
-        'description': new FormControl('', [Validators.required])
-      });
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -55,6 +43,9 @@ export class PlanningComponent implements OnInit {
     // });
     this.teamService.getTeam(this.teamJiraPrefix).subscribe((team: Team) => {
       this.team = team;
+      this.sprints.forEach(sprint => {
+        sprint['capacity'] = team.averageSprintCapacity;
+      });
     });
     this.programIncrementService.getProgramIncrement(this.pi).subscribe((programIncrement: ProgramIncrement) => {
       this.programIncrement = programIncrement;
@@ -82,7 +73,7 @@ export class PlanningComponent implements OnInit {
     newStory.description = 'new story';
 
     this.piplanService.createStory(new Story(newStory)).then(() => {
-      console.log('new story saved');
+      // new story saved
     }, () => {
       this.error = 'errorHasOcurred';
     });
@@ -92,9 +83,7 @@ export class PlanningComponent implements OnInit {
     const story = event.item.data;
     const targetSprint = event.container.data['sprint'];
 
-    if (targetSprint === 'trashcan') {
-      this.piplanService.deleteStory(event.item.data['id']);
-    } else if (event.previousContainer === event.container) {
+    if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data['stories'], event.previousIndex, event.currentIndex);
       // For now the order is not stored... TODO fix that
     } else {
@@ -107,16 +96,21 @@ export class PlanningComponent implements OnInit {
     }
   }
 
+  trashcan(event: CdkDragDrop<string[]>) {
+    const story = event.item.data;
+    this.piplanService.deleteStory(story);
+  }
+
   getStories(sprint) {
     return this.planning && this.planning.filter(story => story.sprint === sprint);
     // return this.planning;
   }
 
   getStartOfSprint(sprintNumber) {
+    if (!this.programIncrement) { return; }
+
     const addNrOfDays = (sprintNumber - 1) * 14;
-    const newDate = new Date(now()); // TODO GET PI START
-    newDate.setDate(newDate.getDate() + addNrOfDays);
-    return newDate.toISOString().slice(0, 10);
+    return moment(this.programIncrement.start, 'YYYY-MM-DD').add(addNrOfDays, 'days').format('YYYY-MM-DD');
   }
 
   getDisplayPoints(points) {
@@ -124,7 +118,13 @@ export class PlanningComponent implements OnInit {
   }
 
   updateStoryNumber(story, newValue) {
-    story.number = newValue;
+    story.jiraNumber = newValue;
+    this.piplanService.updateStory(story);
+    story.editing = '';
+  }
+
+  updateStoryDescr(story, newValue) {
+    story.description = newValue;
     this.piplanService.updateStory(story);
     story.editing = '';
   }
@@ -143,7 +143,7 @@ export class PlanningComponent implements OnInit {
     const currentSpot = this.fibo.indexOf(story.points);
     if (currentSpot + 1 < this.fibo.length) {
       story.points = this.fibo[currentSpot + 1];
-      this.piplanService.saveTeamPlan(this.teamPlan);
+      this.piplanService.updateStory(story);
     }
   }
 
@@ -151,32 +151,15 @@ export class PlanningComponent implements OnInit {
     const currentSpot = this.fibo.indexOf(story.points);
     if (currentSpot > 0) {
       story.points = this.fibo[currentSpot - 1];
-      this.piplanService.saveTeamPlan(this.teamPlan);
+      this.piplanService.updateStory(story);
     }
   }
 
-  // createNewPlanning(newPlanning: any) {
-  //   if (this.newStoryForm.valid) {
-  //     this.teamService.createPlanning(new Story(newPlanning)).then(() => {
-  //       this.myNgForm.resetForm();
-  //     }, () => {
-  //       this.error = 'errorHasOcurred';
-  //     });
-  //   }
-  // }
-
-  // deletePlanning(team: Story) {
-  //   const dialogRef = this.dialog.open(PlanningRemoveComponent);
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.teamService.deletePlanning(team.id).then(() => {
-  //         // this.planningService.showSnackBar('teamRemoved');
-  //         alert('team removed');
-  //       }, () => {
-  //         this.error = 'teamDefault';
-  //       });
-  //     }
-  //   });
-  // }
+  changeSprintCapacity(sprint: Sprint, changeValue) {
+    sprint.capacity += changeValue;
+    sprint.piid = this.pi;
+    sprint.teamid = this.teamJiraPrefix;
+    this.piplanService.saveSprint(sprint);
+  }
 
 }

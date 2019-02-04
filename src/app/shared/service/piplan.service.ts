@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ProgramIncrement, Story } from '../models/piplan.models';
+import {ProgramIncrement, Story, Sprint } from '../models/piplan.models';
 import {catchError, map, tap} from 'rxjs/operators';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {LoggerService} from '../../core/services/logger.service';
@@ -13,11 +13,16 @@ import {UtilsHelperService} from '../../core/services/utils-helper.service';
 })
 export class PiplanService {
   private planningCollection: AngularFirestoreCollection<Story>;
+  private sprintsCollection: AngularFirestoreCollection<Sprint>;
   constructor(private afs: AngularFirestore,
               private snackBar: MatSnackBar) {
 
     this.planningCollection = this.afs.collection<Story>('planning', (planning) => {
       return planning.orderBy('jiraNumber', 'desc');
+    });
+
+    this.sprintsCollection = this.afs.collection<Sprint>('sprintCapacity', (sprints) => {
+      return sprints.orderBy('name', 'desc');
     });
 
   }
@@ -64,9 +69,7 @@ export class PiplanService {
 
   createStory(story: Story): Promise<DocumentReference> {
     return this.planningCollection.add(JSON.parse(JSON.stringify(story))).then((document: DocumentReference) => {
-      LoggerService.log(`added story w/ id=${document.id}`);
-      this.showSnackBar('Story Created');
-      alert('story created');
+      this.showSnackBar(`New Story created on backlog`);
       return document;
     }, (error) => {
       UtilsHelperService.handleError<any>('createStory', error);
@@ -75,17 +78,48 @@ export class PiplanService {
   }
 
   updateStory(story: Story): Promise<void> {
-    return this.afs.doc(`${AppConfig.routes.planning}/${story.id}`).update(JSON.parse(JSON.stringify(story))).then(() => {
-      LoggerService.log(`updated story w/ id=${story.id}`);
-      // this.showSnackBar(`story ${story.jiraNumber} saved`);
+    return this.afs.doc(`${AppConfig.routes.planning}/${story.id}`)
+      .update(this.deepCopyStory(story))
+      .then(() => {
+        LoggerService.log(`updated story w/ id=${story.id}`);
+        // this.showSnackBar(`story ${story.jiraNumber} saved`);
     });
   }
 
-  deleteStory(id: string): Promise<void> {
-    const result = this.afs.doc(`${AppConfig.routes.stories}/${id}`).delete();
-    this.showSnackBar('deleted');
+  deepCopyStory(story: Story) {
+    // want to remove the 'editing' field. Shouldnt be in the database
+    const { id, jiraNumber, description, points, piid, teamid, sprint} = story;
+    return JSON.parse(JSON.stringify({ id, jiraNumber, description, points, piid, teamid, sprint}));
+  }
+
+  deleteStory(story: Story): Promise<void> {
+    const result = this.afs.doc(`${AppConfig.routes.stories}/${story.id}`).delete();
+    this.showSnackBar(`deleted story ${story.jiraNumber}`);
     return result;
   }
+
+  getSprints(): Observable<Sprint[]> {
+    return this.sprintsCollection.snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((action) => {
+            const data = action.payload.doc.data();
+            return new Sprint({id: action.payload.doc.id, ...data});
+          });
+        }),
+        // tap(() => LoggerService.log(`fetched stories in planning`)),
+        catchError(UtilsHelperService.handleError('getSprints', []))
+      );
+  }
+
+
+  saveSprint(sprint: Sprint): Promise<any> {
+    sprint.id = `${sprint.piid}-${sprint.teamid}-${sprint.name}`;
+    const data = JSON.parse(JSON.stringify(sprint));
+    return this.sprintsCollection.doc(sprint.id).set(data);
+  }
+
+
 
   showSnackBar(text): void {
     const config: any = new MatSnackBarConfig();

@@ -5,6 +5,7 @@ import {TeamService} from '../../../shared/service/team.service';
 import {ProgramIncrementService} from '../../../shared/service/program-increment.service';
 import {AppConfig} from '../../../configs/app.config';
 import {UtilsHelperService} from '../../../core/services/utils-helper.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'piplan-home-page',
@@ -29,29 +30,29 @@ export class HomePageComponent implements OnInit {
     this.teamService.getTeams().subscribe((teams: Array<Team>) => {
       this.teams = teams;
     });
+    let closestStartDateFound = false;
     this.programIncrementService.getProgramIncrements().subscribe((programIncrements: Array<ProgramIncrement>) => {
       this.programIncrements = programIncrements.map((pi) => {
         pi['selected'] = false;
+        if (!closestStartDateFound && moment(pi.start, 'YYYY-MM-DD').isSameOrAfter(moment())) {
+          pi['selected'] = true;
+          closestStartDateFound = true;
+          this.selectedProgramIncrement = pi.name;
+        }
         return pi;
-    });
+      });
     });
   }
 
-  // handleSelection(index) {
-  //   console.log(this.programIncrements[index]);
-  //   this.programIncrements[index]['selected'] = true;
-  //   this.setSelectedProgramIncrement(this.programIncrements[index]);
-  // }
-
   setSelectedProgramIncrement(programIncrement): void {
     this.selectedProgramIncrement = programIncrement;
-    this.selectionComplete = (this.selectedProgramIncrement && this.selectedTeam);
+    this.selectionComplete = !!(this.selectedProgramIncrement && this.selectedTeam);
     console.log(this.selectionComplete);
   }
 
   setSelectedTeam(team): void {
     this.selectedTeam = team;
-    this.selectionComplete = (this.selectedProgramIncrement && this.selectedTeam);
+    this.selectionComplete = !!(this.selectedProgramIncrement && this.selectedTeam);
     console.log(this.selectionComplete);
   }
 

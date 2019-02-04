@@ -1,23 +1,26 @@
 <div class="piplan__editablefield"
 [ngClass]="{editing: isEditing}">
 
-<button class="piplan__miniButton" (click)="setEditMode(true)">&#x270e;</button>
-<a *ngIf="isALink" class="piplan__jiraLink" target="_blank" href="{{linkPrefix + fieldValue}}">
-  <label class="piplan__editablefield--view">
-    {{fieldValue}}
+  <button class="piplan__miniButton" (click)="setEditMode(true)">&#x270e;</button>
+  <button class="piplan__miniButton piplan__editablefield__canceledit" (click)="cancel()">&#x2613;</button>
+
+  <a *ngIf="isALink" class="piplan__jiraLink" target="_blank" href="{{linkPrefix + fieldValue}}">
+    <label class="piplan__editablefield--view">
+      {{fieldValue}}
+    </label>
+  </a>
+
+  <label *ngIf="!isALink" class="piplan__editablefield--view"
+        (dblclick)="setEditMode(true)">
+  {{fieldValue}}
   </label>
-</a>
 
-<label *ngIf="!isALink" class="piplan__editablefield--view"
-       (dblclick)="setEditMode(true)">
-{{fieldValue}}
-</label>
+  <input class="piplan__editablefield--edit"
+          #updatedValue
+          [value]="fieldValue"
+          (blur)="updateValue(updatedValue.value)"
+          (keyup.enter)="updateValue(updatedValue.value)"
+          (keyup.escape)="setEditMode(false)"
+          autofocus>
 
-<input class="piplan__editablefield--edit"
-        #updatedValue
-        [value]="fieldValue"
-        (blur)="updateValue(updatedValue.value)"
-        (keyup.enter)="updateValue(updatedValue.value)"
-        (keyup.escape)="setEditMode(false)"
-        autofocus>
 </div>

@@ -15,7 +15,7 @@ export class ProgramIncrementService {
   constructor(private afs: AngularFirestore) {
 
     this.programIncrementsCollection = this.afs.collection<ProgramIncrement>('programIncrements', (programIncrement) => {
-      return programIncrement.orderBy('name');
+      return programIncrement.orderBy('start');
     });
 
   }

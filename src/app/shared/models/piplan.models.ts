@@ -1,5 +1,5 @@
 import {Deserializable} from '../interfaces/deserializable.interface';
-import { Moment } from 'moment';
+import * as moment from 'moment';
 
 export class Team implements Deserializable {
   id: string;
@@ -55,6 +55,26 @@ export class Story implements Deserializable {
     this.piid = story.piid || '';
     this.teamid = story.teamid || '';
     this.sprint = story.sprint || 'backlog';
+  }
+
+  deserialize(input: any) {
+    Object.assign(this, input);
+    return this;
+  }
+}
+export class Sprint implements Deserializable {
+  id: string;
+  name: string;
+  capacity: number;
+  piid: string;
+  teamid: string;
+
+  constructor(sprint: any = {}) {
+    this.id = sprint.name;
+    this.name = sprint.name || '';
+    this.capacity = sprint.capacity || null;
+    this.piid = sprint.piid || '';
+    this.teamid = sprint.teamid || '';
   }
 
   deserialize(input: any) {

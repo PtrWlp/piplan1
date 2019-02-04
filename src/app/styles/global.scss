@@ -77,5 +77,24 @@ pre {
   }
 }
 
+.piplan__miniButton {
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+  vertical-align: middle;
+  background: #a8a7a7;
+  width: 20px;
+  height: 20px;
+  margin: 0 4px 0 0;
+  color: black;
+  transition: color 0.2s ease-out;
+  border-radius: 3px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(121, 173, 121);
+  }
+}
+
 // MATERIAL
 @import "material";

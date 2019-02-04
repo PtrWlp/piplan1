@@ -7,6 +7,7 @@ export const AppConfig: any = {
     teams: 'teams',
     programIncrements: 'programIncrements',
     planning: 'planning',
+    sprintCapacity: 'sprintCapacity',
     error404: '404'
   },
   snackBarDuration: 3000,

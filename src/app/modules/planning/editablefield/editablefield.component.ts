@@ -24,11 +24,17 @@ export class EditableFiedComponent implements OnInit {
     this.isEditing = editMode;
     this.inEditMode.emit(editMode);
   }
+
   updateValue(newValue) {
     if (newValue !== this.currentValue) {
       this.fieldValue = newValue;
       this.valueChanged.emit(newValue);
     }
+    this.isEditing = false;
+  }
+
+  cancel() {
+    this.fieldValue = this.currentValue;
     this.isEditing = false;
   }
 

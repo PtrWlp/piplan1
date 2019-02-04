@@ -40,7 +40,7 @@ describe('PiplanService', () => {
   }));
 
   it('should fail creating empty story', (() => {
-    piplanService.createStory(new Story({
+    piplanService.updateStory(new Story({
       'description': 'test',
       'jiraPrefix': 'test'
     })).then(() => {
