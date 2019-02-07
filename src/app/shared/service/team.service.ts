@@ -51,8 +51,6 @@ export class TeamService {
   updateTeam(team: Team): Promise<void> {
     return this.afs.doc(`${AppConfig.routes.teams}/${team.id}`).update(JSON.parse(JSON.stringify(team))).then(() => {
       LoggerService.log(`updated team w/ id=${team.id}`);
-      alert('team saved');
-      // this.showSnackBar('saved');
     });
   }
 

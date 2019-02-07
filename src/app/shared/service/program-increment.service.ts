@@ -45,8 +45,6 @@ export class ProgramIncrementService {
   createProgramIncrement(programIncrement: ProgramIncrement): Promise<DocumentReference> {
     return this.programIncrementsCollection.add(JSON.parse(JSON.stringify(programIncrement))).then((document: DocumentReference) => {
       LoggerService.log(`added programIncrement w/ id=${document.id}`);
-      // this.showSnackBar('programIncrementCreated');
-      alert('programIncrement created');
       return document;
     }, (error) => {
       UtilsHelperService.handleError<any>('createProgramIncrement', error);
@@ -59,8 +57,6 @@ export class ProgramIncrementService {
            .update(JSON.parse(JSON.stringify(programIncrement)))
            .then(() => {
               LoggerService.log(`updated programIncrement w/ id=${programIncrement.id}`);
-              alert('programIncrement saved');
-              // this.showSnackBar('saved');
             });
   }
 

@@ -44,7 +44,7 @@ describe('HomePage', () => {
       new Story({jiraPrifix: 'test1'}),
       new Story({jiraPrifix: 'test2'})
     ];
-    spyOn(piplanService, 'getStories').and.returnValue(of(planning));
+    spyOn(piplanService, 'getPlanning').and.returnValue(of(planning));
     fixture.detectChanges();
     tick();
     expect(component.planning.length).toBe(2);

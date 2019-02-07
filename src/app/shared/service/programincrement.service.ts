@@ -51,8 +51,6 @@ export class ProgramIncrementService {
     return this.afs.doc(`${AppConfig.routes.programIncrements}/${programIncrement.id}`)
            .update(JSON.parse(JSON.stringify(programIncrement))).then(() => {
       LoggerService.log(`updated programIncrement w/ id=${programIncrement.id}`);
-      alert('programIncrement saved');
-      // this.showSnackBar('saved');
     });
   }
 
