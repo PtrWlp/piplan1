@@ -30,9 +30,9 @@ export class PlanningComponent implements OnInit {
   @ViewChild('form') myNgForm; // just to call resetForm method
 
   constructor(private teamService: TeamService,
-              private programIncrementService: ProgramIncrementService,
-              private piplanService: PiplanService,
-              private activatedRoute: ActivatedRoute) {
+    private programIncrementService: ProgramIncrementService,
+    private piplanService: PiplanService,
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -44,7 +44,9 @@ export class PlanningComponent implements OnInit {
     this.teamService.getTeam(this.teamJiraPrefix).subscribe((team: Team) => {
       this.team = team;
       this.sprints.forEach(sprint => {
-        sprint['capacity'] = team.averageSprintCapacity;
+        if (!sprint['capacity']) {
+          sprint['capacity'] = team.averageSprintCapacity;
+        }
       });
     });
     this.programIncrementService.getProgramIncrement(this.pi).subscribe((programIncrement: ProgramIncrement) => {
@@ -55,13 +57,26 @@ export class PlanningComponent implements OnInit {
     });
 
     this.sprints = [
-      {name: 'backlog'},
-      {name: 'sprint1'},
-      {name: 'sprint2'},
-      {name: 'sprint3'},
-      {name: 'sprint4'},
-      {name: 'sprint5'}
+      { name: 'backlog' },
+      { name: 'sprint1' },
+      { name: 'sprint2' },
+      { name: 'sprint3' },
+      { name: 'sprint4' },
+      { name: 'sprint5' }
     ];
+    this.piplanService.getSprints().subscribe((sprints: Array<Sprint>) => {
+      this.sprints.forEach(sprint => {
+        const sprintDetails = sprints.filter(sprintDetail => {
+          return sprintDetail.piid === this.pi &&
+                 sprintDetail.teamid === this.teamJiraPrefix &&
+                 sprintDetail.name === sprint.name;
+        });
+        if (sprintDetails.length > 0) {
+          sprint.capacity  = sprintDetails[0]['capacity'];
+        }
+      });
+    });
+
   }
 
   createNewStory() {
@@ -89,16 +104,17 @@ export class PlanningComponent implements OnInit {
     } else {
       story.sprint = targetSprint;
       transferArrayItem(event.previousContainer.data['stories'],
-                        event.container.data['stories'],
-                        event.previousIndex,
-                        event.currentIndex);
+        event.container.data['stories'],
+        event.previousIndex,
+        event.currentIndex);
       this.piplanService.updateStory(story);
     }
   }
 
   trashcan(event: CdkDragDrop<string[]>) {
     const story = event.item.data;
-    this.piplanService.deleteStory(story);
+    story.sprint = 'trashcan';
+    this.piplanService.updateStory(story);
   }
 
   getStories(sprint) {

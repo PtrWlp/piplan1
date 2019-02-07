@@ -1,0 +1,26 @@
+<div class="piplan__story">
+
+  <div class="piplan__story__key">
+    <piplan-editablefield
+      class="piplan__story__number"
+      [fieldValue]="story.jiraNumber"
+      [linkPrefix]="'https://jira.devnet.klm.com/browse/'"
+      (valueChanged)="updateStoryNumber(story, $event)"
+      (inEditMode)="story.editing = $event"></piplan-editablefield>
+
+    <div class="piplan__story__points">
+      <div class="piplan__story__points__display piplan__points">
+        {{getDisplayPoints(story.points)}}
+      </div>
+      <button class="piplan__miniButton" (click)="estimateUp(story)">+</button>
+      <button class="piplan__miniButton" (click)="estimateDown(story)">-</button>
+
+    </div>
+  </div>
+  <piplan-editablefield
+    class="piplan__story__description"
+    [fieldValue]="story.description"
+    (valueChanged)="updateStoryDescr(story, $event)"
+    (inEditMode)="story.editing = $event"></piplan-editablefield>
+
+</div>
