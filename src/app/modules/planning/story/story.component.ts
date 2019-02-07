@@ -12,7 +12,7 @@ export class StoryComponent {
   @Input() public story: Story;
   fibo = [null, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
 
-  constructor (private piplanService: PiplanService,) {
+  constructor (private piplanService: PiplanService) {
   }
 
   updateStoryNumber(story, newValue) {
