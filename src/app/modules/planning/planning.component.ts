@@ -98,6 +98,7 @@ export class PlanningComponent implements OnInit {
     const story = event.item.data;
     const targetSprint = event.container.data['sprint'];
 
+    console.log('biddie', 'prev', event.previousIndex, 'curr', event.currentIndex);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data['stories'], event.previousIndex, event.currentIndex);
       // For now the order is not stored... TODO fix that

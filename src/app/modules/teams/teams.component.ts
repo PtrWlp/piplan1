@@ -1,12 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Team} from '../../shared/models/piplan.models';
 import {TeamService} from '../../shared/service/team.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import { Router} from '@angular/router';
-import {AppConfig} from '../../configs/app.config';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {UtilsHelperService} from '../../core/services/utils-helper.service';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
+import {TeamUpdateComponent} from './team-update/team-update.component';
 
 @Component({
   selector: 'piplan-teams',
@@ -18,65 +17,57 @@ import {TeamRemoveComponent} from './team-remove/team-remove.component';
 export class TeamsComponent implements OnInit {
 
   teams: Team[];
-  teamForm: FormGroup;
   error: string;
-  @ViewChild('form') myNgForm; // just to call resetForm method
+  public dataSource = new MatTableDataSource<Team>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  public displayedColumns = ['edit', 'jiraPrefix', 'name', 'averageSprintCapacity', 'delete'];
 
   constructor(private teamService: TeamService,
               private dialog: MatDialog,
-              private router: Router,
-              private formBuilder: FormBuilder,
               private snackBar: MatSnackBar) {
-
-    this.teamForm = this.formBuilder.group({
-      'name': new FormControl('', [Validators.required]),
-      'jiraPrefix': new FormControl('', [Validators.required]),
-      'averageSprintCapacity': new FormControl('', [Validators.pattern('^[0-9]*$')])
-    });
-
   }
 
   ngOnInit() {
     this.teamService.getTeams().subscribe((teams: Array<Team>) => {
       this.teams = teams;
+
+      this.dataSource = new MatTableDataSource<Team>(this.teams);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
     });
   }
 
-  createNewTeam(team: any) {
-    if (this.teamForm.valid) {
-      this.teamService.saveTeam(new Team(team)).then(() => {
-        this.myNgForm.resetForm();
-      }, () => {
-        this.error = 'errorHasOcurred';
-      });
-    }
-  }
-
-  saveTeam(team: any) {
-    if (this.teamForm.valid) {
-      this.teamService.saveTeam(new Team(team)).then(() => {
-        this.myNgForm.resetForm();
-      }, () => {
-        this.error = 'errorHasOcurred';
-      });
-    }
-  }
-
   deleteTeam(team: Team) {
-    const dialogRef = this.dialog.open(TeamRemoveComponent);
+    const dialogRef = this.dialog.open(TeamRemoveComponent, {
+      data: { team },
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.teamService.deleteTeam(team.id).then(() => {
           this.showSnackBar(`team ${team.name} removed`);
-        }, () => {
-          this.error = 'teamDefault';
+        }, (err) => {
+          console.log(err);
+          this.error = 'cannot delete.';
         });
       }
     });
   }
 
-  seeTeamDetails(team): void {
-    this.router.navigate([AppConfig.routes.teams + '/' + team.id]);
+  addTeam() {
+    const dialogRef = this.dialog.open(TeamUpdateComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.showSnackBar(`team added`);
+      }
+    });
+  }
+
+  updateTeam(team: Team) {
+    this.dialog.open(TeamUpdateComponent, {
+      data: { team },
+    });
   }
 
   showSnackBar(message) {

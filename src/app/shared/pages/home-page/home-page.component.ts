@@ -57,7 +57,6 @@ export class HomePageComponent implements OnInit {
   }
 
   viewPlanning(selectedProgramIncrement, selectedTeam): void {
-    console.log(selectedTeam);
     this.router.navigate([selectedProgramIncrement + '/' + selectedTeam + '/planning']);
   }
 

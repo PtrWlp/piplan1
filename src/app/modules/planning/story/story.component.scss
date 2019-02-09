@@ -33,7 +33,21 @@
   }
 }
 
-.cdk-drag-preview .piplan__story__points {
+.cdk-drag-placeholder {
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: #e9e9e9;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+// TODO Make this work
+.cdk-drag-placeholder button {
+  visibility: hidden;
+}
+
+.cdk-drag-placeholder .piplan__story__points {
   visibility: hidden;
 }
 

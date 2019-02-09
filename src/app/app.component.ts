@@ -3,10 +3,8 @@ import {Meta, Title} from '@angular/platform-browser';
 import {NavigationEnd, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import {AppConfig} from './configs/app.config';
-import {LocalStorage} from 'ngx-store';
 import {UtilsHelperService} from './core/services/utils-helper.service';
 
-declare const require;
 declare const Modernizr;
 
 @Component({
@@ -17,7 +15,6 @@ declare const Modernizr;
 
 export class AppComponent implements OnInit {
 
-  @LocalStorage() language = 'en';
   isOnline: boolean;
 
   constructor(private title: Title,

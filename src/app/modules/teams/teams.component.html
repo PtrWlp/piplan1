@@ -1,67 +1,44 @@
 <piplan-header></piplan-header>
 
-<div id="left">
-  <h2 class="header__title">Product Teams</h2>
-  <div>
-    <mat-list id="loading-list" *ngIf="!teams">
-      loading...
-    </mat-list>
-    <mat-list>
-      <mat-list-item *ngFor="let team of teams" [@fadeInOut]>
-        <h3 mat-line (click)="seeTeamDetails(team);"> {{team.jiraPrefix}} </h3>
-        <p mat-line (click)="seeTeamDetails(team);">
-          <span>{{team.name}}</span>
-        </p>
-        <p mat-line (click)="seeTeamDetails(team);">
-          <span>sprint capacity: {{team.averageSprintCapacity}}</span>
-        </p>
-        <p mat-line>
-          <button class="piplan__miniButton" (click)="setTeamAsEditEditMode(true)">&#x270e;</button>
-          <button class="piplan__miniButton" (click)="deleteTeam(team);">&#x2613;</button>
-        </p>
-      </mat-list-item>
-    </mat-list>
+<div fxLayout="row">
+  <div fxFlex="10"></div>
+  <div fxFlex="80">
+
+    <h2 class="header__title">Product Teams
+    <button class="piplan__miniAddButton" (click)="addTeam()">add team</button>
+    </h2>
+    <piplan-loading [@fadeInOut] *ngIf="!teams"></piplan-loading>
+
+    <mat-table [@fadeInOut] [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> edit </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button class="piplan__miniButton" (click)="updateTeam(element)">&#x270e;</button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="jiraPrefix">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Jira Prefix </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.jiraPrefix }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Team Name </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="averageSprintCapacity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> averageSprintCapacity </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.averageSprintCapacity }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> delete </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button class="piplan__miniButton" (click)="deleteTeam(element);">&#x2613;</button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
   </div>
+  <div fxFlex="10"></div>
 </div>
-<div id="right" [@fadeInOut]>
-  <h2 class="header__title">New Team</h2>
-  <div *ngIf="teams">
-    <form [formGroup]="teamForm" #form="ngForm" ngxScrollToFirstInvalid
-          (ngSubmit)="createNewTeam(teamForm.value)" autocomplete="on">
-
-          <mat-form-field class="input-container">
-        <input matInput name="hname" type="text"
-               placeholder="Product Team Name"
-               formControlName="name">
-        <mat-error *ngIf="!teamForm.controls.name.valid && form.submitted">
-          Required field
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="input-container">
-        <input matInput type="text" name="rname"
-               placeholder="Jira Prefix"
-               formControlName="jiraPrefix">
-        <mat-error *ngIf="!teamForm.controls.jiraPrefix.valid && form.submitted">
-          Required field
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="input-container">
-        <input matInput type="text" name="raverageSprintCapacity"
-               placeholder="average sprint capacity"
-               formControlName="averageSprintCapacity">
-        <mat-error *ngIf="!teamForm.controls.averageSprintCapacity.valid && form.submitted">
-          Required field
-        </mat-error>
-      </mat-form-field>
-
-      <button mat-raised-button type="submit" [disabled]="form.submitted && !teamForm.valid">
-        add
-      </button>
-      <div *ngIf="error">An error occurred.</div>
-    </form>
-  </div>
-
-</div>
-<div class="clear"></div>

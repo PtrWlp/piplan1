@@ -7,7 +7,7 @@
 
 <div *ngIf="programIncrements && teams" fxLayout="row">
   <div fxFlex="10"></div>
-  <div fxFlex="20">
+  <div fxFlex="15">
 
     <mat-radio-group #radioGroup>
       <div *ngFor="let programIncrement of programIncrements">
@@ -23,33 +23,25 @@
 
   </div>
 
-  <div fxFlex="20">
-    <mat-form-field>
+  <div fxFlex="30" class="teamselect">
+    <mat-form-field class="teamselectfield">
       <mat-select placeholder="select your Team" [(value)]="selectedTeam">
         <mat-option *ngFor="let team of teams" [value]="team.jiraPrefix">
           {{ team.jiraPrefix }} - {{ team.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <p>You selected: {{selectedTeam}}</p>
-
-  </div>
-
-  <div fxFlex="20">
-    <div class="piplan-homepage-button">
-      <button [disabled]="!(selectedProgramIncrement && selectedTeam)" mat-button mat-raised-button (click)="viewPlanning(selectedProgramIncrement, selectedTeam)">View Planning</button>
-    </div>
-
     <div class="piplan-homepage-button">
       <a mat-raised-button routerLink="/teams">
         Teams
       </a>
     </div>
+
+  </div>
+
+  <div fxFlex="15">
     <div class="piplan-homepage-button">
-        <a mat-raised-button routerLink="/programincrements">
-          Program Increments
-        </a>
-      </div>
+      <button [disabled]="!(selectedProgramIncrement && selectedTeam)" mat-button mat-raised-button (click)="viewPlanning(selectedProgramIncrement, selectedTeam)">View Planning</button>
     </div>
 
   <div fxFlex="10"></div>

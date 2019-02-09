@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>{{ headerText }} {{ isAdding }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="teamForm" #form="ngForm" ngxScrollToFirstInvalid
+        (ngSubmit)="saveTeam(teamForm.value)" autocomplete="on">
+
+    <mat-form-field class="input-container">
+      <input matInput type="text" name="rname"
+              placeholder="Jira Prefix"
+              formControlName="jiraPrefix"
+              autocomplete="off"
+              [attr.disabled]="isAdding ? false : true">
+      <mat-error *ngIf="!teamForm.controls.jiraPrefix.valid && form.submitted">
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="input-container">
+      <input matInput name="hname" type="text"
+              placeholder="Product Team Name"
+              formControlName="name"
+              autocomplete="off">
+      <mat-error *ngIf="!teamForm.controls.name.valid && form.submitted">
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="input-container">
+      <input matInput type="number" name="raverageSprintCapacity"
+              placeholder="average sprint capacity"
+              formControlName="averageSprintCapacity"
+              autocomplete="off">
+      <mat-error *ngIf="!teamForm.controls.averageSprintCapacity.valid && form.submitted">
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="error">An error occurred.</div>
+  </form>
+
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>cancel</button>
+  <button type="submit" (click)="saveTeam(teamForm.value)" mat-dialog-close [disabled]="form.submitted" mat-button>confirm</button>
+</mat-dialog-actions>

@@ -28,40 +28,12 @@ h1, h2 {
   @include push--auto(2rem);
 }
 
-.icon__like--red {
-  color: $red;
-  cursor: pointer;
-}
-
-.icon__like--grey {
-  color: $grey;
-  cursor: pointer;
-}
-
 .text--center {
   text-align: center;
 }
 
 .text--right {
   text-align: right;
-}
-
-pre {
-  background: $light-grey;
-  border: 1px solid $grey;
-  border-left: 3px solid $primary--color;
-  color: $primary--color;
-  page-break-inside: avoid;
-  font-family: monospace;
-  font-size: calculateRem(15px);
-  line-height: 1.6;
-  margin-bottom: 1.6rem;
-  max-width: 100%;
-  overflow: auto;
-  padding: 1rem 1.5rem;
-  display: block;
-  text-align: left;
-  word-wrap: break-word;
 }
 
 .offline-error {
@@ -96,6 +68,22 @@ pre {
   }
 }
 
+.piplan__miniAddButton {
+  border: 0;
+  font-size: 12px;
+  vertical-align: middle;
+  background: $primary--color;
+  height: 20px;
+  margin: 0 5px 0 0;
+  color: $secondary--color;
+  transition: color 0.2s ease-out;
+  border-radius: 3px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .piplan__points {
   border-radius: 50%;
   padding-top: 5px;
@@ -106,6 +94,7 @@ pre {
   color: #666;
   text-align: center;
 }
+
 
 // MATERIAL
 @import "material";

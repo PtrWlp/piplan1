@@ -79,11 +79,7 @@ export class PiplanService {
 
   updateStory(story: Story): Promise<void> {
     return this.afs.doc(`${AppConfig.routes.planning}/${story.id}`)
-      .update(this.deepCopyStory(story))
-      .then(() => {
-        LoggerService.log(`updated story w/ id=${story.id}`);
-        // this.showSnackBar(`story ${story.jiraNumber} saved`);
-    });
+      .update(this.deepCopyStory(story));
   }
 
   deepCopyStory(story: Story) {
