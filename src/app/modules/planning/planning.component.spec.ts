@@ -5,6 +5,7 @@ import {TestsModule} from '../../shared/modules/tests.module';
 import {Observable, of} from 'rxjs';
 import { Story, Team, ProgramIncrement, Sprint } from '../../shared/models/piplan.models';
 import {PiplanService} from '../../shared/service/piplan.service';
+import {TeamService} from '../../shared/service/team.service';
 import { ProgramIncrementService } from 'src/app/shared/service/program-increment.service';
 import {APP_CONFIG, AppConfig} from '../../configs/app.config';
 import {PlanningComponent} from './planning.component';
@@ -38,7 +39,11 @@ describe('PlanningComponent', () => {
       return of([]);
     },
   };
-
+  const mockTeamService = {
+    getTeam(): Observable<any>  {
+      return of([]);
+    },
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,7 +55,8 @@ describe('PlanningComponent', () => {
         {provide: APP_CONFIG, useValue: AppConfig},
         {provide: APP_BASE_HREF, useValue: '/'},
         {provide: PiplanService, useValue: mockPiplanService},
-        {provide: ProgramIncrementService, useValue: mockProgramIncrementService}
+        {provide: ProgramIncrementService, useValue: mockProgramIncrementService},
+        {provide: TeamService, useValue: mockTeamService}
       ],
     }).compileComponents();
 

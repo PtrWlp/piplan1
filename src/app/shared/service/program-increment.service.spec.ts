@@ -18,7 +18,7 @@ describe('ProgramIncrementService', () => {
 
   const docStub = {
     valueChanges: jasmine.createSpy('get').and.returnValue({}),
-    get: jasmine.createSpy('get').and.returnValue(of({name: programIncrementId}))
+    get: jasmine.createSpy('get').and.returnValue(of({data: {id: programIncrementId}}))
   };
 
   const angularFirestoreStub = {

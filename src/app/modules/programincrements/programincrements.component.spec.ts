@@ -14,6 +14,9 @@ describe('ProgramIncrementListComponent', () => {
     getProgramIncrement(id: string): Observable<any>  {
       return of([]);
     },
+    getProgramIncrements(): Observable<any>  {
+      return of([]);
+    }
   };
 
 

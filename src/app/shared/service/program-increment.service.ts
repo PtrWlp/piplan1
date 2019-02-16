@@ -35,8 +35,8 @@ export class ProgramIncrementService {
 
   getProgramIncrement(id: string): Observable<any> {
     return this.afs.doc(`${AppConfig.routes.programIncrements}/${id}`).get().pipe(
-      map((programIncrement) => {
-        return new ProgramIncrement({id, ...programIncrement.data()});
+      map((res) => {
+        return new ProgramIncrement({id, ...res.data()});
       }),
       catchError(UtilsHelperService.handleError('getProgramIncrement', []))
     );
