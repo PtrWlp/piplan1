@@ -41,9 +41,15 @@ export class PlanningComponent implements OnInit {
   ngOnInit() {
     this.pi = this.activatedRoute.snapshot.paramMap.get('pi');
     this.teamJiraPrefix = this.activatedRoute.snapshot.paramMap.get('team');
-    // this.teamService.getTeams().subscribe((teams) => {
-    //   this.team = teams.filter(team => team.jiraPrefix === this.teamJiraPrefix)[0];
-    // });
+    this.sprints = [
+      { name: 'backlog' },
+      { name: 'sprint1' },
+      { name: 'sprint2' },
+      { name: 'sprint3' },
+      { name: 'sprint4' },
+      { name: 'sprint5' }
+    ];
+
     this.teamService.getTeam(this.teamJiraPrefix).subscribe((team: Team) => {
       this.team = team;
       this.sprints.forEach(sprint => {
@@ -59,14 +65,6 @@ export class PlanningComponent implements OnInit {
       this.planning = planning.filter(story => story.piid === this.pi && story.teamid === this.teamJiraPrefix);
     });
 
-    this.sprints = [
-      { name: 'backlog' },
-      { name: 'sprint1' },
-      { name: 'sprint2' },
-      { name: 'sprint3' },
-      { name: 'sprint4' },
-      { name: 'sprint5' }
-    ];
     this.piplanService.getSprints().subscribe((sprints: Array<Sprint>) => {
       this.sprints.forEach(sprint => {
         const sprintDetails = sprints.filter(sprintDetail => {

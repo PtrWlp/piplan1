@@ -12,13 +12,12 @@ describe('ProgramIncrementListComponent', () => {
   let component;
   const mockProgramIncrementService = {
     getProgramIncrement(id: string): Observable<any>  {
-      return of([]);
+      return of({});
     },
     getProgramIncrements(): Observable<any>  {
-      return of([]);
+      return of([{}]);
     }
   };
-
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
