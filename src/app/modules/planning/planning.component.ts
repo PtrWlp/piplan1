@@ -42,7 +42,6 @@ export class PlanningComponent implements OnInit {
     this.pi = this.activatedRoute.snapshot.paramMap.get('pi');
     this.teamJiraPrefix = this.activatedRoute.snapshot.paramMap.get('team');
     this.sprints = [
-      { name: 'backlog' },
       { name: 'sprint1' },
       { name: 'sprint2' },
       { name: 'sprint3' },
@@ -178,7 +177,7 @@ export class PlanningComponent implements OnInit {
     this.piplanService.saveSprint(sprint);
   }
 
-  public captureScreen() {
+  captureScreen() {
     const data = document.getElementById('piplan_planning');
     html2canvas(data).then(canvas => {
       // Few necessary setting options

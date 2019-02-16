@@ -24,7 +24,7 @@
 <div id="right" [@fadeInOut]>
   <h2 class="header__title">New Program Increment</h2>
   <div *ngIf="programincrements">
-    <form [formGroup]="newProgramIncrementForm" #form="ngForm" ngxScrollToFirstInvalid
+    <form [formGroup]="newProgramIncrementForm" #form="ngForm"
           (ngSubmit)="createNewProgramIncrement(newProgramIncrementForm.value)" autocomplete="on">
       <mat-form-field class="input-container">
         <input matInput name="hname" type="text"

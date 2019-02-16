@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{ headerText }} {{ isAdding }}</h2>
 <mat-dialog-content>
-  <form [formGroup]="teamForm" #form="ngForm" ngxScrollToFirstInvalid
+  <form [formGroup]="teamForm" #form="ngForm"
         (ngSubmit)="saveTeam(teamForm.value)" autocomplete="on">
 
     <mat-form-field class="input-container">

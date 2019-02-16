@@ -6,24 +6,43 @@
   <button  data-html2canvas-ignore="true" class="piplan__miniAddButton piplan_pdfbutton" (click)="captureScreen()">export pdf</button>
 
   <div cdkDropListGroup>
+
+    <div class="piplan__sprint" data-html2canvas-ignore="true">
+      <div class="piplan__sprint__heading">
+        <h2 class="piplan__sprint__heading__title">backlog</h2>
+        <div class="piplan__sprint__add-to-backlog">
+          <button class="piplan__miniAddButton" (click)="createNewStory()">add story</button>
+        </div>
+      </div>
+      <div cdkDropList class="piplan__stories"
+          [cdkDropListData]="{sprint: 'backlog', stories: getStories('backlog')}"
+          (cdkDropListDropped)="drop($event)">
+
+        <div cdkDrag
+            *ngFor="let story of getStories('backlog')"
+            [cdkDragData]="story"
+            [cdkDragDisabled]="!story.editing == ''">
+
+          <piplan-story [story]="story"></piplan-story>
+
+        </div>
+      </div>
+    </div>
+
     <div class="piplan__sprint"
-        *ngFor="let sprint of sprints; let i = index">
+        *ngFor="let sprint of sprints">
       <div class="piplan__sprint__heading">
         <h2 class="piplan__sprint__heading__title">{{ sprint.name }}</h2>
-        <div class="piplan__sprint__add-to-backlog"
-            *ngIf="(sprint.name === 'backlog')">
-          <button data-html2canvas-ignore="true" class="piplan__miniAddButton" (click)="createNewStory()">add story</button>
-        </div>
-        <div class="piplan__sprint__heading__sprintstart" *ngIf="sprint.name.indexOf('sprint') !==-1">
+        <div class="piplan__sprint__heading__sprintstart">
           start: {{ getStartOfSprint(i) }}
         </div>
-        <div class="piplan__sprint__capacity" *ngIf="sprint.name.indexOf('sprint') !==-1">
+        <div class="piplan__sprint__capacity">
           capacity:
           <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, 1)">+</button>
           <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, -1)">-</button>
           {{ sprint.capacity || '?' }}
         </div>
-        <div class="piplan__sprint__heading__pointtotal piplan__points" *ngIf="sprint.name.indexOf('sprint') !==-1">
+        <div class="piplan__sprint__heading__pointtotal piplan__points">
           {{ getPoints(sprint.name) }}
         </div>
       </div>

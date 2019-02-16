@@ -6,7 +6,6 @@ import {HeaderComponent} from './components/header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {Error404PageComponent} from './pages/error404-page/error404-page.component';
-import {NgxScrollToFirstInvalidModule} from '@ismaestro/ngx-scroll-to-first-invalid';
 import {WebStorageModule} from 'ngx-store';
 
 import {HomePageComponent} from './pages/home-page/home-page.component';
@@ -19,8 +18,7 @@ import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading
     FlexLayoutModule,
     ReactiveFormsModule,
     RouterModule,
-    WebStorageModule,
-    NgxScrollToFirstInvalidModule
+    WebStorageModule
   ],
   declarations: [
     HomePageComponent,
@@ -34,8 +32,7 @@ import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading
     FlexLayoutModule,
     WebStorageModule,
     HeaderComponent,
-    PiplanLoadingComponent,
-    NgxScrollToFirstInvalidModule
+    PiplanLoadingComponent
   ]
 })
 
