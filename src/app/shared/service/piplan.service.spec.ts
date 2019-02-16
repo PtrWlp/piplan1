@@ -41,8 +41,7 @@ describe('PiplanService', () => {
 
   it('should fail creating empty story', (() => {
     piplanService.updateStory(new Story({
-      'description': 'test',
-      'jiraPrefix': 'test'
+      'id': 'test'
     })).then(() => {
     }, (error) => {
       expect(error).toEqual(jasmine.any(HttpErrorResponse));

@@ -18,11 +18,11 @@ export class PiplanService {
               private snackBar: MatSnackBar) {
 
     this.planningCollection = this.afs.collection<Story>('planning', (planning) => {
-      return planning.orderBy('jiraNumber', 'desc');
+      return planning.orderBy('sortKey').orderBy('jiraNumberPrefix').orderBy('jiraNumber');
     });
 
     this.sprintsCollection = this.afs.collection<Sprint>('sprintCapacity', (sprints) => {
-      return sprints.orderBy('name', 'desc');
+      return sprints.orderBy('name');
     });
 
   }
@@ -50,6 +50,7 @@ export class PiplanService {
         map((actions) => {
           return actions.map((action) => {
             const data = action.payload.doc.data();
+            data['jiraNumberDisplay'] = data['jiraNumberPrefix'] + '-' + data['jiraNumber'];
             return new Story({id: action.payload.doc.id, ...data});
           });
         }),
@@ -78,19 +79,44 @@ export class PiplanService {
   }
 
   updateStory(story: Story): Promise<void> {
+    // construct the databasefields for jira prefix and number
+    const parts = story.jiraNumberDisplay.split('-');
+
+    const jiraNumberSuffixChar = parts[1] ? parts[1].replace(/\D/g, '') : '';
+
+    story.jiraNumberPrefix = parts[0];
+
+    if (story.jiraNumberDisplay.includes('-') && jiraNumberSuffixChar !== '') {
+      story.jiraNumber = parseInt(jiraNumberSuffixChar, 10);
+    } else {
+      story.jiraNumber = null;
+    }
+
     return this.afs.doc(`${AppConfig.routes.planning}/${story.id}`)
-      .update(this.deepCopyStory(story));
+      .update(story.serialize());
   }
 
-  deepCopyStory(story: Story) {
-    // want to remove the 'editing' field. Shouldnt be in the database
-    const { id, jiraNumber, description, points, piid, teamid, sprint} = story;
-    return JSON.parse(JSON.stringify({ id, jiraNumber, description, points, piid, teamid, sprint}));
+  jiraNumberRemovePrecedingZeroes(dbValue: string = '') {
+    // For sorting, we add preceding zeroes to numberpart of jiraNumber
+    let result = dbValue;
+    const parts = dbValue.split('-');
+    const jiraNumberPrefix = parts[0];
+    const jiraNumberSuffix = parts[1].replace(/\D/g, '');
+
+    if (!dbValue.includes('-') || parts[1] === '') {
+      result = dbValue;
+    } else if (jiraNumberSuffix === '') {
+      result = jiraNumberPrefix + '-';
+    } else {
+      result = jiraNumberPrefix + '-' + parseInt(jiraNumberSuffix, 10);
+    }
+    return result;
+
   }
 
   deleteStory(story: Story): Promise<void> {
-    const result = this.afs.doc(`${AppConfig.routes.stories}/${story.id}`).delete();
-    this.showSnackBar(`deleted story ${story.jiraNumber}`);
+    const result = this.afs.doc(`${AppConfig.routes.planning}/${story.id}`).delete();
+    this.showSnackBar(`deleted story ${story.jiraNumberDisplay}`);
     return result;
   }
 
@@ -108,14 +134,11 @@ export class PiplanService {
       );
   }
 
-
   saveSprint(sprint: Sprint): Promise<any> {
     sprint.id = `${sprint.piid}-${sprint.teamid}-${sprint.name}`;
     const data = JSON.parse(JSON.stringify(sprint));
     return this.sprintsCollection.doc(sprint.id).set(data);
   }
-
-
 
   showSnackBar(text): void {
     const config: any = new MatSnackBarConfig();

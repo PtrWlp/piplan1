@@ -48,7 +48,7 @@ describe('AppComponent', () => {
   }));
 
   it('should change title meta tag in root path', (() => {
-    expect(titleService.getTitle()).toBe('Angular Example App');
+    expect(titleService.getTitle()).toBe('PI Planning');
   }));
 
   it('should check browser features', (() => {

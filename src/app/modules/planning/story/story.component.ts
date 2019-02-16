@@ -16,7 +16,7 @@ export class StoryComponent {
   }
 
   updateStoryNumber(story, newValue) {
-    story.jiraNumber = newValue;
+    story.jiraNumberDisplay = newValue;
     this.piplanService.updateStory(story);
     story.editing = '';
   }

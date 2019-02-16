@@ -5,6 +5,9 @@ import { ProgramIncrementService } from 'src/app/shared/service/program-incremen
 import { PiplanService } from '../../shared/service/piplan.service';
 import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import * as jspdf from 'jspdf';
+import * as html2canvas from 'html2canvas';
+
 
 import { UtilsHelperService } from '../../core/services/utils-helper.service';
 import * as moment from 'moment';
@@ -68,11 +71,11 @@ export class PlanningComponent implements OnInit {
       this.sprints.forEach(sprint => {
         const sprintDetails = sprints.filter(sprintDetail => {
           return sprintDetail.piid === this.pi &&
-                 sprintDetail.teamid === this.teamJiraPrefix &&
-                 sprintDetail.name === sprint.name;
+            sprintDetail.teamid === this.teamJiraPrefix &&
+            sprintDetail.name === sprint.name;
         });
         if (sprintDetails.length > 0) {
-          sprint.capacity  = sprintDetails[0]['capacity'];
+          sprint.capacity = sprintDetails[0]['capacity'];
         }
       });
     });
@@ -81,9 +84,11 @@ export class PlanningComponent implements OnInit {
 
   createNewStory() {
     const newStory = new Story;
+
     newStory.piid = this.pi;
     newStory.teamid = this.teamJiraPrefix;
-    newStory.jiraNumber = this.teamJiraPrefix + '-';
+    newStory.jiraNumberPrefix = this.teamJiraPrefix;
+    newStory.jiraNumber = undefined;
     newStory.sprint = 'backlog';
     newStory.description = 'new story';
 
@@ -98,8 +103,10 @@ export class PlanningComponent implements OnInit {
     const story = event.item.data;
     const targetSprint = event.container.data['sprint'];
 
-    console.log('biddie', 'prev', event.previousIndex, 'curr', event.currentIndex);
     if (event.previousContainer === event.container) {
+      if (event.previousIndex === event.currentIndex) {
+        return;
+      }
       moveItemInArray(event.container.data['stories'], event.previousIndex, event.currentIndex);
       // For now the order is not stored... TODO fix that
     } else {
@@ -108,14 +115,20 @@ export class PlanningComponent implements OnInit {
         event.container.data['stories'],
         event.previousIndex,
         event.currentIndex);
-      this.piplanService.updateStory(story);
     }
+
+    // fix the sorting in the database
+    let index = -1;
+    event.container.data['stories'].forEach(singleStory => {
+      index++;
+      singleStory.sortKey = targetSprint + '-' + index;
+      this.piplanService.updateStory(singleStory);
+    });
   }
 
   trashcan(event: CdkDragDrop<string[]>) {
     const story = event.item.data;
-    story.sprint = 'trashcan';
-    this.piplanService.updateStory(story);
+    this.piplanService.deleteStory(story);
   }
 
   getStories(sprint) {
@@ -132,18 +145,6 @@ export class PlanningComponent implements OnInit {
 
   getDisplayPoints(points) {
     return points ? points < 9998 ? points : '∞' : '?';
-  }
-
-  updateStoryNumber(story, newValue) {
-    story.jiraNumber = newValue;
-    this.piplanService.updateStory(story);
-    story.editing = '';
-  }
-
-  updateStoryDescr(story, newValue) {
-    story.description = newValue;
-    this.piplanService.updateStory(story);
-    story.editing = '';
   }
 
   getPoints(sprint) {
@@ -172,11 +173,25 @@ export class PlanningComponent implements OnInit {
     }
   }
 
-  changeSprintCapacity(sprint: Sprint, changeValue) {
+  changeSprintCapacity(sprint: Sprint, changeValue: number) {
     sprint.capacity += changeValue;
     sprint.piid = this.pi;
     sprint.teamid = this.teamJiraPrefix;
     this.piplanService.saveSprint(sprint);
+  }
+
+  public captureScreen() {
+    const data = document.getElementById('piplan_planning');
+    html2canvas(data).then(canvas => {
+      // Few necessary setting options
+      const imgWidth = 208;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+      pdf.addImage(contentDataURL, 'PNG', 0, 0, imgWidth, imgHeight);
+      pdf.save(`PI-planning-${this.pi}-${this.team.id}.pdf`); // Generated PDF
+    });
   }
 
 }

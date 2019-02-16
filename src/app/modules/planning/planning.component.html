@@ -1,54 +1,58 @@
-<piplan-header teamName="{{ team && team.name }}" pi="{{ pi }}"></piplan-header>
+<div id="piplan_planning">
 
-<piplan-loading *ngIf="!planning"></piplan-loading>
+  <piplan-header teamName="{{ team && team.name }}" pi="{{ pi }}"></piplan-header>
 
-<div cdkDropListGroup>
-  <div class="piplan__sprint"
-       *ngFor="let sprint of sprints; let i = index">
-    <div class="piplan__sprint__heading">
-      <h2 class="piplan__sprint__heading__title">{{ sprint.name }}</h2>
-      <div class="piplan__sprint__add-to-backlog"
-           *ngIf="(sprint.name === 'backlog')">
-        <button class="piplan__miniAddButton" (click)="createNewStory()">add story</button>
+  <piplan-loading *ngIf="!planning"></piplan-loading>
+  <button  data-html2canvas-ignore="true" class="piplan__miniAddButton piplan_pdfbutton" (click)="captureScreen()">export pdf</button>
+
+  <div cdkDropListGroup>
+    <div class="piplan__sprint"
+        *ngFor="let sprint of sprints; let i = index">
+      <div class="piplan__sprint__heading">
+        <h2 class="piplan__sprint__heading__title">{{ sprint.name }}</h2>
+        <div class="piplan__sprint__add-to-backlog"
+            *ngIf="(sprint.name === 'backlog')">
+          <button data-html2canvas-ignore="true" class="piplan__miniAddButton" (click)="createNewStory()">add story</button>
+        </div>
+        <div class="piplan__sprint__heading__sprintstart" *ngIf="sprint.name.indexOf('sprint') !==-1">
+          start: {{ getStartOfSprint(i) }}
+        </div>
+        <div class="piplan__sprint__capacity" *ngIf="sprint.name.indexOf('sprint') !==-1">
+          capacity:
+          <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, 1)">+</button>
+          <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, -1)">-</button>
+          {{ sprint.capacity || '?' }}
+        </div>
+        <div class="piplan__sprint__heading__pointtotal piplan__points" *ngIf="sprint.name.indexOf('sprint') !==-1">
+          {{ getPoints(sprint.name) }}
+        </div>
       </div>
-      <div class="piplan__sprint__heading__sprintstart" *ngIf="sprint.name.indexOf('sprint') !==-1">
-        start: {{ getStartOfSprint(i) }}
+
+      <div cdkDropList class="piplan__stories"
+          [cdkDropListData]="{sprint: sprint.name, stories: getStories(sprint.name)}"
+          (cdkDropListDropped)="drop($event)">
+
+        <div cdkDrag
+            *ngFor="let story of getStories(sprint.name)"
+            [cdkDragData]="story"
+            [cdkDragDisabled]="!story.editing == ''">
+
+          <piplan-story [story]="story"></piplan-story>
+
+        </div>
       </div>
-      <div class="piplan__sprint__capacity" *ngIf="sprint.name.indexOf('sprint') !==-1">
-        capacity:
-        <button class="piplan__miniButton" (click)="changeSprintCapacity(sprint, 1)">+</button>
-        <button class="piplan__miniButton" (click)="changeSprintCapacity(sprint, -1)">-</button>
-        {{ sprint.capacity || '?' }}
-      </div>
-      <div class="piplan__sprint__heading__pointtotal piplan__points" *ngIf="sprint.name.indexOf('sprint') !==-1">
-        {{ getPoints(sprint.name) }}
-      </div>
+
     </div>
 
-    <div cdkDropList class="piplan__stories"
-         [cdkDropListData]="{sprint: sprint.name, stories: getStories(sprint.name)}"
-         (cdkDropListDropped)="drop($event)">
-
-      <div cdkDrag
-           *ngFor="let story of getStories(sprint.name)"
-           [cdkDragData]="story"
-           [cdkDragDisabled]="!story.editing == ''">
-
-        <piplan-story [story]="story"></piplan-story>
-
+    <div class="piplan__sprint" data-html2canvas-ignore="true">
+      <div class="piplan__sprint__heading">
+        <h2 class="piplan__sprint__heading__title">trashcan</h2>
+      </div>
+      <div cdkDropList class="piplan__stories piplan__trashcan"
+          (cdkDropListDropped)="trashcan($event)">
       </div>
     </div>
-
   </div>
 
-  <div class="piplan__sprint">
-    <div class="piplan__sprint__heading">
-      <h2 class="piplan__sprint__heading__title">trashcan</h2>
-    </div>
-    <div cdkDropList class="piplan__stories piplan__trashcan"
-        (cdkDropListDropped)="trashcan($event)">
-    </div>
-  </div>
 </div>
-
 

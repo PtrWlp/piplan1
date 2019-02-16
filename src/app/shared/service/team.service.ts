@@ -4,7 +4,7 @@ import {Team } from '../models/piplan.models';
 import {catchError, map, tap} from 'rxjs/operators';
 import {LoggerService} from '../../core/services/logger.service';
 import {AppConfig} from '../../configs/app.config';
-import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {UtilsHelperService} from '../../core/services/utils-helper.service';
 
 @Injectable({

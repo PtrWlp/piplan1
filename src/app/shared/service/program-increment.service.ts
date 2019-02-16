@@ -42,22 +42,9 @@ export class ProgramIncrementService {
     );
   }
 
-  createProgramIncrement(programIncrement: ProgramIncrement): Promise<DocumentReference> {
-    return this.programIncrementsCollection.add(JSON.parse(JSON.stringify(programIncrement))).then((document: DocumentReference) => {
-      LoggerService.log(`added programIncrement w/ id=${document.id}`);
-      return document;
-    }, (error) => {
-      UtilsHelperService.handleError<any>('createProgramIncrement', error);
-      return error;
-    });
-  }
-
-  updateProgramIncrement(programIncrement: ProgramIncrement): Promise<void> {
-    return this.afs.doc(`${AppConfig.routes.programIncrements}/${programIncrement.id}`)
-           .update(JSON.parse(JSON.stringify(programIncrement)))
-           .then(() => {
-              LoggerService.log(`updated programIncrement w/ id=${programIncrement.id}`);
-            });
+  saveProgramIncrement(programIncrement: ProgramIncrement): Promise<any> {
+    const data = JSON.parse(JSON.stringify(programIncrement));
+    return this.programIncrementsCollection.doc(programIncrement.name).set(data);
   }
 
   deleteProgramIncrement(id: string): Promise<void> {

@@ -38,14 +38,4 @@ describe('TeamService', () => {
     });
   }));
 
-  it('should fail creating empty team', (() => {
-    service.saveTeam(new Team({
-      'name': 'test',
-      'jiraPrefix': 'test'
-    })).then(() => {
-    }, (error) => {
-      expect(error).toEqual(jasmine.any(HttpErrorResponse));
-    });
-  }));
-
 });

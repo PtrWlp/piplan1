@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProgramIncrement} from '../../shared/models/piplan.models';
-import {ProgramIncrementService} from '../../shared/service/programincrement.service';
+import {ProgramIncrementService} from '../../shared/service/program-increment.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import { Router} from '@angular/router';
@@ -43,7 +43,7 @@ export class ProgramIncrementsComponent implements OnInit {
 
   createNewProgramIncrement(newProgramIncrement: any) {
     if (this.newProgramIncrementForm.valid) {
-      this.programincrementService.createProgramIncrement(new ProgramIncrement(newProgramIncrement)).then(() => {
+      this.programincrementService.saveProgramIncrement(new ProgramIncrement(newProgramIncrement)).then(() => {
         this.myNgForm.resetForm();
       }, () => {
         this.error = 'errorHasOcurred';
