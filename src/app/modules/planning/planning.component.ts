@@ -130,7 +130,6 @@ export class PlanningComponent implements OnInit {
 
   getStories(sprint) {
     return this.planning && this.planning.filter(story => story.sprint === sprint);
-    // return this.planning;
   }
 
   getStartOfSprint(sprintNumber) {
@@ -138,6 +137,24 @@ export class PlanningComponent implements OnInit {
 
     const addNrOfDays = (sprintNumber - 1) * 14;
     return moment(this.programIncrement.start, 'YYYY-MM-DD').add(addNrOfDays, 'days').format('YYYY-MM-DD');
+  }
+
+  getNumberOfHolidays(sprintNumber) {
+    if (!this.programIncrement) { return 0; }
+
+    const holidays = ['2019-04-22', '2019-05-30', '2019-06-10', '2019-12-23',
+                      '2019-12-24', '2019-12-25', '2019-12-26', '2019-12-27',
+                      '2019-12-30', '2019-12-31', '2020-01-01'];
+
+    const workdayOffset = [0, 1, 2, 3, 4, 7, 8, 9, 10, 11];
+    const startDate = moment(this.getStartOfSprint(sprintNumber), 'YYYY-MM-DD');
+    let nrHolidays = 0;
+    workdayOffset.forEach(addDays => {
+      if (holidays.includes(moment(startDate).add(addDays, 'days').format('YYYY-MM-DD'))) {
+        nrHolidays++;
+      }
+    });
+    return nrHolidays;
   }
 
   getDisplayPoints(points) {

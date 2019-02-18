@@ -30,11 +30,15 @@
     </div>
 
     <div class="piplan__sprint"
-        *ngFor="let sprint of sprints">
+        *ngFor="let sprint of sprints; let i = index">
       <div class="piplan__sprint__heading">
         <h2 class="piplan__sprint__heading__title">{{ sprint.name }}</h2>
         <div class="piplan__sprint__heading__sprintstart">
-          start: {{ getStartOfSprint(i) }}
+          {{ getStartOfSprint(i) }}
+          <span *ngIf="getNumberOfHolidays(i) > 0">
+            (<img src="assets/images/beach-palm.png" style="height: 14px;">
+            {{ getNumberOfHolidays(i) }} )
+          </span>
         </div>
         <div class="piplan__sprint__capacity">
           capacity:
