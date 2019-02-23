@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {Team, ProgramIncrement} from '../../models/piplan.models';
 import {TeamService} from '../../../shared/service/team.service';
 import {ProgramIncrementService} from '../../../shared/service/program-increment.service';
-import {AppConfig} from '../../../configs/app.config';
 import {UtilsHelperService} from '../../../core/services/utils-helper.service';
 import * as moment from 'moment';
 
@@ -27,6 +26,9 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem('selectedTeam')) {
+      this.selectedTeam = localStorage.getItem('selectedTeam');
+    }
     this.teamService.getTeams().subscribe((teams: Array<Team>) => {
       this.teams = teams;
     });
@@ -57,6 +59,7 @@ export class HomePageComponent implements OnInit {
   }
 
   viewPlanning(selectedProgramIncrement, selectedTeam): void {
+    localStorage.setItem('selectedTeam', selectedTeam);
     this.router.navigate([selectedProgramIncrement + '/' + selectedTeam + '/planning']);
   }
 

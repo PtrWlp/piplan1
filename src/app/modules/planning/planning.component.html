@@ -15,11 +15,11 @@
         </div>
       </div>
       <div cdkDropList class="piplan__stories"
-          [cdkDropListData]="{sprint: 'backlog', stories: getStories('backlog')}"
+          [cdkDropListData]="{sprint: 'backlog', stories: getStoriesForSprint('backlog')}"
           (cdkDropListDropped)="drop($event)">
 
         <div cdkDrag
-            *ngFor="let story of getStories('backlog')"
+            *ngFor="let story of getStoriesForSprint('backlog')"
             [cdkDragData]="story"
             [cdkDragDisabled]="!story.editing == ''">
 
@@ -52,11 +52,11 @@
       </div>
 
       <div cdkDropList class="piplan__stories"
-          [cdkDropListData]="{sprint: sprint.name, stories: getStories(sprint.name)}"
+          [cdkDropListData]="{sprint: sprint.name, stories: getStoriesForSprint(sprint.name)}"
           (cdkDropListDropped)="drop($event)">
 
         <div cdkDrag
-            *ngFor="let story of getStories(sprint.name)"
+            *ngFor="let story of getStoriesForSprint(sprint.name)"
             [cdkDragData]="story"
             [cdkDragDisabled]="!story.editing == ''">
 

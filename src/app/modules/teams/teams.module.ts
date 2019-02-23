@@ -5,7 +5,7 @@ import {SharedModule} from '../../shared/shared.module';
 import {TeamsComponent} from './teams.component';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
 import {TeamUpdateComponent} from './team-update/team-update.component';
-import {MatPaginatorModule, MatSortModule, MatTableModule} from '@angular/material';
+import {MatSortModule, MatTableModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -13,7 +13,6 @@ import {MatPaginatorModule, MatSortModule, MatTableModule} from '@angular/materi
     ReactiveFormsModule,
     SharedModule,
     TeamRoutingModule,
-    MatPaginatorModule,
     MatSortModule,
     MatTableModule,
 

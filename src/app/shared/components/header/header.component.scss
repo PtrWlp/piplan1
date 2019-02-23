@@ -14,8 +14,8 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      padding: calculateRem(8px) calculateRem(16px);
-      height: 2rem;
+      padding: 0 calculateRem(16px);
+      height: 40px;
       background: linear-gradient(to right, #0800b9, #00a1de);
       color: white;
       .icon__image {

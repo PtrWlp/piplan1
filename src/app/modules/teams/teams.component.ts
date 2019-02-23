@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Team} from '../../shared/models/piplan.models';
 import {TeamService} from '../../shared/service/team.service';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatSort, MatTableDataSource} from '@angular/material';
 import {UtilsHelperService} from '../../core/services/utils-helper.service';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
 import {TeamUpdateComponent} from './team-update/team-update.component';
@@ -19,7 +19,6 @@ export class TeamsComponent implements OnInit {
   teams: Team[];
   error: string;
   public dataSource = new MatTableDataSource<Team>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns = ['edit', 'jiraPrefix', 'name', 'averageSprintCapacity', 'delete'];
 
@@ -33,7 +32,6 @@ export class TeamsComponent implements OnInit {
       this.teams = teams;
 
       this.dataSource = new MatTableDataSource<Team>(this.teams);
-      this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
     });

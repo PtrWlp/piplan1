@@ -128,7 +128,7 @@ export class PlanningComponent implements OnInit {
     this.piplanService.deleteStory(story);
   }
 
-  getStories(sprint) {
+  getStoriesForSprint(sprint) {
     return this.planning && this.planning.filter(story => story.sprint === sprint);
   }
 
@@ -164,27 +164,11 @@ export class PlanningComponent implements OnInit {
   getPoints(sprint) {
     let points = 0;
     try {
-      this.getStories(sprint).forEach(story => points += story.points);
+      this.getStoriesForSprint(sprint).forEach(story => points += story.points);
     } catch (error) {
       points = undefined;
     }
     return this.getDisplayPoints(points);
-  }
-
-  estimateUp(story) {
-    const currentSpot = this.fibo.indexOf(story.points);
-    if (currentSpot + 1 < this.fibo.length) {
-      story.points = this.fibo[currentSpot + 1];
-      this.piplanService.updateStory(story);
-    }
-  }
-
-  estimateDown(story) {
-    const currentSpot = this.fibo.indexOf(story.points);
-    if (currentSpot > 0) {
-      story.points = this.fibo[currentSpot - 1];
-      this.piplanService.updateStory(story);
-    }
   }
 
   changeSprintCapacity(sprint: Sprint, changeValue: number) {
