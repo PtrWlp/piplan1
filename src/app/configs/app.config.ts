@@ -9,7 +9,5 @@ export const AppConfig: any = {
     planning: 'planning',
     sprintCapacity: 'sprintCapacity',
     error404: '404'
-  },
-  snackBarDuration: 3000,
-  repositoryURL: 'https://github.com/ptrwlp/piplan1'
+  }
 };
