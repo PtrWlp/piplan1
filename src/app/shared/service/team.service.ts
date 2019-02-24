@@ -36,7 +36,6 @@ export class TeamService {
 
   getTeam(id: string): Observable<any> {
     return this.afs.doc(`${AppConfig.routes.teams}/${id}`).get().pipe(
-      tap((res) => {console.log('biddie', res); }),
       map((team) => {
         return new Team({id, ...team.data()});
       }),

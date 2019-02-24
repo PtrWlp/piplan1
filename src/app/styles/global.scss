@@ -1,7 +1,7 @@
 @import "mixins";
 
 * {
-  @include font-roboto();
+  font-family: Montserrat,"Helvetica Neue",sans-serif;
 }
 
 a, .cp {
@@ -17,6 +17,7 @@ h1, h2 {
   font-size: 1.5rem;
   font-weight: 300;
   padding: 1rem 0 0;
+  color: #d22c4c;
 }
 
 .flex-spacer {
@@ -93,6 +94,14 @@ h1, h2 {
   border: 1px solid #666;
   color: #666;
   text-align: center;
+}
+
+.piplan__points--fit {
+  background: #b9ffcb;
+}
+
+.piplan__points--toomuch {
+  background: #f9e8ea;
 }
 
 

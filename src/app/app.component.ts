@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
     if (UtilsHelperService.isBrowserValid()) {
       this.checkBrowserFeatures();
     } else {
-      this.snackBar.open('our browser is not supported. Please use, Chrome, Firefox, Safari, Opera or IE>11', 'OK');
+      this.snackBar.open('Your browser is not supported. Please use, Chrome, Firefox, Safari, Opera or IE>11', 'OK');
     }
   }
 

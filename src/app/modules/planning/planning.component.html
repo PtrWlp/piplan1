@@ -41,12 +41,16 @@
           </span>
         </div>
         <div class="piplan__sprint__capacity">
-          capacity:
+          cap:
           <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, 1)">+</button>
           <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, -1)">-</button>
           {{ sprint.capacity || '?' }}
         </div>
-        <div class="piplan__sprint__heading__pointtotal piplan__points">
+        <div class="piplan__sprint__heading__pointtotal piplan__points"
+             [ngClass]="{'piplan__points--toomuch':(getPoints(sprint.name) > sprint.capacity ||
+                                                    getPoints(sprint.name) === '∞'),
+                         'piplan__points--fit':(getPoints(sprint.name) !== '?' &&
+                                                getPoints(sprint.name) <= sprint.capacity)}">
           {{ getPoints(sprint.name) }}
         </div>
       </div>

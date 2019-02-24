@@ -8,7 +8,6 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import * as jspdf from 'jspdf';
 import * as html2canvas from 'html2canvas';
 
-
 import { UtilsHelperService } from '../../core/services/utils-helper.service';
 import * as moment from 'moment';
 

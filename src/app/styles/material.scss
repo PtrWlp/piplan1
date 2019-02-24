@@ -29,6 +29,11 @@ snack-bar-container {
   background: $grey !important;
 }
 
+.mat-raised-button {
+  color: white;
+  background: #d22c4c !important;
+}
+
 .mat-dialog-container {
   background: #B1B1B1;
   color: $secondary--color;
@@ -41,24 +46,4 @@ snack-bar-container {
 
 .mat-dialog-title {
   text-align: center;
-}
-
-.mat-list-avatar {
-  height: calculateRem(55px) !important;
-  width: calculateRem(55px) !important;
-}
-
-.mat-card-image {
-  margin-bottom: -28px !important;
-  border-top: 1px solid $light-grey;
-}
-
-#search-input {
-  .mat-form-field-label {
-    color: white !important;
-  }
-
-  .mat-form-field-underline {
-    background-color: white !important;
-  }
 }
