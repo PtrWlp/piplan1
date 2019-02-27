@@ -9,6 +9,7 @@ import {TeamService} from '../../shared/service/team.service';
 import { ProgramIncrementService } from 'src/app/shared/service/program-increment.service';
 import {APP_CONFIG, AppConfig} from '../../configs/app.config';
 import {PlanningComponent} from './planning.component';
+import { Router} from '@angular/router';
 
 describe('PlanningComponent', () => {
   let fixture;
@@ -29,7 +30,7 @@ describe('PlanningComponent', () => {
     deleteStory(story: Story): Promise<void> {
       return Promise.resolve();
     },
-    saveSprint(sprint: Sprint): Promise<any> {
+    saveSprintCapacity(sprint: Sprint): Promise<any> {
       return Promise.resolve();
     }
   };

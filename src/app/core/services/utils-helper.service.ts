@@ -23,16 +23,6 @@ export class UtilsHelperService {
     ]);
   }
 
-  static isPalindrome(str) {
-    const len = Math.floor(str.length / 2);
-    for (let i = 0; i < len; i++) {
-      if (str[i] !== str[str.length - i - 1]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   static isBrowserValid() {
     const browser = bowser.getParser(window.navigator.userAgent);
     return browser.satisfies({

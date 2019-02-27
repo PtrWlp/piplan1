@@ -29,7 +29,7 @@ export class TeamService {
             return new Team({id: action.payload.doc.id, ...data});
           });
         }),
-        tap(() => LoggerService.log(`fetched teams`)),
+        // tap(() => LoggerService.log(`fetched teams`)),
         catchError(UtilsHelperService.handleError('getTeams', []))
       );
   }

@@ -4,7 +4,7 @@ import {TeamRoutingModule} from './teams-routing.module';
 import {SharedModule} from '../../shared/shared.module';
 import {TeamsComponent} from './teams.component';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
-import {TeamUpdateComponent} from './team-update/team-update.component';
+// import {TeamUpdateComponent} from '../../shared/components/team-update/team-update.component';
 import {MatSortModule, MatTableModule} from '@angular/material';
 
 @NgModule({
@@ -19,12 +19,10 @@ import {MatSortModule, MatTableModule} from '@angular/material';
   ],
   declarations: [
     TeamsComponent,
-    TeamRemoveComponent,
-    TeamUpdateComponent
+    TeamRemoveComponent
   ],
   entryComponents: [
-    TeamRemoveComponent,
-    TeamUpdateComponent
+    TeamRemoveComponent
   ]
 })
 

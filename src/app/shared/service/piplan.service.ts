@@ -134,11 +134,19 @@ export class PiplanService {
       );
   }
 
-  saveSprint(sprint: Sprint): Promise<any> {
+  saveSprintCapacity(sprint: Sprint): Promise<any> {
     sprint.id = `${sprint.piid}-${sprint.teamid}-${sprint.name}`;
     const data = JSON.parse(JSON.stringify(sprint));
     return this.sprintsCollection.doc(sprint.id).set(data);
   }
+
+  deleteSprintCapacity(sprint: Sprint): Promise<void> {
+    const sprintId = `${sprint.piid}-${sprint.teamid}-${sprint.name}`;
+    const result = this.afs.doc(`sprintCapacity/${sprintId}`).delete();
+    // TODO Doesnt work
+    return result;
+  }
+
 
   showSnackBar(text): void {
     const config: any = new MatSnackBarConfig();

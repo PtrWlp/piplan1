@@ -5,7 +5,7 @@ import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {MatSort, MatTableDataSource} from '@angular/material';
 import {UtilsHelperService} from '../../core/services/utils-helper.service';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
-import {TeamUpdateComponent} from './team-update/team-update.component';
+import {TeamUpdateComponent} from '../../shared/components/team-update/team-update.component';
 
 @Component({
   selector: 'piplan-teams',

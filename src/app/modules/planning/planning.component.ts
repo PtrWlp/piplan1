@@ -3,7 +3,9 @@ import { Story, Team, ProgramIncrement, Sprint } from '../../shared/models/pipla
 import { TeamService } from '../../shared/service/team.service';
 import { ProgramIncrementService } from 'src/app/shared/service/program-increment.service';
 import { PiplanService } from '../../shared/service/piplan.service';
+import { TeamUpdateComponent } from '../../shared/components/team-update/team-update.component';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import * as jspdf from 'jspdf';
 import * as html2canvas from 'html2canvas';
@@ -28,16 +30,19 @@ export class PlanningComponent implements OnInit {
   teamJiraPrefix: string;
   sprints: any;
   fibo = [null, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
+  showOverview: boolean;
 
   @ViewChild('form') myNgForm; // just to call resetForm method
 
   constructor(private teamService: TeamService,
     private programIncrementService: ProgramIncrementService,
     private piplanService: PiplanService,
+    private dialog: MatDialog,
     private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.showOverview = false;
     this.pi = this.activatedRoute.snapshot.paramMap.get('pi');
     this.teamJiraPrefix = this.activatedRoute.snapshot.paramMap.get('team');
     this.sprints = [
@@ -45,7 +50,29 @@ export class PlanningComponent implements OnInit {
       { name: 'sprint2' },
       { name: 'sprint3' },
       { name: 'sprint4' },
-      { name: 'sprint5' }
+      { name: 'sprint5' },
+      { name: 'sprint6' }
+    ];
+
+    this.programIncrementService.getProgramIncrement(this.pi).subscribe((programIncrement: ProgramIncrement) => {
+      this.programIncrement = programIncrement;
+    });
+
+    this.piplanService.getPlanning().subscribe((planning: Array<Story>) => {
+      this.planning = planning.filter(story => story.piid === this.pi && story.teamid === this.teamJiraPrefix);
+    });
+
+    this.refreshCapacityData();
+  }
+
+  refreshCapacityData() {
+    this.sprints = [
+      { name: 'sprint1' },
+      { name: 'sprint2' },
+      { name: 'sprint3' },
+      { name: 'sprint4' },
+      { name: 'sprint5' },
+      { name: 'sprint6' }
     ];
 
     this.teamService.getTeam(this.teamJiraPrefix).subscribe((team: Team) => {
@@ -55,12 +82,6 @@ export class PlanningComponent implements OnInit {
           sprint['capacity'] = team.averageSprintCapacity;
         }
       });
-    });
-    this.programIncrementService.getProgramIncrement(this.pi).subscribe((programIncrement: ProgramIncrement) => {
-      this.programIncrement = programIncrement;
-    });
-    this.piplanService.getPlanning().subscribe((planning: Array<Story>) => {
-      this.planning = planning.filter(story => story.piid === this.pi && story.teamid === this.teamJiraPrefix);
     });
 
     this.piplanService.getSprints().subscribe((sprints: Array<Sprint>) => {
@@ -170,22 +191,41 @@ export class PlanningComponent implements OnInit {
     return this.getDisplayPoints(points);
   }
 
+  openTeamEdit(team: Team) {
+    const dialogRef = this.dialog.open(TeamUpdateComponent, {
+      data: { team, onlyCapacity: true },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('biddie', 'refreshing all');
+        this.team = null;
+        this.refreshCapacityData();
+      }
+    });
+
+  }
+
   changeSprintCapacity(sprint: Sprint, changeValue: number) {
+    debugger;
     sprint.capacity += changeValue;
     sprint.piid = this.pi;
     sprint.teamid = this.teamJiraPrefix;
-    this.piplanService.saveSprint(sprint);
+    if (sprint.capacity !== this.team.averageSprintCapacity) {
+      this.piplanService.saveSprintCapacity(sprint);
+    } else {
+      this.piplanService.deleteSprintCapacity(sprint);
+    }
   }
 
   captureScreen() {
     const data = document.getElementById('piplan_planning');
     html2canvas(data).then(canvas => {
       // Few necessary setting options
-      const imgWidth = 208;
+      const imgWidth = 220;
       const imgHeight = canvas.height * imgWidth / canvas.width;
 
       const contentDataURL = canvas.toDataURL('image/png');
-      const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+      const pdf = new jspdf('l', 'mm', 'a4'); // A4 size page of PDF
       pdf.addImage(contentDataURL, 'PNG', 0, 0, imgWidth, imgHeight);
       pdf.save(`PI-planning-${this.pi}-${this.team.id}.pdf`); // Generated PDF
     });

@@ -3,6 +3,7 @@ import {MaterialModule} from './modules/material.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {HeaderComponent} from './components/header/header.component';
+import {TeamUpdateComponent} from './components/team-update/team-update.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {Error404PageComponent} from './pages/error404-page/error404-page.component';
@@ -24,6 +25,7 @@ import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading
     HomePageComponent,
     Error404PageComponent,
     HeaderComponent,
+    TeamUpdateComponent,
     PiplanLoadingComponent
   ],
   exports: [
@@ -32,7 +34,11 @@ import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading
     FlexLayoutModule,
     WebStorageModule,
     HeaderComponent,
+    TeamUpdateComponent,
     PiplanLoadingComponent
+  ],
+  entryComponents: [
+    TeamUpdateComponent
   ]
 })
 

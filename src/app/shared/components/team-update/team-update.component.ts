@@ -16,7 +16,8 @@ export class TeamUpdateComponent {
   headerText: string;
   teamForm: FormGroup;
   error: string;
-  isAdding = true;
+  disableJiraPrefix = false;
+  disableName = false;
   @ViewChild('form') myNgForm; // just to call resetForm method
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,22 +25,28 @@ export class TeamUpdateComponent {
               private formBuilder: FormBuilder) {
 
     this.headerText = 'Add team';
-
     if (data && data.team) {
-      this.isAdding = false;
+      // apearently updating, not adding
+      this.disableJiraPrefix = true;
       this.team = data.team;
       this.headerText = `Update team ${this.team.name}`;
+      if (data.onlyCapacity) {
+        this.disableName = true;
+      }
     }
+
     this.teamForm = this.formBuilder.group({
-      'name': new FormControl(this.team ? this.team.name : '', [Validators.required]),
-      'jiraPrefix': new FormControl(this.team ? this.team.jiraPrefix : '', [Validators.required]),
+      'jiraPrefix': new FormControl({value: this.team ? this.team.jiraPrefix : '',
+                                     disabled: this.disableJiraPrefix}, Validators.required),
+      'name': new FormControl({value: this.team ? this.team.name : '',
+                               disabled: this.disableName}, Validators.required ),
       'averageSprintCapacity': new FormControl(this.team ? this.team.averageSprintCapacity : '', [Validators.pattern('^[0-9]*$')])
     });
   }
 
   saveTeam(team: any) {
     if (this.teamForm.valid) {
-      this.teamService.saveTeam(new Team(team)).then(() => {
+      this.teamService.saveTeam(new Team(this.teamForm.getRawValue())).then(() => {
         this.myNgForm.resetForm();
       }, () => {
         this.error = 'an error has ocurred';

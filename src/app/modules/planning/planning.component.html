@@ -3,7 +3,37 @@
   <piplan-header teamName="{{ team && team.name }}" pi="{{ pi }}"></piplan-header>
 
   <piplan-loading *ngIf="!planning"></piplan-loading>
+  <button  data-html2canvas-ignore="true" class="piplan__miniAddButton piplan_overviewbutton" (click)="showOverview = !showOverview">{{ showOverview ? 'hide' : 'show' }} overview</button>
   <button  data-html2canvas-ignore="true" class="piplan__miniAddButton piplan_pdfbutton" (click)="captureScreen()">export pdf</button>
+
+  <div fxLayout="row" *ngIf="showOverview" [@fadeInOut]>
+    <div fxFlex="10"></div>
+    <div fxFlex="80" class="piplan__overview__pane">
+      <div *ngIf="team" class="piplan__overview__title" >
+        Average sprint capacity: {{ team.averageSprintCapacity }}
+        <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="openTeamEdit(team)">&#x270e;</button>
+      </div>
+      <div class="piplan__overview" *ngFor="let sprint of sprints; let i = index">
+        <span class="piplan__overview__heading__title">{{ sprint.name }}</span>
+        <span class="piplan__overview__heading__sprintstart">
+          {{ getStartOfSprint(i) }}
+        </span>
+        <span class="piplan__overview__capacity">
+          capacity: {{ sprint.capacity || '?' }}
+
+          <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, 1)">+</button>
+          <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, -1)">-</button>
+
+        </span>
+        <span *ngIf="getNumberOfHolidays(i) > 0">
+          <img src="assets/images/beach-palm.png" style="height: 14px;">
+          {{ getNumberOfHolidays(i) }} holiday(s)
+        </span>
+      </div>
+    </div>
+    <div fxFlex="10"></div>
+    <hr>
+  </div>
 
   <div cdkDropListGroup>
 
@@ -41,9 +71,6 @@
           </span>
         </div>
         <div class="piplan__sprint__capacity">
-          cap:
-          <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, 1)">+</button>
-          <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="changeSprintCapacity(sprint, -1)">-</button>
           {{ sprint.capacity || '?' }}
         </div>
         <div class="piplan__sprint__heading__pointtotal piplan__points"

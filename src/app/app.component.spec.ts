@@ -34,7 +34,7 @@ describe('AppComponent', () => {
     deleteStory(story: Story): Promise<void> {
       return Promise.resolve();
     },
-    saveSprint(sprint: Sprint): Promise<any> {
+    saveSprintCapacity(sprint: Sprint): Promise<any> {
       return Promise.resolve();
     }
   };
