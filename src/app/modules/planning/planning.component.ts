@@ -206,7 +206,6 @@ export class PlanningComponent implements OnInit {
   }
 
   changeSprintCapacity(sprint: Sprint, changeValue: number) {
-    debugger;
     sprint.capacity += changeValue;
     sprint.piid = this.pi;
     sprint.teamid = this.teamJiraPrefix;
