@@ -31,6 +31,19 @@ export class PlanningComponent implements OnInit {
   sprints: any;
   fibo = [null, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
   showOverview: boolean;
+  holidays = {'2019-04-22': '2nd Easter',
+              '2019-05-30': 'Ascension/Hemelvaart',
+              '2019-06-10': '2nd Pentecost/Pinksteren',
+              '2019-12-23': 'Office Closed',
+              '2019-12-24': 'Office Closed',
+              '2019-12-25': 'Christmas',
+              '2019-12-26': 'Christmas',
+              '2019-12-27': 'Office Closed',
+              '2019-12-30': 'Office Closed',
+              '2019-12-31': 'Office Closed',
+              '2020-01-01': 'Newyearsday'};
+
+
 
   @ViewChild('form') myNgForm; // just to call resetForm method
 
@@ -42,7 +55,7 @@ export class PlanningComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showOverview = false;
+    this.showOverview = true;
     this.pi = this.activatedRoute.snapshot.paramMap.get('pi');
     this.teamJiraPrefix = this.activatedRoute.snapshot.paramMap.get('team');
     this.sprints = [
@@ -162,19 +175,36 @@ export class PlanningComponent implements OnInit {
   getNumberOfHolidays(sprintNumber) {
     if (!this.programIncrement) { return 0; }
 
-    const holidays = ['2019-04-22', '2019-05-30', '2019-06-10', '2019-12-23',
-                      '2019-12-24', '2019-12-25', '2019-12-26', '2019-12-27',
-                      '2019-12-30', '2019-12-31', '2020-01-01'];
+    const holidayDates = Object.keys(this.holidays);
 
     const workdayOffset = [0, 1, 2, 3, 4, 7, 8, 9, 10, 11];
     const startDate = moment(this.getStartOfSprint(sprintNumber), 'YYYY-MM-DD');
     let nrHolidays = 0;
     workdayOffset.forEach(addDays => {
-      if (holidays.includes(moment(startDate).add(addDays, 'days').format('YYYY-MM-DD'))) {
+      if (holidayDates.includes(moment(startDate).add(addDays, 'days').format('YYYY-MM-DD'))) {
         nrHolidays++;
       }
     });
     return nrHolidays;
+  }
+
+  getHolidayNames(sprintNumber) {
+    if (!this.programIncrement) { return 0; }
+
+    const holidayDates = Object.keys(this.holidays);
+
+    const workdayOffset = [0, 1, 2, 3, 4, 7, 8, 9, 10, 11];
+    const startDate = moment(this.getStartOfSprint(sprintNumber), 'YYYY-MM-DD');
+    const result = [];
+    workdayOffset.forEach(addDays => {
+      const dayToCompare = moment(startDate).add(addDays, 'days').format('YYYY-MM-DD');
+      if (holidayDates.includes(dayToCompare)) {
+        if (!result.includes(this.holidays[dayToCompare])) {
+          result.push(this.holidays[dayToCompare]);
+        }
+      }
+    });
+    return result.join(', ');
   }
 
   getDisplayPoints(points) {
@@ -197,12 +227,15 @@ export class PlanningComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('biddie', 'refreshing all');
         this.team = null;
         this.refreshCapacityData();
       }
     });
 
+  }
+
+  onSubmit(csv) {
+    console.log('biddie', csv);
   }
 
   changeSprintCapacity(sprint: Sprint, changeValue: number) {

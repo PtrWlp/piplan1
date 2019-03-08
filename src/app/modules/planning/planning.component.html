@@ -6,9 +6,11 @@
   <button  data-html2canvas-ignore="true" class="piplan__miniAddButton piplan_overviewbutton" (click)="showOverview = !showOverview">{{ showOverview ? 'hide' : 'show' }} overview</button>
   <button  data-html2canvas-ignore="true" class="piplan__miniAddButton piplan_pdfbutton" (click)="captureScreen()">export pdf</button>
 
-  <div fxLayout="row" *ngIf="showOverview" [@fadeInOut]>
+  <div fxLayout="row" data-html2canvas-ignore="true" *ngIf="showOverview" [@fadeInOut]>
     <div fxFlex="10"></div>
-    <div fxFlex="80" class="piplan__overview__pane">
+    <div fxFlex="50" class="piplan__overview__pane">
+      <a (click)="showOverview = false">X</a>
+
       <div *ngIf="team" class="piplan__overview__title" >
         Average sprint capacity: {{ team.averageSprintCapacity }}
         <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="openTeamEdit(team)">&#x270e;</button>
@@ -27,10 +29,24 @@
         </span>
         <span *ngIf="getNumberOfHolidays(i) > 0">
           <img src="assets/images/beach-palm.png" style="height: 14px;">
-          {{ getNumberOfHolidays(i) }} holiday(s)
+          {{ getNumberOfHolidays(i) }} : {{ getHolidayNames(i) }}
         </span>
       </div>
     </div>
+
+    <div fxFlex="30" class="piplan__overview__pane">
+      <a target="_blank" href="https://jira.devnet.klm.com/issues/?jql=project%20%3D%20{{ team.jiraPrefix }}%20AND%20issuetype%20%3D%20%22User%20Story%22%20AND%20status%20%3D%20Open%20%20ORDER%20BY%20priority%20DESC%2C%20updated%20DESC">export</a>  (CSV current fields, comma delimited, select columns "key", "Summary" and the "Story Points" column that actually holds the points... )
+      <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm.value.csv)">
+        <div class="form-group">
+          <label>paste csv from jira export</label>
+          <input type="text" class="form-control" name="csv" ngModel>
+        </div>
+        <button type="submit" class="piplan__miniAddButton piplan_importbutton">
+          bulk import stories</button>
+      </form>
+
+    </div>
+
     <div fxFlex="10"></div>
     <hr>
   </div>

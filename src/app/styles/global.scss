@@ -79,6 +79,7 @@ h1, h2 {
   color: $secondary--color;
   transition: color 0.2s ease-out;
   border-radius: 3px;
+  max-width: 200px;
 
   &:hover {
     cursor: pointer;
