@@ -6,6 +6,7 @@ import {SharedModule} from '../../shared/shared.module';
 import {PlanningComponent} from './planning.component';
 import {EditableFiedComponent} from '../../shared/components/editablefield/editablefield.component';
 import {StoryComponent} from './story/story.component';
+import { FileDropModule } from 'ngx-file-drop';
 
 @NgModule({
   imports: [
@@ -13,12 +14,16 @@ import {StoryComponent} from './story/story.component';
     ReactiveFormsModule,
     SharedModule,
     DragDropModule,
-    PlanningRoutingModule
+    PlanningRoutingModule,
+    FileDropModule
   ],
   declarations: [
     EditableFiedComponent,
     StoryComponent,
     PlanningComponent
+  ],
+  providers: [
+    FileDropModule
   ]
 
 })

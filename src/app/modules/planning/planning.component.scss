@@ -61,12 +61,18 @@ form {
 
     &__pane {
       background: #f8f9f9;
-      padding-left: 20px;
+      padding: 10px 20px;
       margin: 10px;
     }
 
     &__title {
       font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    &__hideX {
+      font-weight: bold;
+      display: block;
       margin-bottom: 10px;
     }
 

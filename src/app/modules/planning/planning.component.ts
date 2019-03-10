@@ -5,11 +5,11 @@ import { ProgramIncrementService } from 'src/app/shared/service/program-incremen
 import { PiplanService } from '../../shared/service/piplan.service';
 import { TeamUpdateComponent } from '../../shared/components/team-update/team-update.component';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import * as jspdf from 'jspdf';
 import * as html2canvas from 'html2canvas';
-
+import { UploadEvent, FileSystemFileEntry } from 'ngx-file-drop';
 import { UtilsHelperService } from '../../core/services/utils-helper.service';
 import * as moment from 'moment';
 
@@ -42,7 +42,7 @@ export class PlanningComponent implements OnInit {
               '2019-12-30': 'Office Closed',
               '2019-12-31': 'Office Closed',
               '2020-01-01': 'Newyearsday'};
-
+  lastFileContent;
 
 
   @ViewChild('form') myNgForm; // just to call resetForm method
@@ -51,7 +51,8 @@ export class PlanningComponent implements OnInit {
     private programIncrementService: ProgramIncrementService,
     private piplanService: PiplanService,
     private dialog: MatDialog,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -234,10 +235,6 @@ export class PlanningComponent implements OnInit {
 
   }
 
-  onSubmit(csv) {
-    console.log('biddie', csv);
-  }
-
   changeSprintCapacity(sprint: Sprint, changeValue: number) {
     sprint.capacity += changeValue;
     sprint.piid = this.pi;
@@ -263,4 +260,28 @@ export class PlanningComponent implements OnInit {
     });
   }
 
+  public importCsv(event: UploadEvent) {
+    for (const droppedFile of event.files) {
+      // Is it a file?
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+
+          const fileReader = new FileReader();
+          fileReader.onload = (e) => {
+            console.log(fileReader.result);
+            this.lastFileContent = fileReader.result;
+            this.showSnackBar('Ask yes/no import');
+          };
+          fileReader.readAsText(file);
+        });
+      }
+    }
+  }
+
+  showSnackBar(message) {
+    const config: any = new MatSnackBarConfig();
+    config.duration = 3000;
+    this.snackBar.open(message, 'OK', config);
+  }
 }

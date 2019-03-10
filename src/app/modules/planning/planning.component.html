@@ -9,7 +9,7 @@
   <div fxLayout="row" data-html2canvas-ignore="true" *ngIf="showOverview" [@fadeInOut]>
     <div fxFlex="10"></div>
     <div fxFlex="50" class="piplan__overview__pane">
-      <a (click)="showOverview = false">X</a>
+      <a class="piplan__overview__hideX" (click)="showOverview = false">X</a>
 
       <div *ngIf="team" class="piplan__overview__title" >
         Average sprint capacity: {{ team.averageSprintCapacity }}
@@ -35,16 +35,13 @@
     </div>
 
     <div fxFlex="30" class="piplan__overview__pane">
-      <a target="_blank" href="https://jira.devnet.klm.com/issues/?jql=project%20%3D%20{{ team.jiraPrefix }}%20AND%20issuetype%20%3D%20%22User%20Story%22%20AND%20status%20%3D%20Open%20%20ORDER%20BY%20priority%20DESC%2C%20updated%20DESC">export</a>  (CSV current fields, comma delimited, select columns "key", "Summary" and the "Story Points" column that actually holds the points... )
-      <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm.value.csv)">
-        <div class="form-group">
-          <label>paste csv from jira export</label>
-          <input type="text" class="form-control" name="csv" ngModel>
-        </div>
-        <button type="submit" class="piplan__miniAddButton piplan_importbutton">
-          bulk import stories</button>
-      </form>
+      <!-- sprint = 30090 AND status != closed AND issuetype != "Technical Task" ORDER BY Rank ASC -->
+      <a class="piplan__miniAddButton piplan__miniButton" target="_blank" href="https://jira.devnet.klm.com/issues/?jql=project%20%3D%20{{ team && team.jiraPrefix }}%20AND%20issuetype%20%3D%20%22User%20Story%22%20AND%20status%20%3D%20Open%20%20ORDER%20BY%20priority%20DESC%2C%20updated%20DESC">Get Jira export</a>
+      <div>(choose "CSV current fields" and "comma delimited", select columns "key", "Summary" and the "Story Points" column that actually holds the points... ) <br>
+      Then edit the downloaded file so it holds only the stories you want to plan, and drop it below.</div>
 
+      <file-drop dropZoneLabel="Drop jira export here" (onFileDrop)="importCsv($event)">
+      </file-drop>
     </div>
 
     <div fxFlex="10"></div>
