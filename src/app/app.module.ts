@@ -7,6 +7,7 @@ import {environment} from '../environments/environment';
 import {APP_CONFIG, AppConfig} from './configs/app.config';
 import {SharedModule} from './shared/shared.module';
 import {FirebaseModule} from './shared/modules/firebase.module';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import {FirebaseModule} from './shared/modules/firebase.module';
     AppComponent
   ],
   providers: [
-    {provide: APP_CONFIG, useValue: AppConfig}
+    {provide: APP_CONFIG, useValue: AppConfig},
+    CookieService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

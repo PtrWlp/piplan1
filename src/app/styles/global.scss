@@ -80,10 +80,16 @@ h1, h2 {
   transition: color 0.2s ease-out;
   border-radius: 3px;
   max-width: 200px;
+  padding: 1px 7px 2px;
 
   &:hover {
     cursor: pointer;
   }
+}
+
+a.piplan__miniAddButton {
+  text-decoration: none;
+  margin: 10px;
 }
 
 .piplan__points {

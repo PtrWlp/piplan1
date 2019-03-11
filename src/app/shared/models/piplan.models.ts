@@ -49,6 +49,7 @@ export class Story implements Deserializable {
   jiraNumberDisplay: String;
   editing: string;
   sortKey: string;
+  needsJiraUpdate: boolean;
 
   constructor(story: any = {}) {
     this.id = story.id;
@@ -62,6 +63,7 @@ export class Story implements Deserializable {
     this.teamid = story.teamid || '';
     this.sprint = story.sprint || 'backlog';
     this.sortKey = story.sortKey || '';
+    this.needsJiraUpdate = story.needsJiraUpdate || false;
   }
 
   jiraNumberFormat(story: any) {
@@ -87,6 +89,7 @@ export class Story implements Deserializable {
     plainObject['teamid'] = this.teamid;
     plainObject['sprint'] = this.sprint;
     plainObject['sortKey'] = this.sortKey;
+    plainObject['needsJiraUpdate'] = this.needsJiraUpdate;
     return plainObject;
   }
 

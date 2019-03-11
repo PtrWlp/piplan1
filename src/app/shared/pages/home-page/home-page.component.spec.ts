@@ -8,6 +8,7 @@ import {HomePageComponent} from './home-page.component';
 import {APP_CONFIG, AppConfig} from '../../../configs/app.config';
 import {Observable, of} from 'rxjs';
 import {Team, ProgramIncrement} from '../../models/piplan.models';
+import {CookieService} from 'ngx-cookie-service';
 
 describe('HomePage', () => {
   let fixture;
@@ -49,7 +50,8 @@ describe('HomePage', () => {
         {provide: APP_CONFIG, useValue: AppConfig},
         {provide: APP_BASE_HREF, useValue: '/'},
         {provide: ProgramIncrementService, useValue: mockProgramIncrementService},
-        {provide: TeamService, useValue: mockTeamService}
+        {provide: TeamService, useValue: mockTeamService},
+        CookieService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

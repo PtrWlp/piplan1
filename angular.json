@@ -27,7 +27,7 @@
                 "output": "/"
               },
               {
-                "glob": "sitemap.xml",
+                "glob": "robots.txt",
                 "input": "src/assets",
                 "output": "/"
               },
@@ -122,7 +122,7 @@
                 "output": "/"
               },
               {
-                "glob": "sitemap.xml",
+                "glob": "robots.txt",
                 "input": "src/assets",
                 "output": "/"
               },

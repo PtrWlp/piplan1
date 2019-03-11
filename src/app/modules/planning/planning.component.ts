@@ -32,7 +32,8 @@ export class PlanningComponent implements OnInit {
   sprints: any;
   fibo = [null, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
   showOverview: boolean;
-  holidays = {'2019-04-22': '2nd Easter',
+  holidays = {'2019-04-19': 'Good Friday',
+              '2019-04-22': '2nd Easter',
               '2019-05-30': 'Ascension/Hemelvaart',
               '2019-06-10': '2nd Pentecost/Pinksteren',
               '2019-12-23': 'Office Closed',
@@ -158,9 +159,16 @@ export class PlanningComponent implements OnInit {
     });
   }
 
-  trashcan(event: CdkDragDrop<string[]>) {
+  dropTrashcan(event: CdkDragDrop<string[]>) {
     const story = event.item.data;
     this.piplanService.deleteStory(story);
+  }
+
+  emptyTrashcan() {
+    this.getStoriesForSprint('trashcan').forEach(singleStory => {
+      this.piplanService.deleteStory(singleStory);
+    });
+    this.showSnackBar(`trashcan empty`);
   }
 
   getStoriesForSprint(sprint) {
@@ -170,7 +178,7 @@ export class PlanningComponent implements OnInit {
   getStartOfSprint(sprintNumber) {
     if (!this.programIncrement) { return; }
 
-    const addNrOfDays = (sprintNumber - 1) * 14;
+    const addNrOfDays = sprintNumber * 14;
     return moment(this.programIncrement.start, 'YYYY-MM-DD').add(addNrOfDays, 'days').format('YYYY-MM-DD');
   }
 
@@ -251,12 +259,11 @@ export class PlanningComponent implements OnInit {
     const data = document.getElementById('piplan_planning');
     html2canvas(data).then(canvas => {
       // Few necessary setting options
-      const imgWidth = 220;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-
       const contentDataURL = canvas.toDataURL('image/png');
-      const pdf = new jspdf('l', 'mm', 'a4'); // A4 size page of PDF
-      pdf.addImage(contentDataURL, 'PNG', 0, 0, imgWidth, imgHeight);
+      const pdf = new jspdf('l', 'mm', 'a3'); // A4 size page of PDF
+      const imgWidth = pdf.internal.pageSize.getWidth() - 20;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      pdf.addImage(contentDataURL, 'PNG', 10, 10, imgWidth, imgHeight);
       pdf.save(`PI-planning-${this.pi}-${this.team.id}.pdf`); // Generated PDF
     });
   }

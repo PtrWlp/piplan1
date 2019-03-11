@@ -116,7 +116,6 @@ export class PiplanService {
 
   deleteStory(story: Story): Promise<void> {
     const result = this.afs.doc(`${AppConfig.routes.planning}/${story.id}`).delete();
-    this.showSnackBar(`deleted story ${story.jiraNumberDisplay}`);
     return result;
   }
 

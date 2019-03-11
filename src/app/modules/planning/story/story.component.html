@@ -1,5 +1,9 @@
 <div class="piplan__story">
 
+  <button class="piplan__story__touched"
+       *ngIf="story.needsJiraUpdate"
+       (click)="resetTouchedFlag(story)"></button>
+
   <div class="piplan__story__key">
     <piplan-editablefield
       class="piplan__story__number"
@@ -14,7 +18,8 @@
       </div>
       <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="estimateUp(story)">+</button>
       <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="estimateDown(story)">-</button>
-      <button *ngIf="story.sprint === 'backlog'" data-html2canvas-ignore="true" class="piplan__miniButton" (click)="deleteStory(story)">x</button>
+      <button *ngIf="story.sprint === 'backlog'" data-html2canvas-ignore="true" class="piplan__miniButton" (click)="throwToTrashcan(story)">x</button>
+      <button *ngIf="story.sprint === 'trashcan'" data-html2canvas-ignore="true" class="piplan__miniButton" (click)="deleteStory(story)">x</button>
 
     </div>
   </div>

@@ -4,6 +4,7 @@ import {Team, ProgramIncrement} from '../../models/piplan.models';
 import {TeamService} from '../../../shared/service/team.service';
 import {ProgramIncrementService} from '../../../shared/service/program-increment.service';
 import {UtilsHelperService} from '../../../core/services/utils-helper.service';
+import {CookieService} from 'ngx-cookie-service';
 import * as moment from 'moment';
 
 @Component({
@@ -22,12 +23,13 @@ export class HomePageComponent implements OnInit {
 
   constructor(private teamService: TeamService,
               private programIncrementService: ProgramIncrementService,
-              private router: Router) {
+              private router: Router,
+              private cookieService: CookieService) {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('selectedTeam')) {
-      this.selectedTeam = localStorage.getItem('selectedTeam');
+    if (this.cookieService.get('selectedTeam')) {
+      this.selectedTeam = this.cookieService.get('selectedTeam');
     }
     this.teamService.getTeams().subscribe((teams: Array<Team>) => {
       this.teams = teams;
@@ -59,7 +61,7 @@ export class HomePageComponent implements OnInit {
   }
 
   viewPlanning(selectedProgramIncrement, selectedTeam): void {
-    localStorage.setItem('selectedTeam', selectedTeam);
+    this.cookieService.set('selectedTeam', selectedTeam);
     this.router.navigate([selectedProgramIncrement + '/' + selectedTeam + '/planning']);
   }
 

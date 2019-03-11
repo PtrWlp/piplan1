@@ -17,12 +17,14 @@ export class StoryComponent {
 
   updateStoryNumber(story, newValue) {
     story.jiraNumberDisplay = newValue;
+    story.needsJiraUpdate = true;
     this.piplanService.updateStory(story);
     story.editing = '';
   }
 
   updateStoryDescr(story, newValue) {
     story.description = newValue;
+    story.needsJiraUpdate = true;
     this.piplanService.updateStory(story);
     story.editing = '';
   }
@@ -31,6 +33,7 @@ export class StoryComponent {
     const currentSpot = this.fibo.indexOf(story.points);
     if (currentSpot + 1 < this.fibo.length) {
       story.points = this.fibo[currentSpot + 1];
+      story.needsJiraUpdate = true;
       this.piplanService.updateStory(story);
     }
   }
@@ -39,8 +42,21 @@ export class StoryComponent {
     const currentSpot = this.fibo.indexOf(story.points);
     if (currentSpot > 0) {
       story.points = this.fibo[currentSpot - 1];
+      story.needsJiraUpdate = true;
       this.piplanService.updateStory(story);
     }
+  }
+
+  resetTouchedFlag(story) {
+    if (confirm('Have you synced with Jira?')) {
+      story.needsJiraUpdate = false;
+      this.piplanService.updateStory(story);
+    }
+  }
+
+  throwToTrashcan(story) {
+    story.sprint = 'trashcan';
+    this.piplanService.updateStory(story);
   }
 
   deleteStory(story) {

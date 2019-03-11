@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Import stories</h2>
+<mat-dialog-content>
+  <div *ngIf="!error">
+    Found {{ numberOfStories }} stories. Import them?
+  </div>
+
+  <div *ngIf="error">An error occurred. {{ error }}</div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>cancel</button>
+  <button type="submit"
+          (click)="saveStories()"
+          [mat-dialog-close]="true"
+          [disabled]="error"
+          mat-button>confirm</button>
+</mat-dialog-actions>
