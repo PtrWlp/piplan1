@@ -147,10 +147,17 @@ export class PiplanService {
     return result;
   }
 
-
   showSnackBar(text): void {
     const config: any = new MatSnackBarConfig();
     config.duration = 3000;
     this.snackBar.open(text, 'OK', config);
+  }
+
+  makeSortKey(targetSprint, index) {
+      let paddedIndex = String(index);
+      while (paddedIndex.length < (3)) {
+        paddedIndex = '0' + paddedIndex;
+      }
+    return targetSprint + '-' + paddedIndex;
   }
 }

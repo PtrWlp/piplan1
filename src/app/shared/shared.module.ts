@@ -4,6 +4,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {HeaderComponent} from './components/header/header.component';
 import {TeamUpdateComponent} from './components/team-update/team-update.component';
+import {CsvImportComponent} from './components/csv-import/csv-import.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {Error404PageComponent} from './pages/error404-page/error404-page.component';
@@ -26,6 +27,7 @@ import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading
     Error404PageComponent,
     HeaderComponent,
     TeamUpdateComponent,
+    CsvImportComponent,
     PiplanLoadingComponent
   ],
   exports: [
@@ -35,10 +37,12 @@ import {PiplanLoadingComponent} from './components/piplan-loading/piplan-loading
     WebStorageModule,
     HeaderComponent,
     TeamUpdateComponent,
+    CsvImportComponent,
     PiplanLoadingComponent
   ],
   entryComponents: [
-    TeamUpdateComponent
+    TeamUpdateComponent,
+    CsvImportComponent
   ]
 })
 

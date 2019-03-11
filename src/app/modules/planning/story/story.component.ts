@@ -43,6 +43,10 @@ export class StoryComponent {
     }
   }
 
+  deleteStory(story) {
+    this.piplanService.deleteStory(story);
+  }
+
   getDisplayPoints(points) {
     return points ? points < 9998 ? points : '∞' : '?';
   }

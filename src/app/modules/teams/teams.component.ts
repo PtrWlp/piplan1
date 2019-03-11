@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Team} from '../../shared/models/piplan.models';
 import {TeamService} from '../../shared/service/team.service';
-import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatSnackBarConfig, MatSort, MatTableDataSource } from '@angular/material';
 import {UtilsHelperService} from '../../core/services/utils-helper.service';
 import {TeamRemoveComponent} from './team-remove/team-remove.component';
 import {TeamUpdateComponent} from '../../shared/components/team-update/team-update.component';

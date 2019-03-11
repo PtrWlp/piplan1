@@ -14,6 +14,7 @@
       </div>
       <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="estimateUp(story)">+</button>
       <button data-html2canvas-ignore="true" class="piplan__miniButton" (click)="estimateDown(story)">-</button>
+      <button *ngIf="story.sprint === 'backlog'" data-html2canvas-ignore="true" class="piplan__miniButton" (click)="deleteStory(story)">x</button>
 
     </div>
   </div>

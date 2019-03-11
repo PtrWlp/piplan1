@@ -4,6 +4,7 @@ import { TeamService } from '../../shared/service/team.service';
 import { ProgramIncrementService } from 'src/app/shared/service/program-increment.service';
 import { PiplanService } from '../../shared/service/piplan.service';
 import { TeamUpdateComponent } from '../../shared/components/team-update/team-update.component';
+import { CsvImportComponent } from '../../shared/components/csv-import/csv-import.component';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -152,7 +153,7 @@ export class PlanningComponent implements OnInit {
     let index = -1;
     event.container.data['stories'].forEach(singleStory => {
       index++;
-      singleStory.sortKey = targetSprint + '-' + index;
+      singleStory.sortKey = this.piplanService.makeSortKey(targetSprint, index);
       this.piplanService.updateStory(singleStory);
     });
   }
@@ -268,12 +269,21 @@ export class PlanningComponent implements OnInit {
         fileEntry.file((file: File) => {
 
           const fileReader = new FileReader();
+          fileReader.readAsText(file);
           fileReader.onload = (e) => {
             console.log(fileReader.result);
             this.lastFileContent = fileReader.result;
-            this.showSnackBar('Ask yes/no import');
+            const dialogRef = this.dialog.open(CsvImportComponent, {
+              data: { pi: this.pi,
+                      teamJiraPrefix: this.teamJiraPrefix,
+                      fileContents: this.lastFileContent }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.showSnackBar(`Items imported`);
+              }
+            });
           };
-          fileReader.readAsText(file);
         });
       }
     }

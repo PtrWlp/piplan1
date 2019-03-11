@@ -36,8 +36,9 @@
 
     <div fxFlex="30" class="piplan__overview__pane">
       <!-- sprint = 30090 AND status != closed AND issuetype != "Technical Task" ORDER BY Rank ASC -->
-      <a class="piplan__miniAddButton piplan__miniButton" target="_blank" href="https://jira.devnet.klm.com/issues/?jql=project%20%3D%20{{ team && team.jiraPrefix }}%20AND%20issuetype%20%3D%20%22User%20Story%22%20AND%20status%20%3D%20Open%20%20ORDER%20BY%20priority%20DESC%2C%20updated%20DESC">Get Jira export</a>
-      <div>(choose "CSV current fields" and "comma delimited", select columns "key", "Summary" and the "Story Points" column that actually holds the points... ) <br>
+      <!-- project = BWA AND issuetype = "User Story" AND status = Open  ORDER BY priority DESC, updated DESC -->
+      <a class="piplan__miniAddButton piplan__miniButton" target="_blank" href="https://jira.devnet.klm.com/issues/?jql=project%20%3D%20{{ team && team.jiraPrefix }}%20AND%20issuetype%20%3D%20%22User%20Story%22%20AND%20status%20%3D%20Open%20%20ORDER%20BY%20Rank%20ASC%2C%20updated%20DESC">Get Jira export</a>
+      <div>(choose "CSV current fields" and "comma delimited", select columns "key", "Summary" , "Issue Type" and the "Story Points" column that actually holds the points... ) <br>
       Then edit the downloaded file so it holds only the stories you want to plan, and drop it below.</div>
 
       <file-drop dropZoneLabel="Drop jira export here" (onFileDrop)="importCsv($event)">
