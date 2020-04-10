@@ -11,7 +11,7 @@ import { PiplanService } from '../../../shared/service/piplan.service';
 export class StoryComponent {
   @Input() public story: Story;
   fibo = [null, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
-  sprintsWithNext = ['backlog', 'sprint1', 'sprint2', 'sprint3', 'sprint4', 'sprint5']
+  sprintsWithNext = ['backlog', 'sprint1', 'sprint2', 'sprint3', 'sprint4', 'sprint5'];
 
   constructor (private piplanService: PiplanService) {
   }
