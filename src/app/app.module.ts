@@ -8,6 +8,8 @@ import {APP_CONFIG, AppConfig} from './configs/app.config';
 import {SharedModule} from './shared/shared.module';
 import {FirebaseModule} from './shared/modules/firebase.module';
 import { CookieService } from 'ngx-cookie-service';
+import {FirestoreSettingsToken} from '@angular/fire/firestore';
+
 
 @NgModule({
   imports: [
@@ -22,6 +24,7 @@ import { CookieService } from 'ngx-cookie-service';
   ],
   providers: [
     {provide: APP_CONFIG, useValue: AppConfig},
+    { provide: FirestoreSettingsToken, useValue: {} },
     CookieService
   ],
   bootstrap: [AppComponent],

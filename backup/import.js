@@ -26,7 +26,7 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
-db.settings({ timestampsInSnapshots: true });
+// db.settings({ timestampsInSnapshots: true });
 
 fs.readFile(fileName, 'utf8', function(err, data){
   if(err){
@@ -56,33 +56,33 @@ async function udpateCollection(dataArray){
 }
 
 function startUpdating(collectionName, doc, data){
-  // convert date from unixtimestamp  
+  // convert date from unixtimestamp
   let parameterValid = true;
 
   // Enter date value
-  if(typeof dateArray !== 'undefined') {        
-    dateArray.map(date => {      
+  if(typeof dateArray !== 'undefined') {
+    dateArray.map(date => {
       if (data.hasOwnProperty(date)) {
         data[date] = new Date(data[date]._seconds * 1000);
       } else {
         console.log('Please check your date parameters!!!', dateArray);
         parameterValid = false;
-      }     
-    });    
+      }
+    });
   }
 
   // Enter geo value
   if(typeof geoArray !== 'undefined') {
     geoArray.map(geo => {
-      if(data.hasOwnProperty(geo)) {        
-        data[geo] = new admin.firestore.GeoPoint(data[geo]._latitude, data[geo]._longitude);        
+      if(data.hasOwnProperty(geo)) {
+        data[geo] = new admin.firestore.GeoPoint(data[geo]._latitude, data[geo]._longitude);
       } else {
         console.log('Please check your geo parameters!!!', geoArray);
         parameterValid = false;
       }
     })
   }
-  
+
   if(parameterValid) {
     return new Promise(resolve => {
       db.collection(collectionName).doc(doc)
@@ -96,6 +96,6 @@ function startUpdating(collectionName, doc, data){
       });
     });
   } else {
-    console.log(`${doc} is not imported to firestore. Please check your parameters!`);    
+    console.log(`${doc} is not imported to firestore. Please check your parameters!`);
   }
 }

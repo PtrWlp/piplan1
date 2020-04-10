@@ -54,6 +54,10 @@
     <div class="piplan__sprint" data-html2canvas-ignore="true">
       <div class="piplan__sprint__heading">
         <h2 class="piplan__sprint__heading__title">backlog</h2>
+        <div class="piplan__sprint__heading__pointtotal piplan__points">
+          {{ getPoints('backlog') }}
+        </div>
+
         <div class="piplan__sprint__add-to-backlog">
           <button class="piplan__miniAddButton" (click)="createNewStory()">add story</button>
         </div>

@@ -43,7 +43,17 @@ export class PlanningComponent implements OnInit {
               '2019-12-27': 'Office Closed',
               '2019-12-30': 'Office Closed',
               '2019-12-31': 'Office Closed',
-              '2020-01-01': 'Newyearsday'};
+              '2020-01-01': 'Newyearsday',
+              '2020-04-09': 'Good Friday',
+              '2020-04-13': '2nd Easter',
+              '2020-04-22': 'Office Closed',
+              '2020-04-27': 'Kingsday',
+              '2020-05-04': 'Office Closed',
+              '2020-05-05': 'Liberation Day',
+              '2020-05-21': 'Ascension/Hemelvaart',
+              '2020-05-22': 'Office Closed',
+              '2020-06-01': '2nd Pentecost/Pinksteren',
+              '2020-12-25': 'Christmas'};
   lastFileContent;
 
 

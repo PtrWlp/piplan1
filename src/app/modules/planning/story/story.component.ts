@@ -11,6 +11,7 @@ import { PiplanService } from '../../../shared/service/piplan.service';
 export class StoryComponent {
   @Input() public story: Story;
   fibo = [null, 1, 2, 3, 5, 8, 13, 21, 34, 9999];
+  sprintsWithNext = ['backlog', 'sprint1', 'sprint2', 'sprint3', 'sprint4', 'sprint5']
 
   constructor (private piplanService: PiplanService) {
   }
@@ -56,6 +57,16 @@ export class StoryComponent {
 
   throwToTrashcan(story) {
     story.sprint = 'trashcan';
+    this.piplanService.updateStory(story);
+  }
+
+  nextSprint(story) {
+    const locator = this.sprintsWithNext.indexOf(story.sprint);
+    if (story.sprint === 'sprint5') {
+      story.sprint = 'sprint6';
+    } else {
+      story.sprint = this.sprintsWithNext[locator + 1];
+    }
     this.piplanService.updateStory(story);
   }
 
